@@ -1,6 +1,19 @@
-import { alpha, PaletteOptions } from '@mui/material';
+import { alpha, PaletteOptions, Shadows } from '@mui/material';
 
-const primary = {
+interface IColor {
+  lighter: string;
+  light: string;
+  main: string;
+  dark: string;
+  darker: string;
+}
+
+interface IPallette {
+  light: PaletteOptions;
+  dark: PaletteOptions;
+}
+
+export const primary: IColor = {
   lighter: '#EBD6FD',
   light: '#B985F4',
   main: '#7635dC',
@@ -8,35 +21,35 @@ const primary = {
   darker: '#200A69',
 };
 
-const secondary = {
+export const secondary: IColor = {
   lighter: '#D6E4FF',
   light: '#84A9FF',
   main: '#3366FF',
   dark: '#1939B7',
   darker: '#091A7A',
 };
-const info = {
+export const info: IColor = {
   lighter: '#D0F2FF',
   light: '#74CAFF',
   main: '#1890FF',
   dark: '#0C53B7',
   darker: '#04297A',
 };
-const success = {
+export const success: IColor = {
   lighter: '#E9FCD4',
   light: '#AAF27F',
   main: '#54D62C',
   dark: '#229A16',
   darker: '#08660D',
 };
-const warning = {
+export const warning: IColor = {
   lighter: '#FFF7CD',
   light: '#FFE16A',
   main: '#FFC107',
   dark: '#B78103',
   darker: '#7A4F01',
 };
-const error = {
+export const error: IColor = {
   lighter: '#FFE7D9',
   light: '#FFA48D',
   main: '#FF4842',
@@ -44,12 +57,7 @@ const error = {
   darker: '#7A0C2E',
 };
 
-interface IPallette {
-  light: Partial<PaletteOptions>;
-  dark: Partial<PaletteOptions>;
-}
-
-const grey = {
+export const grey = {
   0: '#FFFFFF',
   100: '#F9FAFB',
   200: '#F4F6F8',
@@ -60,17 +68,9 @@ const grey = {
   700: '#454F5B',
   800: '#212B36',
   900: '#161C24',
-  500_8: alpha('#919EAB', 0.08),
-  500_12: alpha('#919EAB', 0.12),
-  500_16: alpha('#919EAB', 0.16),
-  500_24: alpha('#919EAB', 0.24),
-  500_32: alpha('#919EAB', 0.32),
-  500_48: alpha('#919EAB', 0.48),
-  500_56: alpha('#919EAB', 0.56),
-  500_80: alpha('#919EAB', 0.8),
 };
 
-const palette: Partial<PaletteOptions> = {
+const palette: PaletteOptions = {
   common: {
     black: '#000',
     white: '#FFF',
@@ -91,18 +91,22 @@ const palette: Partial<PaletteOptions> = {
     ...error,
     contrastText: grey[800],
   },
+  warning: {
+    ...warning,
+    contrastText: '#FFF',
+  },
   info: {
     ...info,
     contrastText: '#FFF',
   },
   grey: grey,
-  divider: grey[500_24],
+  divider: alpha(grey[500], 0.24),
   action: {
-    hover: grey[500_8],
-    selected: grey[500_16],
-    disabled: grey[500_80],
-    disabledBackground: grey[500_24],
-    focus: grey[500_24],
+    hover: alpha(grey[500], 0.08),
+    selected: alpha(grey[500], 0.16),
+    disabled: alpha(grey[500], 0.8),
+    disabledBackground: alpha(grey[500], 0.24),
+    focus: alpha(grey[500], 0.24),
     hoverOpacity: 0.08,
     disabledOpacity: 0.48,
   },

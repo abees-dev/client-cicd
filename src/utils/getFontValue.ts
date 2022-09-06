@@ -1,4 +1,4 @@
-interface TypeResponsive {
+interface IResponsive {
   sm: number;
   md: number;
   lg: number;
@@ -8,7 +8,7 @@ export const pxToRem = (value: number): string => {
   return `${value / 16}rem`;
 };
 
-export const responsiveFontSizes = ({ sm, md, lg }: TypeResponsive) => {
+export const responsiveFontSizes = ({ sm, md, lg }: IResponsive) => {
   return {
     '@media (min-width:600px)': {
       fontSize: pxToRem(sm),

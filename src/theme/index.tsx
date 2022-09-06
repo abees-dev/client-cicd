@@ -1,15 +1,17 @@
 import { createTheme, CssBaseline, ThemeOptions, ThemeProvider as MUIThemeProvider } from '@mui/material';
-import React, { ReactElement, useMemo } from 'react';
+import React, { ReactElement, ReactNode, useMemo } from 'react';
+import useSetting from '../hooks/useSetting';
+import { IPropsTypes } from '../types/PropsTypes';
 import breakpoints from './breakpoint';
-import paletteMode from './palete';
+import overridesComponents from './overrides';
+import paletteMode from './pallette';
+import shadows, { customShadows } from './shadow';
 import typography from './typography';
 
-interface IThemeProvider {
-  children: ReactElement;
-}
-
-export default function ThemeProvider({ children }: IThemeProvider): ReactElement {
-  const isLight: boolean = true;
+export default function ThemeProvider({ children }: IPropsTypes<ReactNode>): ReactElement {
+  const { themeMode } = useSetting();
+  console.log(themeMode);
+  const isLight: boolean = themeMode === 'light';
 
   const themeOption: ThemeOptions = useMemo(
     () => ({
@@ -17,13 +19,16 @@ export default function ThemeProvider({ children }: IThemeProvider): ReactElemen
       breakpoints: breakpoints,
       typography: typography,
       shape: {
-        borderRadius: 4,
+        borderRadius: 8,
       },
+      shadows: isLight ? shadows.light : shadows.dark,
+      customShadows: isLight ? customShadows.light : customShadows.dark,
     }),
     [isLight]
   );
 
   const theme = createTheme(themeOption);
+  theme.components = overridesComponents(theme);
   return (
     <>
       <MUIThemeProvider theme={theme}>
