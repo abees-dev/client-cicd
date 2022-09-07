@@ -10,7 +10,6 @@ import typography from './typography';
 
 export default function ThemeProvider({ children }: IPropsTypes<ReactNode>): ReactElement {
   const { themeMode } = useSetting();
-  console.log(themeMode);
   const isLight: boolean = themeMode === 'light';
 
   const themeOption: ThemeOptions = useMemo(

@@ -1,8 +1,8 @@
 // ----------------------------------------------------------------------
 
-import { alpha, Theme } from '@mui/material';
+import { alpha, Components, Theme } from '@mui/material';
 
-export default function Button(theme: Theme) {
+export default function Button(theme: Theme): Components {
   return {
     MuiButton: {
       styleOverrides: {

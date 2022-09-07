@@ -13,8 +13,6 @@ export default function Iconify({ icon, sx, ...other }: IIconify & PropsCustoms<
       component={Icon}
       icon={icon}
       sx={{
-        width: 32,
-        height: 32,
         ...sx,
       }}
       {...other}

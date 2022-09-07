@@ -1,26 +1,36 @@
-import { Button, styled } from '@mui/material';
-import React, { useState } from 'react';
-import { useCookies } from 'react-cookie';
+import { Button, IconButton, styled } from '@mui/material';
 import Iconify from '../../../components/Iconify';
-import useCookiesTheme from '../../../hooks/useCookies';
 import useSetting from '../../../hooks/useSetting';
 
 type ButtonAnimateProps = {
   isLight: boolean;
 };
 
-const RootStyled = styled('div')(({ theme }) => ({
-  backgroundColor: theme.palette.action.focus,
-  height: 48,
+type RootProps = INavSwitch;
+
+interface INavSwitch {
+  isCollapse: boolean;
+}
+
+const RootStyled = styled('div', {
+  shouldForwardProp: (props) => props !== 'isCollapse',
+})<RootProps>(({ theme, isCollapse }) => ({
   marginRight: theme.spacing(2),
   marginLeft: theme.spacing(2),
-  borderRadius: theme.spacing(20),
-  padding: theme.spacing(0.5),
+  marginBottom: theme.spacing(2),
+  marginTop: 'auto',
   display: 'flex',
-  alignContent: 'center',
-  justifyContent: 'space-between',
-  gap: 4,
-  position: 'relative',
+  justifyContent: 'center',
+  ...(!isCollapse && {
+    backgroundColor: theme.palette.action.focus,
+    height: 48,
+    borderRadius: theme.spacing(20),
+    padding: theme.spacing(0.5),
+    justifyContent: 'space-between',
+    gap: 4,
+    position: 'relative',
+    alignContent: 'center',
+  }),
 }));
 const ButtonStyled = styled(Button)(({ theme }) => ({
   borderRadius: 100,
@@ -52,7 +62,7 @@ const ButtonAnimateStyled = styled(Button, {
   };
 });
 
-const NavSwitch = () => {
+const NavSwitch = ({ isCollapse }: INavSwitch) => {
   const { onChange, themeMode } = useSetting();
 
   const isLight = themeMode === 'light';
@@ -60,46 +70,54 @@ const NavSwitch = () => {
     onChange(method);
   };
   return (
-    <RootStyled>
-      <ButtonStyled
-        size="medium"
-        color="inherit"
-        startIcon={<Iconify icon="heroicons:sun-solid" sx={{ width: 24, height: 24 }} />}
-        sx={{
-          ...(isLight && {
-            opacity: 0,
-          }),
-        }}
-        onClick={() => handleClick('light')}
-      >
-        light
-      </ButtonStyled>
+    <RootStyled isCollapse={isCollapse}>
+      {!isCollapse ? (
+        <>
+          <ButtonStyled
+            size="medium"
+            color="inherit"
+            startIcon={<Iconify icon="heroicons:sun-solid" sx={{ width: 24, height: 24 }} />}
+            sx={{
+              ...(isLight && {
+                opacity: 0,
+              }),
+            }}
+            onClick={() => handleClick('light')}
+          >
+            light
+          </ButtonStyled>
 
-      <ButtonStyled
-        size="medium"
-        color="inherit"
-        startIcon={<Iconify icon="heroicons:moon-solid" sx={{ width: 24, height: 24 }} />}
-        sx={{
-          ...(!isLight && {
-            opacity: 0,
-          }),
-        }}
-        onClick={() => handleClick('dark')}
-      >
-        dark
-      </ButtonStyled>
+          <ButtonStyled
+            size="medium"
+            color="inherit"
+            startIcon={<Iconify icon="heroicons:moon-solid" sx={{ width: 24, height: 24 }} />}
+            sx={{
+              ...(!isLight && {
+                opacity: 0,
+              }),
+            }}
+            onClick={() => handleClick('dark')}
+          >
+            dark
+          </ButtonStyled>
 
-      <ButtonAnimateStyled
-        variant="contained"
-        size="medium"
-        color="inherit"
-        isLight={isLight}
-        startIcon={
+          <ButtonAnimateStyled
+            variant="contained"
+            size="medium"
+            color="inherit"
+            isLight={isLight}
+            startIcon={
+              <Iconify icon={isLight ? 'heroicons:sun-solid' : 'heroicons:moon-solid'} sx={{ width: 24, height: 24 }} />
+            }
+          >
+            {isLight ? 'light' : 'dark'}
+          </ButtonAnimateStyled>
+        </>
+      ) : (
+        <IconButton>
           <Iconify icon={isLight ? 'heroicons:sun-solid' : 'heroicons:moon-solid'} sx={{ width: 24, height: 24 }} />
-        }
-      >
-        {isLight ? 'light' : 'dark'}
-      </ButtonAnimateStyled>
+        </IconButton>
+      )}
     </RootStyled>
   );
 };

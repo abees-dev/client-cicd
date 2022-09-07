@@ -13,12 +13,20 @@ interface IPallette {
   dark: PaletteOptions;
 }
 
+// export const primary: IColor = {
+//   lighter: '#EBD6FD',
+//   light: '#B985F4',
+//   main: '#7635dC',
+//   dark: '#431A9E',
+//   darker: '#200A69',
+// };
+
 export const primary: IColor = {
-  lighter: '#EBD6FD',
-  light: '#B985F4',
-  main: '#7635dC',
-  dark: '#431A9E',
-  darker: '#200A69',
+  lighter: '#f48fb1',
+  light: '#ED4B82',
+  main: '#E91E63',
+  dark: '#A31545',
+  darker: '#ad1457',
 };
 
 export const secondary: IColor = {

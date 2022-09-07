@@ -8,8 +8,9 @@ const RootStyle = styled('div')(({ theme }) => ({
   gap: theme.spacing(2),
 }));
 
-const MainStyle = styled('main')(() => ({
+const MainStyle = styled('main')(({ theme }) => ({
   flex: 1,
+  paddingTop: theme.spacing(15),
 }));
 
 export default function Layout({ children }: IPropsTypes<ReactElement>) {

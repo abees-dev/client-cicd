@@ -74,7 +74,7 @@ export default function Navbar() {
             ))}
           </List>
         ))}
-        <NavSwitch />
+        <NavSwitch isCollapse={isCollapse} />
       </Drawer>
     </RootStyle>
   );
