@@ -1,7 +1,9 @@
 import { styled } from '@mui/material';
+import { type } from 'os';
 import { ReactElement } from 'react';
-import { IPropsTypes } from '../types/PropsTypes';
+import { IPropsTypes } from '../types/props';
 import DashboardLayout from './dashboard';
+import LogoOnly from './LogoOnly';
 
 const RootStyle = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -13,7 +15,20 @@ const MainStyle = styled('main')(({ theme }) => ({
   paddingTop: theme.spacing(15),
 }));
 
-export default function Layout({ children }: IPropsTypes<ReactElement>) {
+type Variants = 'dashboard' | 'logoOnly' | 'main';
+interface ILayout {
+  children: ReactElement;
+  variants?: Variants;
+}
+
+export default function Layout({ children, variants = 'dashboard' }: ILayout) {
+  if (variants === 'logoOnly') {
+    return <LogoOnly>{children}</LogoOnly>;
+  }
+
+  if (variants === 'main') {
+    return <>{children}</>;
+  }
   return (
     <RootStyle>
       <DashboardLayout />

@@ -3,7 +3,7 @@ import { forwardRef, ReactElement } from 'react';
 import Head from 'next/head';
 // @mui
 import { Box, BoxProps } from '@mui/material';
-import { PropsCustoms } from '../types/PropsTypes';
+import { PropsCustoms } from '../types/props';
 
 // ----------------------------------------------------------------------
 

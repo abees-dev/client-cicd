@@ -3,16 +3,11 @@ import { Stack } from '@mui/system';
 import { ReactElement } from 'react';
 import { DeveloperIllustrator } from '../../assets';
 import Page from '../../components/Page';
-import { LoginForm } from '../../container/auth';
+import { LoginForm, RegisterForm } from '../../container/auth';
 import Layout from '../../layouts';
 import { NextPageWithLayout } from '../_app';
 import NextLink from 'next/link';
 import { PATH_AUTH } from '../../routes/paths';
-
-type FormValues = {
-  email: string;
-  password: string;
-};
 
 const RootStyled = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -28,15 +23,15 @@ const TextStyled = styled('div')(({ theme }) => ({
   gap: theme.spacing(0.5),
 }));
 
-const Login: NextPageWithLayout = () => {
+const Register: NextPageWithLayout = () => {
   return (
     <Page title="Login">
       <RootStyled>
         <TextStyled>
-          <Typography variant="body2">Don’t have an account?</Typography>
-          <NextLink href={PATH_AUTH.register}>
+          <Typography variant="body2">Already have an account?</Typography>
+          <NextLink href={PATH_AUTH.login}>
             <Link underline="hover" variant="subtitle2" sx={{ cursor: 'pointer' }}>
-              Get stated
+              Login
             </Link>
           </NextLink>
         </TextStyled>
@@ -63,8 +58,8 @@ const Login: NextPageWithLayout = () => {
               height: 1,
             }}
           >
-            <Typography variant="h5">Login to assess</Typography>
-            <LoginForm />
+            <Typography variant="h5">Register Now</Typography>
+            <RegisterForm />
           </Stack>
         </Container>
       </RootStyled>
@@ -72,8 +67,8 @@ const Login: NextPageWithLayout = () => {
   );
 };
 
-Login.getLayout = function getLayout(page: ReactElement) {
+Register.getLayout = function getLayout(page: ReactElement) {
   return <Layout variants="logoOnly">{page}</Layout>;
 };
 
-export default Login;
+export default Register;

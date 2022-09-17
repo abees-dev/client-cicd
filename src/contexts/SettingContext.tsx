@@ -1,6 +1,6 @@
 import React, { createContext, ReactElement, useEffect, useState } from 'react';
 import useCookiesTheme from '../hooks/useCookies';
-import { IPropsTypes } from '../types/PropsTypes';
+import { IPropsTypes } from '../types/props';
 
 interface IInitialState {
   themeMode: string;

@@ -1,9 +1,11 @@
 import { Button, styled, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
-import React from 'react';
+import React, { ReactElement } from 'react';
+import { NextPageWithLayout } from './_app';
 import { Illustrator404 } from '../assets';
 import NextLink from 'next/link';
 import { PATH_DASHBOARD } from '../routes/paths';
+import Layout from '../layouts';
 
 const RootStyled = styled('div')(() => ({
   display: 'flex',
@@ -12,7 +14,8 @@ const RootStyled = styled('div')(() => ({
   height: '100vh',
   width: '100%',
 }));
-export default function Page404() {
+
+const Page404: NextPageWithLayout = () => {
   return (
     <RootStyled>
       <Stack justifyContent="center" alignItems="center" mt={5}>
@@ -35,4 +38,9 @@ export default function Page404() {
       </Stack>
     </RootStyled>
   );
-}
+};
+
+Page404.getLayout = function getLayout(page: ReactElement) {
+  return <Layout variants="logoOnly">{page}</Layout>;
+};
+export default Page404;

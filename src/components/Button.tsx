@@ -1,6 +1,6 @@
 import { Button, ButtonProps, styled } from '@mui/material';
 import { ReactElement } from 'react';
-import { PropsCustoms } from '../types/PropsTypes';
+import { PropsCustoms } from '../types/props';
 
 const CustomButtonStyle = styled(Button)(({ theme }) => ({
   color: theme.palette.primary.dark,

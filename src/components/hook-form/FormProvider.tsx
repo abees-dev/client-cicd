@@ -14,7 +14,9 @@ export default function FormProvider<Type extends Record<string, any>>({
 }: IFormProvider<Type>) {
   return (
     <Provider {...methods}>
-      <form onSubmit={onSubmit}>{children}</form>
+      <form onSubmit={onSubmit} style={{ width: '100%' }}>
+        {children}
+      </form>
     </Provider>
   );
 }

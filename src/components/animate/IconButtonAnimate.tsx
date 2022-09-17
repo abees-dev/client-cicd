@@ -1,6 +1,6 @@
 import { IconButton, IconButtonProps } from '@mui/material';
 import { Variants, motion } from 'framer-motion';
-import { PropsCustoms } from '../../types/PropsTypes';
+import { PropsCustoms } from '../../types/props';
 
 const variantSmall: Variants = {
   hover: {

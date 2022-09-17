@@ -1,30 +1,11 @@
 // @mui
 
 import { alpha, Shadows } from '@mui/material/styles';
+import { ICustomShadows } from '../types/theme';
 //
 import { error, grey, info, primary, secondary, success, warning } from './pallette';
 
 // ----------------------------------------------------------------------
-
-export interface ICustomShadows {
-  z1: string;
-  z8: string;
-  z12: string;
-  z16: string;
-  z20: string;
-  z24: string;
-  //
-  primary: string;
-  info: string;
-  secondary: string;
-  success: string;
-  warning: string;
-  error: string;
-  //
-  card: string;
-  dialog: string;
-  dropdown: string;
-}
 
 const LIGHT_MODE: string = grey[500];
 const DARK_MODE: string = '#000000';

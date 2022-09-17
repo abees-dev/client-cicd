@@ -1,5 +1,5 @@
 import React, { createContext, ReactElement, useState } from 'react';
-import { IPropsTypes } from '../types/PropsTypes';
+import { IPropsTypes } from '../types/props';
 
 interface IState {
   isCollapse: boolean;
@@ -26,8 +26,6 @@ export default function CollapseSideBarProvider({ children }: IPropsTypes<ReactE
     click: false,
     hover: false,
   });
-
-  console.log('provider', collapse.click && !collapse.hover);
 
   const handleToggle = () => {
     setCollapse((prev) => ({ ...prev, click: !prev.click }));

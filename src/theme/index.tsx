@@ -1,7 +1,7 @@
 import { createTheme, CssBaseline, ThemeOptions, ThemeProvider as MUIThemeProvider } from '@mui/material';
 import React, { ReactElement, ReactNode, useMemo } from 'react';
 import useSetting from '../hooks/useSetting';
-import { IPropsTypes } from '../types/PropsTypes';
+import { IPropsTypes } from '../types/props';
 import breakpoints from './breakpoint';
 import overridesComponents from './overrides';
 import paletteMode from './pallette';

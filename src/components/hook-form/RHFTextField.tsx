@@ -13,7 +13,7 @@ export default function RHFTextField({ name, ...other }: IRHFTextField & TextFie
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <TextField {...field} helperText={error && error.message} error={!!error} {...other} />
+        <TextField {...field} fullWidth helperText={error && error.message} error={!!error} {...other} />
       )}
     />
   );

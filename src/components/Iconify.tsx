@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
 import { Box, BoxProps } from '@mui/material';
-import { PropsCustoms } from '../types/PropsTypes';
+import { PropsCustoms } from '../types/props';
 
 interface IIconify {
   icon: string;

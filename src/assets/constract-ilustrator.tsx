@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { BoxProps } from '@mui/system';
-import { PropsCustoms } from '../types/PropsTypes';
+import { PropsCustoms } from '../types/props';
 
 export const Test = ({ ...other }: PropsCustoms<BoxProps>) => {
   return (
