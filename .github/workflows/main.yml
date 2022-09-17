@@ -42,7 +42,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.CR_PAT }}
+          password: ${{ secrets.P_DOCKER }}
       - name: Build and Push Docker Images
         run: |
           export CURRENT_BRANCH=${GITHUB_REF#refs/heads/}
