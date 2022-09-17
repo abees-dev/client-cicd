@@ -15,8 +15,13 @@ const initialState: UserState = {
   accessToken: undefined,
 };
 
-export const userLoginThunk = createAsyncThunk('auth/login', async (params: LoginInput) => {
-  return await userLogin(params);
+export const userLoginThunk = createAsyncThunk('auth/login', async (params: LoginInput, { rejectWithValue }) => {
+  try {
+    const response = await userLogin(params);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error);
+  }
 });
 
 export const userSlice = createSlice({
@@ -31,11 +36,13 @@ export const userSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(userLoginThunk.fulfilled, (state, action) => {
-      state.user = action.payload.data.user;
-      state.accessToken = action.payload.data.accessToken;
+      state.user = action.payload.user;
+      state.accessToken = action.payload.accessToken;
       state.isAuthenticated = true;
     });
   },
 });
+
+export const { useLogout } = userSlice.actions;
 
 export default userSlice.reducer;

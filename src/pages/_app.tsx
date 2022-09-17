@@ -9,6 +9,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import store, { persistor } from '../redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import ProgressBar from '../components/ProgressBar';
+import NotistackProvider from '../components/Notistack';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -28,10 +29,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             <CollapseSideBarProvider>
               <SettingContextProvider>
                 <ThemeProvider>
-                  <>
+                  <NotistackProvider>
                     <ProgressBar />
                     {getLayout(<Component {...pageProps} />)}
-                  </>
+                  </NotistackProvider>
                 </ThemeProvider>
               </SettingContextProvider>
             </CollapseSideBarProvider>

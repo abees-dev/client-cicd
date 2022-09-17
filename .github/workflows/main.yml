@@ -1,0 +1,55 @@
+name: Build & Publish
+
+on:
+  push:
+    branches:
+      - '**'
+      - '!dependabot/**'
+  workflow_dispatch:
+
+jobs:
+  next-build:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    container: node:lts
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - run: npm ci
+      - run: npm run build
+        env:
+          NEXT_BASE_API_URL: ${{secrets.NEXT_BASE_API_URL}}
+      - name: Upload Next build
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: |
+            .next
+            public
+          retention-days: 7
+  docker-push:
+    needs: next-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Download next build
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CR_PAT }}
+      - name: Build and Push Docker Images
+        run: |
+          export CURRENT_BRANCH=${GITHUB_REF#refs/heads/}
+          export TAG=$([[ $CURRENT_BRANCH == "main" ]] && echo "latest" || echo $CURRENT_BRANCH)
+          export GITHUB_REF_IMAGE=ghcr.io/$GITHUB_REPOSITORY:$GITHUB_SHA
+          export GITHUB_BRANCH_IMAGE=ghcr.io/$GITHUB_REPOSITORY:$TAG
+          docker build -t $GCR_IMAGE -t $GITHUB_REF_IMAGE -t $GITHUB_BRANCH_IMAGE .
+          echo "Pushing Image to GitHub Container Registry"
+          docker push $GITHUB_REF_IMAGE
+          docker push $GITHUB_BRANCH_IMAGE

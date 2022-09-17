@@ -12,10 +12,16 @@ import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { userLoginThunk } from '../../../redux/slice/auth.slice';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { LoginInput } from '../../../types/input';
+import { useSnackbar } from 'notistack';
+import { AxiosError } from 'axios';
+import { formatError } from '../../../utils/formatError';
+import { MyError } from '../../../types/error';
 
 export default function LoginForm() {
   const user = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().required(),
@@ -35,18 +41,18 @@ export default function LoginForm() {
     formState: { isSubmitting },
   } = methods;
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
   const onSubmit = async (data: LoginInput) => {
-    console.log(data);
     try {
       const actionResult = await dispatch(userLoginThunk(data));
       const result = unwrapResult(actionResult);
-      console.log(result);
+      enqueueSnackbar(result.message, {
+        variant: 'success',
+      });
     } catch (error) {
-      console.log(error);
+      const err = error as MyError;
+      enqueueSnackbar(err.message, {
+        variant: 'error',
+      });
     }
   };
 
