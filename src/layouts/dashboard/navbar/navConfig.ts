@@ -1,4 +1,4 @@
-import { PATH_DASHBOARD } from '../../../routes/paths';
+import { PATH_DASHBOARD } from 'src/routes/paths';
 
 export function getActive<T extends string>(path: T, pathname: T, asPath: T) {
   const currentPath = path.split('/').pop() as string;

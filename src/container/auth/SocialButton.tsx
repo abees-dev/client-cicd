@@ -1,6 +1,6 @@
 import { Button, Grid, Stack } from '@mui/material';
 import React from 'react';
-import Iconify from '../../components/Iconify';
+import Iconify from 'src/components/Iconify';
 
 export default function SocialButton() {
   return (

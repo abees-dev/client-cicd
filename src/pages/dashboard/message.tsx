@@ -1,10 +1,10 @@
-import { Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import React, { ReactElement } from 'react';
 import { MessageBox } from '../../container/dashboard/message';
 import Layout from '../../layouts';
-import { NextPageWithLayout } from '../_app';
+import { NextPageWithLayout } from 'src/types';
 
-const Message: NextPageWithLayout = () => {
+const PageMessage: NextPageWithLayout = () => {
   return (
     <Box mt={8}>
       <MessageBox />
@@ -12,8 +12,8 @@ const Message: NextPageWithLayout = () => {
   );
 };
 
-Message.getLayout = function getLayout(page: ReactElement) {
-  return <Layout variants="main">{page}</Layout>;
+PageMessage.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>;
 };
 
-export default Message;
+export default PageMessage;

@@ -1,6 +1,14 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
-import { useLogout } from '../redux/slice/auth.slice';
-import { injectStore } from './injectStore';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import jwtDecode, { JwtPayload } from 'jwt-decode';
+import { refreshToken, useLogout } from '../redux/slice/auth.slice';
+import store from '../redux/store';
+import { getToken } from './jwt';
+
+interface RefreshTokenResponse {
+  code?: number;
+  message?: string;
+  accessToken?: string;
+}
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_BASE_API_URL,
@@ -9,17 +17,38 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(async (config: AxiosRequestConfig) => {
-  const { dispatch, getState } = injectStore();
-  const accessToken = getState().user.accessToken;
+  const { dispatch } = store;
+  const accessToken = getToken();
+  if (!accessToken) {
+    dispatch(useLogout());
+  }
 
-  console.log(accessToken);
-  // if (!accessToken) {
-  //   return dispatch(useLogout());
-  // }
+  try {
+    const payload = accessToken && (jwtDecode(accessToken as string) as JwtPayload);
+
+    const currentTime = (new Date().getTime() + 1) / 1000;
+    const { retry } = config;
+
+    const whiteListUrl = !['/api/auth/login', '/api/auth/register'].includes(config.url as string);
+
+    if (payload && payload.exp && payload.exp > currentTime && whiteListUrl && !retry) {
+      config.retry = true;
+      console.log('first');
+      const response: AxiosResponse<RefreshTokenResponse> = await axios({
+        method: 'POST',
+        url: `${process.env.NEXT_BASE_API_URL}/api/auth/refresh-token`,
+        withCredentials: true,
+      });
+      dispatch(refreshToken(response.data));
+    }
+  } catch (error: any) {
+    console.log(error.message);
+    dispatch(useLogout());
+  }
+
   config.headers = {
-    Authorization: `Bearer ${accessToken}`,
+    Authorization: `Bearer ${getToken()}`,
   };
-
   return config;
 });
 

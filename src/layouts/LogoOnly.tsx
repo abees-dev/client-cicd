@@ -1,7 +1,7 @@
 import { Box, styled } from '@mui/material';
 import React, { ReactElement } from 'react';
-import Logo from '../components/Logo';
-import { IPropsTypes } from '../types/props';
+import Logo from 'src/components/Logo';
+import { IPropsTypes } from 'src/types/props';
 
 const LogoStyled = styled('header')(({ theme }) => ({
   position: 'absolute',

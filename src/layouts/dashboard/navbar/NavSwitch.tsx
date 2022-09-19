@@ -1,6 +1,6 @@
 import { Button, IconButton, styled } from '@mui/material';
-import Iconify from '../../../components/Iconify';
-import useSetting from '../../../hooks/useSetting';
+import Iconify from 'src/components/Iconify';
+import useSetting from 'src/hooks/useSetting';
 
 type ButtonAnimateProps = {
   isLight: boolean;

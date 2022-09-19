@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import { ReactElement } from 'react';
 import Layout from '../../layouts';
-import { NextPageWithLayout } from '../_app';
+import { NextPageWithLayout } from 'src/types';
 
 const Notification: NextPageWithLayout = () => {
   return (

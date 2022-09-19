@@ -1,7 +1,7 @@
 // @mui
 import { alpha, styled } from '@mui/material/styles';
 import { ListItemText, ListItemButton, ListItemIcon } from '@mui/material';
-import { NAVBAR } from '../../../config';
+import { NAVBAR } from 'src/config';
 // config
 
 // ----------------------------------------------------------------------

@@ -1,9 +1,10 @@
 import { Box, Divider, Drawer, List, ListSubheader, ListSubheaderProps, styled } from '@mui/material';
-import { NAVBAR } from '../../../config';
-import useCollapse from '../../../hooks/useCollapse';
+import { NAVBAR } from 'src/config';
+import useCollapse from 'src/hooks/useCollapse';
 import NavbarAccount from './NavbarAccount';
 import { navConfig } from './navConfig';
 import { NavListRoot } from './NavList';
+
 import NavSwitch from './NavSwitch';
 
 interface IRootProps {

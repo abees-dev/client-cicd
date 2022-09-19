@@ -1,12 +1,10 @@
-import React from 'react';
-import * as Yup from 'yup';
-import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import FormProvider from '../../../components/hook-form/FormProvider';
-import RHFTextField from '../../../components/hook-form/RHFTextField';
-import { Stack } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { useRegister } from '../../../api/auth';
+import { Stack } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import { useRegister } from 'src/api/auth';
+import { FormProvider, RHFTextField } from 'src/components/hook-form';
+import * as Yup from 'yup';
 
 export type RegisterValue = {
   firstName: string;
@@ -28,7 +26,7 @@ export default function RegisterForm() {
   const defaultValues: RegisterValue = {
     firstName: 'abees',
     lastName: 'dev',
-    email: 'abeesdevj@gmail.com',
+    email: 'abeesdevjs@gmail.com',
     password: 'abeesdevjs',
     confirmPassword: 'abeesdevjs',
   };

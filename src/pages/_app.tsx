@@ -10,33 +10,36 @@ import store, { persistor } from '../redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import ProgressBar from '../components/ProgressBar';
 import NotistackProvider from '../components/Notistack';
-
-export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
-  getLayout?: (page: ReactElement) => ReactNode;
-};
+import { NextPageWithLayout } from 'src/types';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-  const getLayout = Component.getLayout ?? ((page) => page);
+  const getLayout = Component.getLayout ?? ((page: ReactElement) => page);
+  const queryClient = new QueryClient();
   return (
     <>
       <ReduxProvider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <CookiesProvider>
-            <CollapseSideBarProvider>
-              <SettingContextProvider>
-                <ThemeProvider>
-                  <NotistackProvider>
-                    <ProgressBar />
-                    {getLayout(<Component {...pageProps} />)}
-                  </NotistackProvider>
-                </ThemeProvider>
-              </SettingContextProvider>
-            </CollapseSideBarProvider>
-          </CookiesProvider>
+          <QueryClientProvider client={queryClient}>
+            <CookiesProvider>
+              <CollapseSideBarProvider>
+                <SettingContextProvider>
+                  <ThemeProvider>
+                    <NotistackProvider>
+                      <ProgressBar />
+                      <ReactQueryDevtools initialIsOpen={false} />
+                      {getLayout(<Component {...pageProps} />)}
+                    </NotistackProvider>
+                  </ThemeProvider>
+                </SettingContextProvider>
+              </CollapseSideBarProvider>
+            </CookiesProvider>
+          </QueryClientProvider>
         </PersistGate>
       </ReduxProvider>
     </>

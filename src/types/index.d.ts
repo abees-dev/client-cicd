@@ -1,5 +1,9 @@
 export type Nullable<T> = T | null;
 
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
 export interface User {
   id: string;
   email: string;
@@ -16,5 +20,5 @@ export interface UserResponse {
   code?: number;
   message?: string;
   accessToken?: string;
-  user?: User;
+  user: User;
 }

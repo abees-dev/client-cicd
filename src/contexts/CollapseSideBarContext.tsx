@@ -1,5 +1,5 @@
 import React, { createContext, ReactElement, useState } from 'react';
-import { IPropsTypes } from '../types/props';
+import { IPropsTypes } from 'src/types/props';
 
 interface IState {
   isCollapse: boolean;

@@ -1,18 +1,13 @@
-import * as React from 'react';
+import { alpha, Badge, styled } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import { alpha, Badge, styled } from '@mui/material';
-import { HEADER, NAVBAR } from '../../../config';
-import useCollapse from '../../../hooks/useCollapse';
-import { motion, Variant, Variants } from 'framer-motion';
-import IconButtonAnimate from '../../../components/animate/IconButtonAnimate';
-import Iconify from '../../../components/Iconify';
-import MyAvatar from '../../../components/MyAvatar';
 import { Stack } from '@mui/system';
+import IconButtonAnimate from 'src/components/animate/IconButtonAnimate';
+import Iconify from 'src/components/Iconify';
+import MyAvatar from 'src/components/MyAvatar';
+import { HEADER, NAVBAR } from 'src/config';
+import useCollapse from 'src/hooks/useCollapse';
 
 interface AppBarProps {
   isCollapse: boolean;

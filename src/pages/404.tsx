@@ -1,11 +1,11 @@
 import { Button, styled, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
 import React, { ReactElement } from 'react';
-import { NextPageWithLayout } from './_app';
 import { Illustrator404 } from '../assets';
 import NextLink from 'next/link';
 import { PATH_DASHBOARD } from '../routes/paths';
 import Layout from '../layouts';
+import { NextPageWithLayout } from 'src/types';
 
 const RootStyled = styled('div')(() => ({
   display: 'flex',

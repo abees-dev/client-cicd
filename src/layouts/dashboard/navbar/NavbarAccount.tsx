@@ -1,7 +1,7 @@
 import { alpha, Button, Stack, styled, Typography } from '@mui/material';
-import Iconify from '../../../components/Iconify';
-import MyAvatar from '../../../components/MyAvatar';
-import useCollapse from '../../../hooks/useCollapse';
+import Iconify from 'src/components/Iconify';
+import MyAvatar from 'src/components/MyAvatar';
+import useCollapse from 'src/hooks/useCollapse';
 
 type RootProp = {
   isCollapse: boolean;

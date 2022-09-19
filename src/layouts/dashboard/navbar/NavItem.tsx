@@ -4,9 +4,9 @@ import NextLink from 'next/link';
 // @mui
 import { Box, ListItemText } from '@mui/material';
 //
-import Iconify from '../../../components/Iconify';
 import { IChildren, IList } from './navConfig';
 import { ListItemIconStyle, ListItemStyle, ListItemTextStyle } from './styled';
+import Iconify from 'src/components/Iconify';
 // ----------------------------------------------------------------------
 
 interface INavItemRoot {

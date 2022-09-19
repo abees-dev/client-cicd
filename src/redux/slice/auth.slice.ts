@@ -25,13 +25,16 @@ export const userLoginThunk = createAsyncThunk('auth/login', async (params: Logi
 });
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: 'auth',
   initialState,
   reducers: {
     useLogout: (state) => {
       state.accessToken = undefined;
       state.isAuthenticated = undefined;
       state.user = undefined;
+    },
+    refreshToken: (state, action) => {
+      state.accessToken = action.payload.accessToken;
     },
   },
   extraReducers(builder) {
@@ -43,6 +46,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { useLogout } = userSlice.actions;
+export const { useLogout, refreshToken } = userSlice.actions;
 
 export default userSlice.reducer;

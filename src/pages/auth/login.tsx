@@ -1,13 +1,13 @@
 import { Card, Container, Link, styled, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
-import { ReactElement } from 'react';
-import { DeveloperIllustrator } from '../../assets';
-import Page from '../../components/Page';
-import { LoginForm } from '../../container/auth';
-import Layout from '../../layouts';
-import { NextPageWithLayout } from '../_app';
 import NextLink from 'next/link';
-import { PATH_AUTH } from '../../routes/paths';
+import { ReactElement } from 'react';
+import Page from 'src/components/Page';
+import { LoginForm } from 'src/container/auth';
+import Layout from 'src/layouts';
+import { PATH_AUTH } from 'src/routes/paths';
+import { NextPageWithLayout } from 'src/types';
+import { DeveloperIllustrator } from '../../assets';
 
 type FormValues = {
   email: string;

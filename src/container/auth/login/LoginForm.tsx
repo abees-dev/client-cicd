@@ -1,24 +1,22 @@
-import { Button, Divider, Stack, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
-import { useForm, UseFormReturn } from 'react-hook-form';
-import FormProvider from '../../../components/hook-form/FormProvider';
-import RHFTextField from '../../../components/hook-form/RHFTextField';
-import SocialButton from '../SocialButton';
-import { userLogin } from '../../../api/auth';
 import { LoadingButton } from '@mui/lab';
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { userLoginThunk } from '../../../redux/slice/auth.slice';
+import { Divider, Stack, Typography } from '@mui/material';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { LoginInput } from '../../../types/input';
 import { useSnackbar } from 'notistack';
-import { AxiosError } from 'axios';
-import { formatError } from '../../../utils/formatError';
-import { MyError } from '../../../types/error';
+import { useForm } from 'react-hook-form';
+import { FormProvider, RHFTextField } from 'src/components/hook-form';
+import useSocket from 'src/hooks/useSocket';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { userLoginThunk } from 'src/redux/slice/auth.slice';
+import { UserResponse } from 'src/types';
+import { MyError } from 'src/types/error';
+import { LoginInput } from 'src/types/input';
+import * as Yup from 'yup';
+import SocialButton from '../SocialButton';
 
 export default function LoginForm() {
-  const user = useAppSelector((state) => state.user);
+  const user = useAppSelector((state) => state.auth);
+  const socket = useSocket();
   const dispatch = useAppDispatch();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -44,10 +42,12 @@ export default function LoginForm() {
   const onSubmit = async (data: LoginInput) => {
     try {
       const actionResult = await dispatch(userLoginThunk(data));
-      const result = unwrapResult(actionResult);
+      const result = unwrapResult(actionResult) as UserResponse;
       enqueueSnackbar(result.message, {
         variant: 'success',
       });
+
+      socket?.emit('login', result.user.id);
     } catch (error) {
       const err = error as MyError;
       enqueueSnackbar(err.message, {

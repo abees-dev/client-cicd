@@ -1,7 +1,5 @@
 import { styled } from '@mui/material';
-import { type } from 'os';
 import { ReactElement } from 'react';
-import { IPropsTypes } from '../types/props';
 import DashboardLayout from './dashboard';
 import LogoOnly from './LogoOnly';
 
@@ -13,6 +11,8 @@ const RootStyle = styled('div')(({ theme }) => ({
 const MainStyle = styled('main')(({ theme }) => ({
   flex: 1,
   paddingTop: theme.spacing(15),
+  paddingRight: theme.spacing(4),
+  paddingLeft: theme.spacing(4),
 }));
 
 type Variants = 'dashboard' | 'logoOnly' | 'main';

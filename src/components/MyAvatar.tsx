@@ -6,7 +6,7 @@ import createAvatar from '../utils/createAvatar';
 export default function MyAvatar({ sx, ...other }: PropsCustoms<AvatarProps>) {
   return (
     <Avatar
-      src="https://haycafe.vn/wp-content/uploads/2021/11/A"
+      src=""
       color="primary"
       sx={{
         width: 40,

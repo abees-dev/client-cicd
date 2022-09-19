@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material';
 import React, { ReactElement } from 'react';
 import Layout from '../../layouts';
-import { NextPageWithLayout } from '../_app';
+import { NextPageWithLayout } from 'src/types';
 
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
