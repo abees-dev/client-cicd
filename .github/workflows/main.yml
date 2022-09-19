@@ -34,5 +34,5 @@ jobs:
           username: ${{secrets.SSH_USER_NAME}}
           script: |
             sudo docker pull abeesdevjs/client:latest 
-            sudo docker rm -f $(sudo docker ps -a -q)
-            sudo docker run -d -p 3030:3030 abeesdevjs/client
+            sudo docker rm -f client
+            sudo docker run --name client -dp 3030:3030 abeesdevjs/client
