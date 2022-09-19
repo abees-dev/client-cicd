@@ -3,7 +3,12 @@ import { NextPageWithLayout } from 'src/types';
 import Layout from '../../layouts';
 
 const Dashboard: NextPageWithLayout = () => {
-  return <div>Dashboard</div>;
+  return (
+    <div>
+      Dashboard
+      <h1>CIDD</h1>
+    </div>
+  );
 };
 
 Dashboard.getLayout = function getLayout(page: ReactElement) {
