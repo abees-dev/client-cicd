@@ -6,7 +6,7 @@ export default function useSocket() {
   const [socket, setSocket] = useState<Nullable<Socket>>(null);
 
   useEffect(() => {
-    const socketIo = io('http://localhost:3080', { withCredentials: true });
+    const socketIo = io(process.env.NEXT_BASE_API_URL as string, { withCredentials: true });
 
     setSocket(socketIo);
 
