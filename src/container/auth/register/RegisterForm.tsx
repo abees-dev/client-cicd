@@ -1,3 +1,4 @@
+import { ApolloError } from '@apollo/client';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
 import { Stack } from '@mui/material';
@@ -47,8 +48,12 @@ export default function RegisterForm() {
   const { enqueueSnackbar } = useSnackbar();
 
   const onSubmit = async (inputData: RegisterValue) => {
-    const { data } = await register({ variables: { data: inputData } });
+    const { data, errors } = await register({ variables: { data: inputData } });
+
     const response = data?.register;
+
+    console.log(errors);
+
     if (response?.code === 201) {
       enqueueSnackbar(response.message);
     } else {

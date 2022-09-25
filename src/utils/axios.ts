@@ -11,7 +11,7 @@ import axios, { AxiosError } from 'axios';
 // }
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_BASE_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   withCredentials: true,
   timeout: 30000,
 });

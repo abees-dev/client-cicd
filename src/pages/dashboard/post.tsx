@@ -1,8 +1,8 @@
 import { Box, Card, Container } from '@mui/material';
 import { isEmpty } from 'lodash';
-import React, { ReactElement, useEffect, useState } from 'react';
-import { CommentInput, CommentList, PostCreate, PostList } from 'src/container/dashboard/post';
-import { Post, PostResponse, useGetAllPostQuery } from 'src/generated/graphql';
+import { ReactElement, useEffect, useState } from 'react';
+import { CommentList, PostCreate, PostList } from 'src/container/dashboard/post';
+import { Post, useGetAllPostQuery } from 'src/generated/graphql';
 import Layout from 'src/layouts';
 import { NextPageWithLayout } from 'src/types';
 
@@ -39,8 +39,7 @@ const Post: NextPageWithLayout = () => {
         <Card key={post?.id} sx={{ pb: 2, mt: 2 }}>
           <Box>
             <PostList post={post as Post} />
-            <CommentInput />
-            <CommentList />
+            <CommentList post={post as Post} />
           </Box>
         </Card>
       ))}

@@ -1,5 +1,5 @@
-subscription ListenCommentPost($topic: String!) {
-  listenCommentPost(topic: $topic) {
+query GetCommentByPost($postId: Float!) {
+  comments(postId: $postId) {
     id
     message
     createdAt

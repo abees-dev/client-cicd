@@ -1,17 +1,22 @@
-query getAllPost {
+query GetAllPost {
   posts {
     id
     content
-    updatedAt
-    createdAt
     image {
       url
+      id
+      fileName
     }
+    createdAt
+    updatedAt
     user {
       id
-      firstName
+      email
       lastName
+      firstName
       avatar
+      createdAt
+      updatedAt
     }
   }
 }

@@ -17,16 +17,23 @@ export type Scalars = {
   JSONObject: any;
 };
 
+export type AllCommentResponse = BaseResponse & {
+  __typename?: 'AllCommentResponse';
+  code?: Maybe<Scalars['Float']>;
+  comment?: Maybe<Array<Comment>>;
+  message?: Maybe<Scalars['String']>;
+};
+
 export type AllPostResponse = BaseResponse & {
   __typename?: 'AllPostResponse';
-  code: Scalars['Float'];
-  message: Scalars['String'];
+  code?: Maybe<Scalars['Float']>;
+  message?: Maybe<Scalars['String']>;
   posts?: Maybe<Post>;
 };
 
 export type BaseResponse = {
-  code: Scalars['Float'];
-  message: Scalars['String'];
+  code?: Maybe<Scalars['Float']>;
+  message?: Maybe<Scalars['String']>;
 };
 
 export type Comment = {
@@ -34,14 +41,27 @@ export type Comment = {
   createdAt: Scalars['String'];
   id: Scalars['ID'];
   message: Scalars['String'];
-  parent: User;
-  post: Array<Post>;
+  post: Post;
   updatedAt: Scalars['String'];
-  user: User;
+  user?: Maybe<User>;
 };
 
-export type CommentResponse = {
+export type CommentInput = {
+  message: Scalars['String'];
+  post: Scalars['JSONObject'];
+  type?: InputMaybe<Scalars['String']>;
+  user: Scalars['JSONObject'];
+};
+
+export type CommentResponse = BaseResponse & {
   __typename?: 'CommentResponse';
+  code?: Maybe<Scalars['Float']>;
+  comment?: Maybe<Comment>;
+  message?: Maybe<Scalars['String']>;
+};
+
+export type CommentResponseTest = {
+  __typename?: 'CommentResponseTest';
   date: Scalars['DateTime'];
   message: Scalars['String'];
 };
@@ -77,12 +97,21 @@ export type Model = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createComment: CommentResponse;
   createPost: PostResponse;
   login: UserResponse;
-  mutationComment: CommentResponse;
+  mutationComment: CommentResponseTest;
   pubSubMutation: Scalars['Boolean'];
   pubSubMutationToDynamicTopic: Scalars['Boolean'];
+  publisherMutation: Scalars['Boolean'];
   register: UserResponse;
+  replyComment: CommentResponse;
+};
+
+
+export type MutationCreateCommentArgs = {
+  commentInput: CommentInput;
+  topic: Scalars['String'];
 };
 
 
@@ -113,8 +142,18 @@ export type MutationPubSubMutationToDynamicTopicArgs = {
 };
 
 
+export type MutationPublisherMutationArgs = {
+  message?: InputMaybe<Scalars['String']>;
+};
+
+
 export type MutationRegisterArgs = {
   registerInput: RegisterInput;
+};
+
+
+export type MutationReplyCommentArgs = {
+  replyInput: ReplyInput;
 };
 
 export type Notification = {
@@ -126,8 +165,8 @@ export type Notification = {
 
 export type NotificationResponse = BaseResponse & {
   __typename?: 'NotificationResponse';
-  code: Scalars['Float'];
-  message: Scalars['String'];
+  code?: Maybe<Scalars['Float']>;
+  message?: Maybe<Scalars['String']>;
   notification: Scalars['String'];
 };
 
@@ -151,22 +190,29 @@ export type PostInput = {
   checking?: InputMaybe<Scalars['String']>;
   content: Scalars['String'];
   status?: InputMaybe<Scalars['String']>;
-  user?: InputMaybe<Scalars['JSONObject']>;
+  user: Scalars['JSONObject'];
   visible?: InputMaybe<Scalars['String']>;
 };
 
 export type PostResponse = BaseResponse & {
   __typename?: 'PostResponse';
-  code: Scalars['Float'];
-  message: Scalars['String'];
+  code?: Maybe<Scalars['Float']>;
+  message?: Maybe<Scalars['String']>;
   post?: Maybe<Post>;
 };
 
 export type Query = {
   __typename?: 'Query';
+  comments: Array<Comment>;
   currentDate: Scalars['DateTime'];
   posts: Array<Post>;
+  refreshToken: UserResponse;
   users: Scalars['String'];
+};
+
+
+export type QueryCommentsArgs = {
+  postId: Scalars['Float'];
 };
 
 export type RegisterInput = {
@@ -177,12 +223,25 @@ export type RegisterInput = {
   password: Scalars['String'];
 };
 
+export type ReplyInput = {
+  comment: Scalars['JSONObject'];
+  message: Scalars['String'];
+  post: Scalars['JSONObject'];
+  user: Scalars['JSONObject'];
+};
+
 export type Subscription = {
   __typename?: 'Subscription';
-  listenComment: CommentResponse;
+  listenCommentPost: Comment;
+  listenCommentTest: CommentResponseTest;
   normalSubscription: Notification;
   subscriptionWithFilter: Notification;
   subscriptionWithFilterToDynamicTopic: Notification;
+};
+
+
+export type SubscriptionListenCommentPostArgs = {
+  topic: Scalars['String'];
 };
 
 
@@ -193,6 +252,7 @@ export type SubscriptionSubscriptionWithFilterToDynamicTopicArgs = {
 export type User = {
   __typename?: 'User';
   avatar?: Maybe<Scalars['String']>;
+  comment?: Maybe<Comment>;
   createdAt: Scalars['String'];
   email: Scalars['String'];
   firstName: Scalars['String'];
@@ -221,8 +281,8 @@ export type UserProfile = {
 export type UserResponse = BaseResponse & {
   __typename?: 'UserResponse';
   accessToken?: Maybe<Scalars['String']>;
-  code: Scalars['Float'];
-  message: Scalars['String'];
+  code?: Maybe<Scalars['Float']>;
+  message?: Maybe<Scalars['String']>;
   user?: Maybe<User>;
 };
 
@@ -231,14 +291,22 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', code: number, message: string, accessToken?: string | null, user?: { __typename?: 'User', id: string, email: string, lastName: string, firstName: string, createdAt: string, updatedAt: string, avatar?: string | null } | null } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', code?: number | null, message?: string | null, accessToken?: string | null, user?: { __typename?: 'User', id: string, email: string, lastName: string, firstName: string, createdAt: string, updatedAt: string, avatar?: string | null } | null } };
 
 export type RegisterMutationVariables = Exact<{
   data: RegisterInput;
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', code: number, message: string } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', code?: number | null, message?: string | null } };
+
+export type CreateCommentPostMutationVariables = Exact<{
+  topic: Scalars['String'];
+  commentInput: CommentInput;
+}>;
+
+
+export type CreateCommentPostMutation = { __typename?: 'Mutation', createComment: { __typename?: 'CommentResponse', code?: number | null, message?: string | null, comment?: { __typename: 'Comment', id: string, createdAt: string, updatedAt: string, user?: { __typename?: 'User', id: string, firstName: string, lastName: string, createdAt: string, email: string, avatar?: string | null, updatedAt: string } | null } | null } };
 
 export type CreatePostMutationVariables = Exact<{
   postInput: PostInput;
@@ -246,24 +314,26 @@ export type CreatePostMutationVariables = Exact<{
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'PostResponse', code: number, message: string, post?: { __typename?: 'Post', id: string, content: string, updatedAt: string, createdAt: string, image: Array<{ __typename?: 'Image', url: string, type: string, fileName: string }>, user: { __typename?: 'User', id: string, firstName: string, lastName: string, avatar?: string | null, createdAt: string } } | null } };
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'PostResponse', code?: number | null, message?: string | null, post?: { __typename?: 'Post', id: string, content: string, updatedAt: string, createdAt: string, image: Array<{ __typename?: 'Image', url: string, type: string, fileName: string }>, user: { __typename?: 'User', id: string, firstName: string, lastName: string, avatar?: string | null, createdAt: string } } | null } };
+
+export type GetCommentByPostQueryVariables = Exact<{
+  postId: Scalars['Float'];
+}>;
+
+
+export type GetCommentByPostQuery = { __typename?: 'Query', comments: Array<{ __typename: 'Comment', id: string, message: string, createdAt: string, updatedAt: string, user?: { __typename?: 'User', id: string, firstName: string, lastName: string, createdAt: string, email: string, avatar?: string | null, updatedAt: string } | null, post: { __typename?: 'Post', id: string } }> };
 
 export type GetAllPostQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllPostQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: string, content: string, updatedAt: string, createdAt: string, image: Array<{ __typename?: 'Image', url: string }>, user: { __typename?: 'User', id: string, firstName: string, lastName: string, avatar?: string | null } }> };
+export type GetAllPostQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: string, content: string, createdAt: string, updatedAt: string, image: Array<{ __typename?: 'Image', url: string, id: string, fileName: string }>, user: { __typename?: 'User', id: string, email: string, lastName: string, firstName: string, avatar?: string | null, createdAt: string, updatedAt: string } }> };
 
-export type ListentCommentSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type ListentCommentSubscription = { __typename?: 'Subscription', listenComment: { __typename?: 'CommentResponse', date: any, message: string } };
-
-export type MutationCommentMutationVariables = Exact<{
-  message?: InputMaybe<Scalars['String']>;
+export type ListenCommentPostSubscriptionVariables = Exact<{
+  topic: Scalars['String'];
 }>;
 
 
-export type MutationCommentMutation = { __typename?: 'Mutation', mutationComment: { __typename?: 'CommentResponse', date: any, message: string } };
+export type ListenCommentPostSubscription = { __typename?: 'Subscription', listenCommentPost: { __typename: 'Comment', id: string, message: string, createdAt: string, updatedAt: string, user?: { __typename?: 'User', id: string, firstName: string, lastName: string, createdAt: string, email: string, avatar?: string | null, updatedAt: string } | null, post: { __typename?: 'Post', id: string } } };
 
 
 export const LoginDocument = gql`
@@ -344,6 +414,56 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const CreateCommentPostDocument = gql`
+    mutation CreateCommentPost($topic: String!, $commentInput: CommentInput!) {
+  createComment(topic: $topic, commentInput: $commentInput) {
+    code
+    message
+    comment {
+      id
+      createdAt
+      updatedAt
+      __typename
+      user {
+        id
+        firstName
+        lastName
+        createdAt
+        email
+        avatar
+        updatedAt
+      }
+    }
+  }
+}
+    `;
+export type CreateCommentPostMutationFn = Apollo.MutationFunction<CreateCommentPostMutation, CreateCommentPostMutationVariables>;
+
+/**
+ * __useCreateCommentPostMutation__
+ *
+ * To run a mutation, you first call `useCreateCommentPostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCommentPostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCommentPostMutation, { data, loading, error }] = useCreateCommentPostMutation({
+ *   variables: {
+ *      topic: // value for 'topic'
+ *      commentInput: // value for 'commentInput'
+ *   },
+ * });
+ */
+export function useCreateCommentPostMutation(baseOptions?: Apollo.MutationHookOptions<CreateCommentPostMutation, CreateCommentPostMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCommentPostMutation, CreateCommentPostMutationVariables>(CreateCommentPostDocument, options);
+      }
+export type CreateCommentPostMutationHookResult = ReturnType<typeof useCreateCommentPostMutation>;
+export type CreateCommentPostMutationResult = Apollo.MutationResult<CreateCommentPostMutation>;
+export type CreateCommentPostMutationOptions = Apollo.BaseMutationOptions<CreateCommentPostMutation, CreateCommentPostMutationVariables>;
 export const CreatePostDocument = gql`
     mutation createPost($postInput: PostInput!, $imageInput: [ImageInput!]!) {
   createPost(postInput: $postInput, imageInput: $imageInput) {
@@ -397,21 +517,77 @@ export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
 export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
 export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
-export const GetAllPostDocument = gql`
-    query getAllPost {
-  posts {
+export const GetCommentByPostDocument = gql`
+    query GetCommentByPost($postId: Float!) {
+  comments(postId: $postId) {
     id
-    content
-    updatedAt
+    message
     createdAt
-    image {
-      url
-    }
+    updatedAt
+    __typename
     user {
       id
       firstName
       lastName
+      createdAt
+      email
       avatar
+      updatedAt
+    }
+    post {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCommentByPostQuery__
+ *
+ * To run a query within a React component, call `useGetCommentByPostQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCommentByPostQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCommentByPostQuery({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useGetCommentByPostQuery(baseOptions: Apollo.QueryHookOptions<GetCommentByPostQuery, GetCommentByPostQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCommentByPostQuery, GetCommentByPostQueryVariables>(GetCommentByPostDocument, options);
+      }
+export function useGetCommentByPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCommentByPostQuery, GetCommentByPostQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCommentByPostQuery, GetCommentByPostQueryVariables>(GetCommentByPostDocument, options);
+        }
+export type GetCommentByPostQueryHookResult = ReturnType<typeof useGetCommentByPostQuery>;
+export type GetCommentByPostLazyQueryHookResult = ReturnType<typeof useGetCommentByPostLazyQuery>;
+export type GetCommentByPostQueryResult = Apollo.QueryResult<GetCommentByPostQuery, GetCommentByPostQueryVariables>;
+export const GetAllPostDocument = gql`
+    query GetAllPost {
+  posts {
+    id
+    content
+    image {
+      url
+      id
+      fileName
+    }
+    createdAt
+    updatedAt
+    user {
+      id
+      email
+      lastName
+      firstName
+      avatar
+      createdAt
+      updatedAt
     }
   }
 }
@@ -443,67 +619,49 @@ export function useGetAllPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetAllPostQueryHookResult = ReturnType<typeof useGetAllPostQuery>;
 export type GetAllPostLazyQueryHookResult = ReturnType<typeof useGetAllPostLazyQuery>;
 export type GetAllPostQueryResult = Apollo.QueryResult<GetAllPostQuery, GetAllPostQueryVariables>;
-export const ListentCommentDocument = gql`
-    subscription ListentComment {
-  listenComment {
-    date
+export const ListenCommentPostDocument = gql`
+    subscription ListenCommentPost($topic: String!) {
+  listenCommentPost(topic: $topic) {
+    id
     message
+    createdAt
+    updatedAt
+    __typename
+    user {
+      id
+      firstName
+      lastName
+      createdAt
+      email
+      avatar
+      updatedAt
+    }
+    post {
+      id
+    }
   }
 }
     `;
 
 /**
- * __useListentCommentSubscription__
+ * __useListenCommentPostSubscription__
  *
- * To run a query within a React component, call `useListentCommentSubscription` and pass it any options that fit your needs.
- * When your component renders, `useListentCommentSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useListenCommentPostSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useListenCommentPostSubscription` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useListentCommentSubscription({
+ * const { data, loading, error } = useListenCommentPostSubscription({
  *   variables: {
+ *      topic: // value for 'topic'
  *   },
  * });
  */
-export function useListentCommentSubscription(baseOptions?: Apollo.SubscriptionHookOptions<ListentCommentSubscription, ListentCommentSubscriptionVariables>) {
+export function useListenCommentPostSubscription(baseOptions: Apollo.SubscriptionHookOptions<ListenCommentPostSubscription, ListenCommentPostSubscriptionVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<ListentCommentSubscription, ListentCommentSubscriptionVariables>(ListentCommentDocument, options);
+        return Apollo.useSubscription<ListenCommentPostSubscription, ListenCommentPostSubscriptionVariables>(ListenCommentPostDocument, options);
       }
-export type ListentCommentSubscriptionHookResult = ReturnType<typeof useListentCommentSubscription>;
-export type ListentCommentSubscriptionResult = Apollo.SubscriptionResult<ListentCommentSubscription>;
-export const MutationCommentDocument = gql`
-    mutation MutationComment($message: String) {
-  mutationComment(message: $message) {
-    date
-    message
-  }
-}
-    `;
-export type MutationCommentMutationFn = Apollo.MutationFunction<MutationCommentMutation, MutationCommentMutationVariables>;
-
-/**
- * __useMutationCommentMutation__
- *
- * To run a mutation, you first call `useMutationCommentMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useMutationCommentMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [mutationCommentMutation, { data, loading, error }] = useMutationCommentMutation({
- *   variables: {
- *      message: // value for 'message'
- *   },
- * });
- */
-export function useMutationCommentMutation(baseOptions?: Apollo.MutationHookOptions<MutationCommentMutation, MutationCommentMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<MutationCommentMutation, MutationCommentMutationVariables>(MutationCommentDocument, options);
-      }
-export type MutationCommentMutationHookResult = ReturnType<typeof useMutationCommentMutation>;
-export type MutationCommentMutationResult = Apollo.MutationResult<MutationCommentMutation>;
-export type MutationCommentMutationOptions = Apollo.BaseMutationOptions<MutationCommentMutation, MutationCommentMutationVariables>;
+export type ListenCommentPostSubscriptionHookResult = ReturnType<typeof useListenCommentPostSubscription>;
+export type ListenCommentPostSubscriptionResult = Apollo.SubscriptionResult<ListenCommentPostSubscription>;
