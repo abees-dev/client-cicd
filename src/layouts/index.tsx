@@ -13,6 +13,7 @@ const MainStyle = styled('main')(({ theme }) => ({
   paddingTop: theme.spacing(15),
   paddingRight: theme.spacing(4),
   paddingLeft: theme.spacing(4),
+  paddingBottom: theme.spacing(15),
 }));
 
 type Variants = 'dashboard' | 'logoOnly' | 'main';

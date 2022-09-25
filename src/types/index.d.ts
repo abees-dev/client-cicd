@@ -4,6 +4,10 @@ export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
+export interface FileType extends File {
+  preview?: string;
+}
+
 export interface User {
   id: string;
   email: string;

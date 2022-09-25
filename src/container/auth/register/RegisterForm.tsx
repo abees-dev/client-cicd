@@ -1,9 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
 import { Stack } from '@mui/material';
+import { useSnackbar } from 'notistack';
 import { useForm } from 'react-hook-form';
-import { useRegister } from 'src/api/auth';
 import { FormProvider, RHFTextField } from 'src/components/hook-form';
+import { useRegisterMutation } from 'src/generated/graphql';
 import * as Yup from 'yup';
 
 export type RegisterValue = {
@@ -41,13 +42,17 @@ export default function RegisterForm() {
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = async (data: RegisterValue) => {
-    console.log(data);
-    try {
-      const res = await useRegister(data);
-      console.log(res);
-    } catch (error) {
-      console.log(error);
+  const [register, _] = useRegisterMutation({ fetchPolicy: 'no-cache' });
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  const onSubmit = async (inputData: RegisterValue) => {
+    const { data } = await register({ variables: { data: inputData } });
+    const response = data?.register;
+    if (response?.code === 201) {
+      enqueueSnackbar(response.message);
+    } else {
+      enqueueSnackbar(response?.message, { variant: 'error' });
     }
   };
 

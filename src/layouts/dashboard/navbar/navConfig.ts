@@ -54,6 +54,11 @@ export const navConfig: INavBar[] = [
         path: PATH_DASHBOARD.inbox,
         icon: 'ic:sharp-forward-to-inbox',
       },
+      {
+        title: 'post',
+        path: PATH_DASHBOARD.post,
+        icon: 'ic:sharp-forward-to-inbox',
+      },
     ],
   },
   {

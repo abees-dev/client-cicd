@@ -1,7 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { userLogin } from '../../api/auth';
-import { User } from '../../types';
-import { LoginInput } from '../../types/input';
+import { createSlice } from '@reduxjs/toolkit';
+import { User } from 'src/generated/graphql';
 
 export interface UserState {
   user?: User;
@@ -15,15 +13,6 @@ const initialState: UserState = {
   accessToken: undefined,
 };
 
-export const userLoginThunk = createAsyncThunk('auth/login', async (params: LoginInput, { rejectWithValue }) => {
-  try {
-    const response = await userLogin(params);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error);
-  }
-});
-
 export const userSlice = createSlice({
   name: 'auth',
   initialState,
@@ -33,19 +22,17 @@ export const userSlice = createSlice({
       state.isAuthenticated = undefined;
       state.user = undefined;
     },
+    loginSuccess: (state, action) => {
+      state.isAuthenticated = true;
+      state.accessToken = action.payload.accessToken;
+      state.user = action.payload.user;
+    },
     refreshToken: (state, action) => {
       state.accessToken = action.payload.accessToken;
     },
   },
-  extraReducers(builder) {
-    builder.addCase(userLoginThunk.fulfilled, (state, action) => {
-      state.user = action.payload.user;
-      state.accessToken = action.payload.accessToken;
-      state.isAuthenticated = true;
-    });
-  },
 });
 
-export const { useLogout, refreshToken } = userSlice.actions;
+export const { useLogout, refreshToken, loginSuccess } = userSlice.actions;
 
 export default userSlice.reducer;

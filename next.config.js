@@ -3,7 +3,8 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   env: {
-    NEXT_BASE_API_URL: 'http://localhost:3080',
+    NEXT_PUBLIC_BASE_URL: 'http://localhost:3089/graphql',
+    NEXT_PUBLIC_SOCKET_URL: 'ws://localhost:3089/graphql',
   },
 };
 
