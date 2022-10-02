@@ -35,7 +35,7 @@ export default function useAppApolloClient() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const httpLink = createHttpLink({
-        uri: process.env.NEXT_PUBLIC_BASE_URL,
+        uri: `${process.env.NEXT_PUBLIC_BASE_URL}/graphql`,
         credentials: 'include',
       });
 
@@ -52,7 +52,7 @@ export default function useAppApolloClient() {
           if (payload && Number(payload.exp) < currentTime && !whiteListUrl) {
             const response = await axios({
               method: 'POST',
-              url: 'http://localhost:3089/refreshToken',
+              url: `${process.env.NEXT_PUBLIC_BASE_URL}/refreshToken`,
               withCredentials: true,
             });
 

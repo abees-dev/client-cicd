@@ -1,11 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
 import { UploadSingleResponse, UploadMultipleResponse } from 'src/types/response';
-import axiosInstance from 'src/utils/axios';
 
 export const uploadSingle = async (data: FormData): Promise<AxiosResponse<UploadSingleResponse>> => {
-  return await axiosInstance({
+  return await axios({
     method: 'POST',
-    url: '/upload-single',
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}/upload-single`,
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -16,7 +15,7 @@ export const uploadSingle = async (data: FormData): Promise<AxiosResponse<Upload
 export const uploadMultiple = async (data: FormData): Promise<UploadMultipleResponse> => {
   const res: AxiosResponse<UploadMultipleResponse> = await axios({
     method: 'POST',
-    url: ' http://localhost:3089/upload-multiple',
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}/upload-multiple`,
     headers: {
       'Content-Type': 'multipart/form-data',
     },
