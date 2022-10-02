@@ -72,7 +72,7 @@ export default function useAppApolloClient() {
 
       const wsLink = new GraphQLWsLink(
         createClient({
-          url: 'https://gateway.abeesdev.site/graphql',
+          url: process.env.NEXT_PUBLIC_SOCKET_URL as string,
         })
       );
 
