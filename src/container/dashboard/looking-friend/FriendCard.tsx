@@ -14,8 +14,6 @@ interface FriendCardProps {
 }
 
 export default function FriendCard({ accept, friendship, onAccepted }: FriendCardProps) {
-  const handleSend = (data: string) => {};
-
   const generate = () => {
     const { addressee, requester } = friendship;
     if (accept) {

@@ -1,7 +1,7 @@
 import { Avatar, Box, Button, Stack, Tooltip, TooltipProps, Typography } from '@mui/material';
 import { capitalCase } from 'change-case';
-import React, { forwardRef, ReactElement, useEffect, useState } from 'react';
-import { HoverCardResponse, useHoverCardLazyQuery, useHoverCardQuery } from 'src/generated/graphql';
+import { ReactElement, useEffect, useState } from 'react';
+import { HoverCardResponse, useHoverCardLazyQuery } from 'src/generated/graphql';
 import { useAppSelector } from 'src/redux/hooks';
 import { fDistanceToNow } from 'src/utils/formatTime';
 import ButtonText from './ButtonText';

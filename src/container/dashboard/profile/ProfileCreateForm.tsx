@@ -1,15 +1,13 @@
-import React, { SyntheticEvent, useEffect, useState } from 'react';
-import * as Yup from 'yup';
-import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider } from 'src/components/hook-form';
 import { Autocomplete, Button, styled, TextField, Typography } from '@mui/material';
-import axiosInstance from 'src/utils/axios';
-import axios from 'axios';
-import useProvince, { useProvinceReturn } from 'src/hooks/useProvince';
+import { SyntheticEvent, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { FormProvider } from 'src/components/hook-form';
 import useDistrict, { UseDistrictReturn } from 'src/hooks/useDistrict';
+import useProvince, { useProvinceReturn } from 'src/hooks/useProvince';
 import useWard, { UseWardReturn } from 'src/hooks/useWard';
-import { AutocompleteValue, Nullable } from 'src/types';
+import { AutocompleteValue } from 'src/types';
+import * as Yup from 'yup';
 
 interface AddressState {
   wardId?: string;
@@ -43,7 +41,7 @@ export const ProfileCreateForm = () => {
     districtId: '',
   });
 
-  const { handleSubmit, register, setValue, watch } = methods;
+  const { handleSubmit, setValue, watch } = methods;
 
   const provinces = useProvince();
 
