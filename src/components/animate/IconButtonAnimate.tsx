@@ -1,5 +1,6 @@
-import { IconButton, IconButtonProps } from '@mui/material';
+import { Box, IconButton, IconButtonProps } from '@mui/material';
 import { Variants, motion } from 'framer-motion';
+import { forwardRef } from 'react';
 import { PropsCustoms } from '../../types/props';
 
 const variantSmall: Variants = {
@@ -29,20 +30,24 @@ const variantLarge: Variants = {
   },
 };
 
-function IconButtonAnimate({ size, children, ...other }: PropsCustoms<IconButtonProps>) {
+const IconButtonAnimate = forwardRef(({ size, children, sx, ...other }: PropsCustoms<IconButtonProps>, ref) => {
   const isSmall = size === 'small';
   const isMedium = size === 'medium';
   return (
-    <motion.div
+    <Box
+      component={motion.div}
       whileHover="hover"
       whileTap="tab"
+      sx={sx}
       variants={(isSmall && variantSmall) || (isMedium && variantMedium) || variantLarge}
     >
-      <IconButton size={size} {...other}>
-        {children}
-      </IconButton>
-    </motion.div>
+      <Box ref={ref}>
+        <IconButton size={size} {...other}>
+          {children}
+        </IconButton>
+      </Box>
+    </Box>
   );
-}
+});
 
 export default IconButtonAnimate;

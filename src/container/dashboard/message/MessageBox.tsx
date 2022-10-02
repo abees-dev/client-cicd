@@ -79,7 +79,7 @@ function MessageItem({ message, isReply }: MessageItem) {
           <Typography>{message.message}</Typography>
         </MessageItemStyle>
         <Typography variant="caption" ml={1} mt={0.5} align={!isReply ? 'right' : 'left'}>
-          {fDistanceToNow(message.createdAt)}
+          {fDistanceToNow(Number(message.createdAt))}
         </Typography>
       </Stack>
       {!isReply && <Avatar src="" sx={{ width: 40, height: 40, mt: 2 }} />}

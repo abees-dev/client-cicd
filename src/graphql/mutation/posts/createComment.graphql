@@ -1,0 +1,21 @@
+mutation CreateCommentPost($topic: String!, $commentInput: CommentInput!) {
+  createComment(topic: $topic, commentInput: $commentInput) {
+    code
+    message
+    comment {
+      id
+      createdAt
+      updatedAt
+      __typename
+      user {
+        id
+        firstName
+        lastName
+        createdAt
+        email
+        avatar
+        updatedAt
+      }
+    }
+  }
+}

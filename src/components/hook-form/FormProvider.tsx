@@ -1,4 +1,4 @@
-import { FormEventHandler, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { FormProvider as Provider, UseFormReturn } from 'react-hook-form';
 
 interface IFormProvider<Type extends Record<string, any>> {

@@ -11,6 +11,7 @@ export const PATH_DASHBOARD = {
   notification: paths(ROOT_DASHBOARD, 'notification'),
   message: paths(ROOT_DASHBOARD, 'message'),
   inbox: paths(ROOT_DASHBOARD, 'inbox'),
+  post: paths(ROOT_DASHBOARD, 'post'),
 };
 
 export const PATH_AUTH = {

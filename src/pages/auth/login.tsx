@@ -9,11 +9,6 @@ import { PATH_AUTH } from 'src/routes/paths';
 import { NextPageWithLayout } from 'src/types';
 import { DeveloperIllustrator } from '../../assets';
 
-type FormValues = {
-  email: string;
-  password: string;
-};
-
 const RootStyled = styled('div')(({ theme }) => ({
   display: 'flex',
   height: '100vh',

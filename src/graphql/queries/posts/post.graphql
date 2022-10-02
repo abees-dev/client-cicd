@@ -1,0 +1,22 @@
+query GetAllPost {
+  posts {
+    id
+    content
+    image {
+      url
+      id
+      fileName
+    }
+    createdAt
+    updatedAt
+    user {
+      id
+      email
+      lastName
+      firstName
+      avatar
+      createdAt
+      updatedAt
+    }
+  }
+}

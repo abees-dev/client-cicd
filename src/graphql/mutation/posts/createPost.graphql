@@ -1,0 +1,24 @@
+mutation createPost($postInput: PostInput!, $imageInput: [ImageInput!]!) {
+  createPost(postInput: $postInput, imageInput: $imageInput) {
+    code
+    message
+    post {
+      id
+      content
+      updatedAt
+      createdAt
+      image {
+        url
+        type
+        fileName
+      }
+      user {
+        id
+        firstName
+        lastName
+        avatar
+        createdAt
+      }
+    }
+  }
+}
