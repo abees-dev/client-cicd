@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 // import jwtDecode, { JwtPayload } from 'jwt-decode';
 // import { refreshToken, useLogout } from '../redux/slice/auth.slice';
 // import store from '../redux/store';
@@ -14,6 +14,9 @@ const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   withCredentials: true,
   timeout: 30000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 // axiosInstance.interceptors.request.use(async (config: AxiosRequestConfig) => {

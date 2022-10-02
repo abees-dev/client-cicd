@@ -1,7 +1,5 @@
-import { Masonry } from '@mui/lab';
 import { alpha, Box, Stack, styled, SxProps } from '@mui/material';
-import { createStyled } from '@mui/system';
-import { isEmpty, isString } from 'lodash';
+import { isEmpty } from 'lodash';
 import { forwardRef, ReactNode } from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
 import { uploadIllustrator } from 'src/assets/images';
@@ -73,69 +71,69 @@ const UploadMultiple = forwardRef(
               />
             )}
           </Stack>
-          {singlePreview && !isEmpty(files) && <PreviewSingle files={files} />}
+          {/* {singlePreview && !isEmpty(files) && <PreviewSingle files={files} />} */}
         </DropZoneStyle>
-        {showPreview && <MultiplePreview files={files} onRemove={onRemove} />}
+        <MultiplePreview files={files as FileType[]} />
       </Box>
     );
   }
 );
 
-interface PreviewSingleProp {
-  files?: Partial<FileType[]>;
-}
+// interface PreviewSingleProp {
+//   files?: Partial<FileType[]>;
+// }
 
-interface MasonryProps {
-  length: number;
-}
+// interface MasonryProps {
+//   length: number;
+// }
 
-const MasonryStyled = styled(Masonry, {
-  shouldForwardProp: (prop) => prop !== 'length',
-})<MasonryProps>(({ theme, length }) => ({
-  // height: 'calc(100% + 1px)',
-  '& :nth-of-type(3)': {
-    position: 'relative',
-    ...(length > 0 && {
-      '&::before': {
-        content: `'+${length}'`,
-        position: 'absolute',
-        inset: 0,
-        backgroundColor: alpha(theme.palette.grey[600], 0.7),
-        zIndex: theme.zIndex.tooltip,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: theme.typography.h3.fontSize,
-        fontWeight: 600,
-        color: theme.palette.grey[300],
-        borderRadius: theme.shape.borderRadius,
-      },
-    }),
-  },
-}));
+// const MasonryStyled = styled(Masonry, {
+//   shouldForwardProp: (prop) => prop !== 'length',
+// })<MasonryProps>(({ theme, length }) => ({
+//   // height: 'calc(100% + 1px)',
+//   '& :nth-of-type(3)': {
+//     position: 'relative',
+//     ...(length > 0 && {
+//       '&::before': {
+//         content: `'+${length}'`,
+//         position: 'absolute',
+//         inset: 0,
+//         backgroundColor: alpha(theme.palette.grey[600], 0.7),
+//         zIndex: theme.zIndex.tooltip,
+//         display: 'flex',
+//         justifyContent: 'center',
+//         alignItems: 'center',
+//         fontSize: theme.typography.h3.fontSize,
+//         fontWeight: 600,
+//         color: theme.palette.grey[300],
+//         borderRadius: theme.shape.borderRadius,
+//       },
+//     }),
+//   },
+// }));
 
-function PreviewSingle({ files = [] }: PreviewSingleProp) {
-  return (
-    <>
-      <MasonryStyled defaultHeight={0} columns={files.length === 1 ? 1 : 2} spacing={1} length={files.length - 4}>
-        {files?.map((file, index) => {
-          if (index > 3) return null;
-          return (
-            <Box key={index}>
-              <Image
-                src={isEmpty(file) ? '' : file.preview}
-                sx={{
-                  height: index % 2 === 0 ? 300 : 200,
-                  borderRadius: 1,
-                  overflow: 'hidden',
-                }}
-              />
-            </Box>
-          );
-        })}
-      </MasonryStyled>
-    </>
-  );
-}
+// function PreviewSingle({ files = [] }: PreviewSingleProp) {
+//   return (
+//     <>
+//       <MasonryStyled defaultHeight={0} columns={files.length === 1 ? 1 : 2} spacing={1} length={files.length - 4}>
+//         {files?.map((file, index) => {
+//           if (index > 3) return null;
+//           return (
+//             <Box key={index}>
+//               <Image
+//                 src={isEmpty(file) ? '' : file.preview}
+//                 sx={{
+//                   height: index % 2 === 0 ? 300 : 200,
+//                   borderRadius: 1,
+//                   overflow: 'hidden',
+//                 }}
+//               />
+//             </Box>
+//           );
+//         })}
+//       </MasonryStyled>
+//     </>
+//   );
+// }
 
 export default UploadMultiple;

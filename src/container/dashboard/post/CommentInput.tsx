@@ -1,11 +1,10 @@
-import { Input, InputAdornment, styled } from '@mui/material';
-import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { Input, InputAdornment, styled, SxProps } from '@mui/material';
+import { ChangeEvent, Dispatch, KeyboardEvent } from 'react';
 import IconButtonAnimate from 'src/components/animate/IconButtonAnimate';
 import EmojiPicker from 'src/components/EmojiPicker';
 import Iconify from 'src/components/Iconify';
 import MyAvatar from 'src/components/MyAvatar';
-import { Post, useCreateCommentPostMutation } from 'src/generated/graphql';
-import { useAppSelector } from 'src/redux/hooks';
+import { Comment, Post } from 'src/generated/graphql';
 
 const RootStyled = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -25,51 +24,35 @@ const InputStyled = styled('div')(({ theme }) => ({
   alignItems: 'center',
 }));
 
+type TypeProp = 'reply' | 'comment';
 interface CommentInputProps {
-  post: Post;
+  post?: Post;
+  type?: TypeProp;
+  sx?: SxProps;
+  currentComment?: Comment;
+  value: string;
+  setValue: Dispatch<string>;
+  handleSubmit: () => void;
 }
 
-export default function CommentInput({ post }: CommentInputProps) {
-  const [comment, setComment] = useState('');
-
-  const user = useAppSelector((state) => state.auth.user);
-
-  const [createComment, _] = useCreateCommentPostMutation();
-
-  const handleOnchange = (event: ChangeEvent<HTMLInputElement>) => {
-    setComment(event.target.value);
-  };
-
-  const handleSendComment = async () => {
-    try {
-      const newComment = await createComment({
-        variables: {
-          commentInput: {
-            message: comment,
-            post,
-            user,
-          },
-          topic: post.id,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+export default function CommentInput({ sx, handleSubmit, value, setValue }: CommentInputProps) {
   const handleKeyUp = ({ key }: KeyboardEvent<HTMLInputElement>) => {
     if (key === 'Enter') {
-      handleSendComment();
+      handleSubmit();
     }
   };
+
+  const handleOnchange = (event: ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+  };
   return (
-    <RootStyled>
+    <RootStyled sx={sx}>
       <MyAvatar sx={{ width: 35, height: 35 }} />
       <InputStyled>
         <Input
           fullWidth
           disableUnderline
-          value={comment}
+          value={value}
           onChange={handleOnchange}
           onKeyUp={handleKeyUp}
           placeholder="Comments"
@@ -79,9 +62,9 @@ export default function CommentInput({ post }: CommentInputProps) {
                 <Iconify icon="carbon:camera" />
               </IconButtonAnimate>
 
-              <EmojiPicker setValue={setComment} value={comment} size="small" />
+              <EmojiPicker setValue={setValue} value={value} size="small" />
 
-              <IconButtonAnimate size="small" onClick={handleSendComment}>
+              <IconButtonAnimate size="small" onClick={handleSubmit}>
                 <Iconify icon="fluent:send-20-regular" />
               </IconButtonAnimate>
             </InputAdornment>

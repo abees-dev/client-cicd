@@ -1,0 +1,15 @@
+query FriendShipRecommend($query: QueryInput, $userId: String!) {
+  friendShipRecommend(query: $query, userId: $userId) {
+    users {
+      id
+      avatar
+      firstName
+      lastName
+      createdAt
+    }
+    page
+    perPage
+    totalCount
+    totalPage
+  }
+}

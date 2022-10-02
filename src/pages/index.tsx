@@ -5,7 +5,6 @@ import Page from '../components/Page';
 import Layout from '../layouts';
 import { useAppDispatch } from '../redux/hooks';
 import { useLogout } from '../redux/slice/auth.slice';
-import { LogoutTest } from '../utils/test';
 
 const Home: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();

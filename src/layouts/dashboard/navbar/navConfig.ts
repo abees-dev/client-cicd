@@ -35,14 +35,14 @@ export const navConfig: INavBar[] = [
         icon: 'ci:home-alt-fill',
       },
       {
-        title: 'Task',
-        path: PATH_DASHBOARD.task,
-        icon: 'uim:bag',
+        title: 'post',
+        path: PATH_DASHBOARD.post,
+        icon: 'ic:sharp-forward-to-inbox',
       },
       {
-        title: 'Notification',
-        path: PATH_DASHBOARD.notification,
-        icon: 'fa6-solid:bell',
+        title: 'Profile',
+        path: PATH_DASHBOARD.profile,
+        icon: 'uim:bag',
       },
       {
         title: 'Message',
@@ -55,8 +55,8 @@ export const navConfig: INavBar[] = [
         icon: 'ic:sharp-forward-to-inbox',
       },
       {
-        title: 'post',
-        path: PATH_DASHBOARD.post,
+        title: 'Friend',
+        path: PATH_DASHBOARD.lookingFriend,
         icon: 'ic:sharp-forward-to-inbox',
       },
     ],

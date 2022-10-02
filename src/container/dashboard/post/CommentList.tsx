@@ -1,8 +1,17 @@
-import { styled } from '@mui/material';
+import { styled, Typography } from '@mui/material';
+import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
-import { Comment, Post, useGetCommentByPostQuery, useListenCommentPostSubscription } from 'src/generated/graphql';
+import {
+  Comment,
+  CommentListResponse,
+  Post,
+  useCreateCommentMutation,
+  useGetCommentByPostQuery,
+  useListJoinCommentPostSubscription,
+} from 'src/generated/graphql';
+import { useAppSelector } from 'src/redux/hooks';
 import CommentInput from './CommentInput';
-import CommentItem from './CommentItem';
+import CommentItemRoot from './CommentItem';
 
 const RootStyled = styled('div')(({ theme }) => ({
   paddingLeft: theme.spacing(2),
@@ -15,39 +24,132 @@ interface CommentListProps {
   // comments: Comment[];
 }
 
-export default function CommentList({ post }: CommentListProps) {
-  const [comments, setComments] = useState<Comment[]>([]);
+interface CommentList extends CommentListResponse {
+  comment?: Comment[];
+}
 
-  const { data } = useGetCommentByPostQuery({
+export default function CommentList({ post }: CommentListProps) {
+  const [commentResponse, setCommentResponse] = useState<CommentList>({});
+  const [page, setPage] = useState(0);
+
+  const { comment, totalCount, totalPage } = commentResponse;
+
+  const user = useAppSelector((state) => state.auth.user);
+
+  const [message, setMessage] = useState('');
+
+  const { data, fetchMore, previousData } = useGetCommentByPostQuery({
     variables: {
-      postId: Number(post.id),
+      postId: String(post.id),
+      query: {
+        page: 0,
+        limit: 3,
+      },
     },
   });
 
-  const { data: socketData } = useListenCommentPostSubscription({
+  const { data: socketData } = useListJoinCommentPostSubscription({
     variables: {
-      topic: post.id,
+      room: String(post.id),
     },
   });
 
   useEffect(() => {
-    if (data) {
-      setComments(data.comments as Comment[]);
+    if (data && !previousData) {
+      setCommentResponse(data.comments as CommentList);
+      setPage(0);
     }
   }, [data]);
 
   useEffect(() => {
-    if (socketData) {
-      setComments((prev) => [socketData.listenCommentPost as Comment, ...prev]);
+    if (socketData && socketData.listJoinCommentPost.type === 'comment') {
+      setCommentResponse((prev) => ({
+        ...prev,
+        comment: [{ ...(socketData.listJoinCommentPost.data as Comment), reply: [] }, ...(prev.comment as Comment[])],
+      }));
+    }
+
+    if (socketData && socketData.listJoinCommentPost.type === 'reply') {
+      const commentId = socketData.listJoinCommentPost.commentId;
+      const reply = socketData.listJoinCommentPost.data;
+      console.log(isEmpty(commentResponse.comment?.find((item) => item.id === commentId)));
+      setCommentResponse((prev) => ({
+        ...prev,
+        comment: prev.comment?.map((item) =>
+          item.id !== commentId ? item : { ...item, reply: [reply, ...(item.reply as any[])] }
+        ),
+      }));
     }
   }, [socketData]);
 
+  const [createComment] = useCreateCommentMutation();
+
+  const handleSendComment = async () => {
+    try {
+      await createComment({
+        variables: {
+          commentInput: {
+            post: post,
+            author: user,
+            message,
+          },
+          room: String(post.id),
+        },
+      });
+      setMessage('');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleViewComment = async () => {
+    try {
+      const { data: fetchMoreData } = await fetchMore({
+        variables: {
+          query: {
+            page: page + 1,
+            limit: 3,
+          },
+        },
+      });
+
+      const { comment, ...other } = fetchMoreData.comments as CommentList;
+
+      console.log(fetchMoreData);
+      setPage((prev) => prev + 1);
+      setCommentResponse((prev) => ({
+        comment: [...(prev.comment as any[]), ...(comment as Comment[])],
+        ...other,
+      }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <RootStyled>
-      <CommentInput post={post as Post} />
-      {comments.map((comment) => (
-        <CommentItem key={comment.id} comment={comment as Comment} />
+      <CommentInput value={message} setValue={setMessage} handleSubmit={handleSendComment} />
+      {comment?.map((commentItem) => (
+        <div key={commentItem.id}>
+          <CommentItemRoot key={commentItem.id} comment={commentItem as Comment} post={post} />
+        </div>
       ))}
+      {Number(page) < Number(totalPage) - 1 && (
+        <Typography
+          variant="body2"
+          mt={1}
+          onClick={handleViewComment}
+          sx={{
+            mt: 1,
+            cursor: 'pointer',
+            '&:hover': {
+              textDecoration: 'underline',
+            },
+          }}
+        >
+          See more {Number(totalCount) - Number(comment?.length)} comments
+        </Typography>
+      )}
     </RootStyled>
   );
 }

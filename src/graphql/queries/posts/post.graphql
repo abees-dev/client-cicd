@@ -1,22 +1,30 @@
-query GetAllPost {
-  posts {
-    id
-    content
-    image {
-      url
+query GetAllPost($query: QueryInput!, $userId: String) {
+  postsQuery(query: $query, userId: $userId) {
+    posts {
       id
-      fileName
-    }
-    createdAt
-    updatedAt
-    user {
-      id
-      email
-      lastName
-      firstName
-      avatar
+      content
+      image {
+        url
+        id
+        type
+      }
       createdAt
       updatedAt
+      user {
+        id
+        email
+        lastName
+        firstName
+        avatar
+        createdAt
+      }
+      comment {
+        id
+      }
     }
+    page
+    perPage
+    totalCount
+    totalPage
   }
 }

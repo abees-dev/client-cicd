@@ -19,3 +19,9 @@ export const userPersist = {
   storage,
   keyPrefix: 'redux-',
 };
+
+export const locationPersist = {
+  key: 'location',
+  storage,
+  keyPrefix: 'redux-',
+};

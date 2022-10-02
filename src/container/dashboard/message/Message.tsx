@@ -1,30 +1,24 @@
 import {
   Avatar,
   Box,
-  Button,
   Card,
-  Container,
-  Divider,
   List,
-  ListItem,
   ListItemAvatar,
   ListItemButton,
   ListItemText,
-  Stack,
   styled,
-  TextField,
   Typography,
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getAllUser, getMessage } from 'src/api/message';
 import useSocket from 'src/hooks/useSocket';
 import { useAppSelector } from 'src/redux/hooks';
-import { User, UserResponse } from 'src/types';
+import { User } from 'src/types';
 import { MessageResponse } from 'src/types/response';
 import MessageBox from './MessageBox';
 
-const RootStyle = styled(Card)(({ theme }) => ({
+const RootStyle = styled(Card)(() => ({
   display: 'flex',
   gap: 2,
 }));
@@ -69,7 +63,6 @@ export default function Message() {
     if (socket) {
       // socket.emit('created-room', { user_id: user?.id });
       socket.on('private-chat', (msg) => {
-        console.log(msg);
         setMessageList((prev) => [...prev, msg]);
         handleScrollIsview();
       });
@@ -106,7 +99,6 @@ export default function Message() {
 
   const handleClick = (id: string) => {
     setReceive(id);
-    console.log(id);
   };
 
   return (

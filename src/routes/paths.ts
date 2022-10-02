@@ -12,6 +12,8 @@ export const PATH_DASHBOARD = {
   message: paths(ROOT_DASHBOARD, 'message'),
   inbox: paths(ROOT_DASHBOARD, 'inbox'),
   post: paths(ROOT_DASHBOARD, 'post'),
+  profile: paths(ROOT_DASHBOARD, `profile`),
+  lookingFriend: paths(ROOT_DASHBOARD, 'looking-friend'),
 };
 
 export const PATH_AUTH = {

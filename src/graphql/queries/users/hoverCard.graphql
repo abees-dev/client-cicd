@@ -1,0 +1,20 @@
+query HoverCard($userId: String!) {
+  hoverCard(userId: $userId) {
+    isFriend
+    user {
+      id
+      avatar
+      firstName
+      lastName
+      createdAt
+      profile {
+        address
+        dayOfBirth
+        gender
+        workAt
+        liveAt
+        phoneNumber
+      }
+    }
+  }
+}

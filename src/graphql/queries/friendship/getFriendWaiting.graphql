@@ -1,0 +1,23 @@
+query FriendWaiting($query: QueryInput, $userId: String!) {
+  friendWaiting(query: $query, userId: $userId) {
+    page
+    perPage
+    totalCount
+    totalPage
+    friendRequest {
+      accepted
+      addressee {
+        avatar
+        firstName
+        lastName
+        id
+      }
+      requester {
+        avatar
+        firstName
+        lastName
+        id
+      }
+    }
+  }
+}

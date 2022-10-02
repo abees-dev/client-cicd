@@ -2,26 +2,16 @@ import * as React from 'react';
 // next
 import Document, { Html, Head, Main, NextScript, DocumentInitialProps, DocumentContext } from 'next/document';
 // emotion
-import createCache from '@emotion/cache';
 // theme
 
 // ----------------------------------------------------------------------
-
-function createEmotionCache() {
-  return createCache({ key: 'css' });
-}
-
 export default class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
         <Head>
           <meta charSet="utf-8" />
-          <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
-          <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
-          <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon.ico" />
-
-          <link rel="manifest" href="/manifest.json" />
+          <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico" />
 
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link

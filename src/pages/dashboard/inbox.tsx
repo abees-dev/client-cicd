@@ -2,7 +2,7 @@ import { Button, Container, TextField } from '@mui/material';
 import { ChangeEvent, ReactElement, useCallback, useState } from 'react';
 import { uploadMultiple } from 'src/api/upload';
 import { UploadMultiple } from 'src/components/upload';
-import { useCreatePostMutation } from 'src/generated/graphql';
+import { useCreatePostMutation, useLittenJoinRoomSubscription } from 'src/generated/graphql';
 import { useAppSelector } from 'src/redux/hooks';
 import { FileType, NextPageWithLayout } from 'src/types';
 import Layout from '../../layouts';
@@ -10,7 +10,9 @@ import Layout from '../../layouts';
 const Inbox: NextPageWithLayout = () => {
   const [files, setFiles] = useState<Partial<FileType[]>>([]);
 
-  const [singleFile, setSingleFile] = useState<Partial<FileType>>({});
+  // const [singleFile, setSingleFile] = useState<Partial<FileType>>({});
+
+  // console.log(singleFile);
 
   const [content, setContent] = useState('');
 
@@ -25,8 +27,6 @@ const Inbox: NextPageWithLayout = () => {
       //     preview: URL.createObjectURL(file),
       //   })
       // );
-
-      console.log(acceptedFiles);
 
       setFiles((prev) => [
         ...prev,
@@ -46,21 +46,20 @@ const Inbox: NextPageWithLayout = () => {
     [setFiles]
   );
 
-  const ondropSingle = useCallback(
-    (acceptedFiles: FileType[]) => {
-      const file = acceptedFiles[0];
+  // const ondropSingle = useCallback(
+  //   (acceptedFiles: FileType[]) => {
+  //     const file = acceptedFiles[0];
 
-      setSingleFile(
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-        })
-      );
-    },
-    [setSingleFile]
-  );
+  //     setSingleFile(
+  //       Object.assign(file, {
+  //         preview: URL.createObjectURL(file),
+  //       })
+  //     );
+  //   },
+  //   [setSingleFile]
+  // );
 
   const handleRemove = (_file?: FileType) => {
-    console.log(_file);
     setFiles((prev) => prev.filter((file) => file !== _file));
   };
 
@@ -73,20 +72,10 @@ const Inbox: NextPageWithLayout = () => {
   const handlePost = async () => {
     try {
       const form = new FormData();
-
       files.forEach((file) => form.append('files', file as Blob));
-
-      // const res = await uploadSingle(form);
-      // const image = res.data.upload;
-      // console.log(res);
-
       const res = await uploadMultiple(form);
-
       const listImage = res.uploads;
-
-      console.log(listImage);
-
-      const post = await createPost({
+      await createPost({
         variables: {
           postInput: {
             content,
@@ -95,7 +84,6 @@ const Inbox: NextPageWithLayout = () => {
           imageInput: listImage,
         },
       });
-      console.log(post);
     } catch (error) {
       console.log(error);
     }

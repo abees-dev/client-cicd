@@ -14,7 +14,7 @@ export default function MyAvatar({ sx, ...other }: PropsCustoms<AvatarProps>) {
       sx={{
         width: 40,
         height: 40,
-        bgcolor: (theme) => createAvatar('abees'),
+        bgcolor: () => createAvatar('abees'),
         ...sx,
       }}
       {...other}

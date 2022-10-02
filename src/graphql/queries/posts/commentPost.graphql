@@ -1,21 +1,42 @@
-query GetCommentByPost($postId: Float!) {
-  comments(postId: $postId) {
-    id
-    message
-    createdAt
-    updatedAt
-    __typename
-    user {
+query GetCommentByPost($query: QueryInput!, $postId: String!) {
+  comments(query: $query, postId: $postId) {
+    totalCount
+    totalPage
+    page
+    perPage
+    comment {
       id
-      firstName
-      lastName
+      message
       createdAt
-      email
-      avatar
       updatedAt
-    }
-    post {
-      id
+      __typename
+      author {
+        id
+        firstName
+        lastName
+        createdAt
+        email
+        avatar
+        updatedAt
+      }
+      reply {
+        id
+        message
+        createdAt
+        updatedAt
+        author {
+          id
+          firstName
+          lastName
+          createdAt
+          email
+          avatar
+          updatedAt
+        }
+      }
+      post {
+        id
+      }
     }
   }
 }

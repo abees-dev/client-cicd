@@ -1,0 +1,23 @@
+query GetNotifications($query: QueryInput, $ownerId: String!) {
+  getNotification(query: $query, ownerId: $ownerId) {
+    notifications {
+      id
+      content
+      createdAt
+      type
+      read
+      requester {
+        avatar
+        id
+        firstName
+        lastName
+        createdAt
+      }
+    }
+    totalUnread
+    totalCount
+    totalPage
+    perPage
+    page
+  }
+}

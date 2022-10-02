@@ -1,4 +1,4 @@
-import { Box, Divider, Drawer, List, ListSubheader, ListSubheaderProps, styled } from '@mui/material';
+import { Divider, Drawer, List, ListSubheader, ListSubheaderProps, styled } from '@mui/material';
 import { NAVBAR } from 'src/config';
 import useCollapse from 'src/hooks/useCollapse';
 import NavbarAccount from './NavbarAccount';

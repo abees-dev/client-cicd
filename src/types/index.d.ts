@@ -26,3 +26,5 @@ export interface UserResponse {
   accessToken?: string;
   user: User;
 }
+
+export type AutocompleteValue<T> = Nullable<T> | string;

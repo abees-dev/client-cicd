@@ -1,21 +1,17 @@
-subscription ListenCommentPost($topic: String!) {
-  listenCommentPost(topic: $topic) {
-    id
-    message
-    createdAt
-    updatedAt
-    __typename
-    user {
+subscription ListJoinCommentPost($room: String!) {
+  listJoinCommentPost(room: $room) {
+    data {
       id
-      firstName
-      lastName
+      message
       createdAt
-      email
-      avatar
-      updatedAt
+      author {
+        avatar
+        firstName
+        lastName
+        createdAt
+      }
     }
-    post {
-      id
-    }
+    commentId
+    type
   }
 }

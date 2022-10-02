@@ -1,0 +1,17 @@
+query GetLikeByPost($likeInput: PostLikeQueryInput!) {
+  getLikeByPost(likeInput: $likeInput) {
+    code
+    message
+    likes {
+      id
+      type
+      createdAt
+      updatedAt
+    }
+    currentLike {
+      like
+      type
+    }
+    totalLike
+  }
+}

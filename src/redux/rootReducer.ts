@@ -1,10 +1,16 @@
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
-import { userPersist } from '../utils/persistConfig';
+import { locationPersist, userPersist } from '../utils/persistConfig';
 import userReducer from './slice/auth.slice';
+import locationReducer from './slice/location.slice';
+import friendWaitingReducer from './slice/friendWaiting.slice';
+import userRecommendReducer from './slice/userRecommend.slice';
 
 const rootReducer = combineReducers({
   auth: persistReducer(userPersist, userReducer),
+  location: persistReducer(locationPersist, locationReducer),
+  friendWaiting: friendWaitingReducer,
+  userRecommend: userRecommendReducer,
 });
 
 export default rootReducer;

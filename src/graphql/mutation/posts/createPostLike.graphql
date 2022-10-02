@@ -1,0 +1,16 @@
+mutation CreatePostLike($likeInput: PostLikeMutationInput!) {
+  createPostLike(likeInput: $likeInput) {
+    code
+    message
+    likes {
+      id
+      type
+      createdAt
+      updatedAt
+    }
+    currentLike {
+      like
+      type
+    }
+  }
+}

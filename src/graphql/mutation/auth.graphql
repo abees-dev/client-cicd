@@ -21,3 +21,11 @@ mutation Register($data: RegisterInput!) {
     message
   }
 }
+
+mutation RefreshToken {
+  refreshToken {
+    code
+    message
+    accessToken
+  }
+}
