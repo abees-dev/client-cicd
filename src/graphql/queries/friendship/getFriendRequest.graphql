@@ -1,0 +1,22 @@
+query FriendRequest($query: QueryInput, $userId: String!) {
+  getFriendRequest(query: $query, userId: $userId) {
+    page
+    perPage
+    totalCount
+    totalPage
+    friendRequest {
+      id
+      accepted
+      createdAt
+      addressee {
+        id
+      }
+      requester {
+        avatar
+        firstName
+        lastName
+        id
+      }
+    }
+  }
+}

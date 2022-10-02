@@ -1,0 +1,14 @@
+mutation addFriendRequest($data: AddFriendInput!) {
+  addFriendMutation(data: $data) {
+    code
+    message
+    addressee {
+      id
+      firstName
+      lastName
+      avatar
+      createdAt
+      email
+    }
+  }
+}

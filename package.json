@@ -21,7 +21,9 @@
     "@reduxjs/toolkit": "^1.8.5",
     "@tanstack/react-query": "^4.3.8",
     "@tanstack/react-query-devtools": "^4.3.8",
+    "add": "^2.0.6",
     "axios": "^0.27.2",
+    "change-case": "^4.1.2",
     "date-fns": "^2.29.3",
     "emoji-mart": "^5.2.2",
     "framer-motion": "^7.2.1",
@@ -36,6 +38,7 @@
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.2",
     "react-hook-form": "^7.34.2",
+    "react-intersection-observer": "^9.4.0",
     "react-lazy-load-image-component": "^1.5.5",
     "react-redux": "^8.0.2",
     "redux": "^4.2.0",
@@ -43,6 +46,7 @@
     "simplebar-react": "^2.4.1",
     "socket.io-client": "^4.5.2",
     "webfontloader": "^1.6.28",
+    "yarn": "^1.22.19",
     "yup": "^0.32.11"
   },
   "devDependencies": {

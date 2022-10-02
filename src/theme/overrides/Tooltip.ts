@@ -1,9 +1,12 @@
-import { Components, Theme } from '@mui/material';
+import { Components } from '@mui/material';
 
-export default function Tooltip(theme: Theme): Components {
+export default function Tooltip(): Components {
   return {
     MuiTooltip: {
       styleOverrides: {
+        tooltip: {
+          maxWidth: 480,
+        },
         tooltipPlacementTop: {},
         tooltipPlacementBottom: {},
         tooltipPlacementLeft: {},

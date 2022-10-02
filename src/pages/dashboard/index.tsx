@@ -1,8 +1,18 @@
 import React, { ReactElement } from 'react';
+import { useListenReplySubscription, useTestListenSubscription } from 'src/generated/graphql';
 import { NextPageWithLayout } from 'src/types';
 import Layout from '../../layouts';
 
 const Dashboard: NextPageWithLayout = () => {
+  const { data } = useTestListenSubscription({
+    variables: {
+      room: '123123',
+    },
+    onSubscriptionComplete: () => console.log('first'),
+  });
+
+  console.log(data);
+
   return (
     <div>
       Dashboard

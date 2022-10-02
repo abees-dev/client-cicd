@@ -5,14 +5,13 @@ import { useSnackbar } from 'notistack';
 import { useForm } from 'react-hook-form';
 import { FormProvider, RHFTextField } from 'src/components/hook-form';
 import { useLoginMutation } from 'src/generated/graphql';
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { useAppDispatch } from 'src/redux/hooks';
 import { loginSuccess } from 'src/redux/slice/auth.slice';
 import { LoginInput } from 'src/types/input';
 import * as Yup from 'yup';
 import SocialButton from '../SocialButton';
 
 export default function LoginForm() {
-  const user = useAppSelector((state) => state.auth);
   // const socket = useSocket();
   const dispatch = useAppDispatch();
 
@@ -39,7 +38,6 @@ export default function LoginForm() {
   } = methods;
 
   const onSubmit = async (input: LoginInput) => {
-    console.log(input);
     const { data } = await login({ variables: { data: input } });
     const response = data?.login;
     if (response?.code === 200) {

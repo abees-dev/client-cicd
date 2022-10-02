@@ -10,7 +10,7 @@ mutation createPost($postInput: PostInput!, $imageInput: [ImageInput!]!) {
       image {
         url
         type
-        fileName
+        type
       }
       user {
         id

@@ -21,7 +21,7 @@ export const RHFUploadMultiple = ({ name, showPreview, singlePreview, sx, ...oth
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState: { error } }) => (
+      render={({ field }) => (
         <UploadMultiple
           {...field}
           files={field.value}

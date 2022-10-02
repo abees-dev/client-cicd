@@ -1,5 +1,6 @@
 import { styled } from '@mui/material';
 import { ReactElement } from 'react';
+import { AuthGuard } from 'src/guards/AuthGuard';
 import DashboardLayout from './dashboard';
 import LogoOnly from './LogoOnly';
 
@@ -32,7 +33,10 @@ export default function Layout({ children, variants = 'dashboard' }: ILayout) {
   }
   return (
     <RootStyle>
-      <DashboardLayout />
+      <AuthGuard>
+        <DashboardLayout />
+      </AuthGuard>
+
       <MainStyle>{children}</MainStyle>
     </RootStyle>
   );

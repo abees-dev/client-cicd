@@ -2,10 +2,10 @@ import { Avatar, Box, Divider, Stack, styled, Typography } from '@mui/material';
 import { MutableRefObject } from 'react';
 import { useAppSelector } from 'src/redux/hooks';
 import { MessageResponse } from 'src/types/response';
-import { fDistanceToNow } from 'src/utils/formatTime';
+// import { fDistanceToNow } from 'src/utils/formatTime';
 import MessageInput from './MessageInput';
 
-const RootStyle = styled('div')(({ theme }) => ({
+const RootStyle = styled('div')(() => ({
   flex: 1,
 }));
 
@@ -63,8 +63,6 @@ const MessageItemRoot = styled('div')<MessageItemProp>(({ theme, isReply }) => (
   }),
 }));
 
-const MessageItemBoxStyle = styled('div')(({ theme }) => ({}));
-
 interface MessageItem {
   message: MessageResponse;
   isReply: boolean;
@@ -79,7 +77,7 @@ function MessageItem({ message, isReply }: MessageItem) {
           <Typography>{message.message}</Typography>
         </MessageItemStyle>
         <Typography variant="caption" ml={1} mt={0.5} align={!isReply ? 'right' : 'left'}>
-          {fDistanceToNow(message.createdAt)}
+          {/* {fDistanceToNow()} */}
         </Typography>
       </Stack>
       {!isReply && <Avatar src="" sx={{ width: 40, height: 40, mt: 2 }} />}

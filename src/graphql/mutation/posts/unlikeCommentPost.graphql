@@ -1,0 +1,6 @@
+mutation UnlikeCommentPost($likeInput: PostLikeQueryInput!) {
+  unLikePost(likeInput: $likeInput) {
+    code
+    message
+  }
+}

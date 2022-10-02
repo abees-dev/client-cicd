@@ -1,0 +1,13 @@
+query GetUserNotCurrent($userId: String!) {
+  getUserNotCurrent(userId: $userId) {
+    code
+    message
+    users {
+      id
+      firstName
+      lastName
+      createdAt
+      avatar
+    }
+  }
+}

@@ -2,6 +2,7 @@ import { alpha, Button, Stack, styled, Typography } from '@mui/material';
 import Iconify from 'src/components/Iconify';
 import MyAvatar from 'src/components/MyAvatar';
 import useCollapse from 'src/hooks/useCollapse';
+import { useAppSelector } from 'src/redux/hooks';
 
 type RootProp = {
   isCollapse: boolean;
@@ -60,6 +61,7 @@ const ArrowStyled = styled(Button)(({ theme }) => ({
 }));
 
 export default function NavbarAccount() {
+  const user = useAppSelector((state) => state.auth.user);
   const { onToggle, isClick, isCollapse } = useCollapse();
   return (
     <RootStyled isCollapse={isCollapse}>
@@ -69,8 +71,8 @@ export default function NavbarAccount() {
       </AvatarStyled>
       {!isCollapse && (
         <Stack>
-          <Typography variant="subtitle1" sx={{ whiteSpace: 'pre' }}>
-            Abees Dev
+          <Typography variant="subtitle1" sx={{ whiteSpace: 'pre', textDecoration: 'capitalize' }}>
+            {`${user?.firstName} ${user?.lastName}`}
           </Typography>
           <Typography variant="caption" sx={{ color: (theme) => theme.palette.grey[700] }}>
             Manager

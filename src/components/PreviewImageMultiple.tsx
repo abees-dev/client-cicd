@@ -1,5 +1,5 @@
 import { Masonry } from '@mui/lab';
-import { alpha, Box, styled } from '@mui/material';
+import { alpha, Box, CardMedia, styled } from '@mui/material';
 import { isEmpty } from 'lodash';
 import React from 'react';
 import { Image as ImageType } from 'src/generated/graphql';
@@ -38,6 +38,15 @@ const MasonryStyled = styled(Masonry, {
   },
 }));
 
+const CardMediaStyled = styled(CardMedia)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  maxHeight: theme.breakpoints.values.sm,
+  objectFit: 'contain',
+  backgroundColor: theme.palette.divider,
+  borderRadius: theme.shape.borderRadius,
+  height: 600,
+})) as typeof CardMedia;
+
 export default function PreviewImageMultiple({ listImage = [] }: PreviewImageProps) {
   const generateColumn = () => {
     const newLength = listImage.slice(2).length;
@@ -58,14 +67,19 @@ export default function PreviewImageMultiple({ listImage = [] }: PreviewImagePro
           if (index > 1) return null;
           return (
             <Box key={index}>
-              <Image
-                src={isEmpty(image) ? '' : image.url}
-                sx={{
-                  height: index < 2 ? 300 : 600,
-                  borderRadius: 1,
-                  overflow: 'hidden',
-                }}
-              />
+              {image?.type === 'image*/mp4' ? (
+                <CardMediaStyled component="video" src={image.url} controls loop defaultValue={10} />
+              ) : (
+                <Image
+                  src={isEmpty(image) ? '' : image.url}
+                  sx={{
+                    height: index > 2 ? 300 : 600,
+                    borderRadius: 1,
+                    overflow: 'hidden',
+                    mt: 2,
+                  }}
+                />
+              )}
             </Box>
           );
         })}
@@ -76,14 +90,19 @@ export default function PreviewImageMultiple({ listImage = [] }: PreviewImagePro
           if (index > 2) return null;
           return (
             <Box key={index}>
-              <Image
-                src={isEmpty(image) ? '' : image.url}
-                sx={{
-                  height: 200,
-                  borderRadius: 1,
-                  overflow: 'hidden',
-                }}
-              />
+              {image?.type === 'image*/mp4' ? (
+                <CardMediaStyled component="video" src={image.url} controls loop defaultValue={10} />
+              ) : (
+                <CardMediaStyled
+                  component="img"
+                  src={isEmpty(image) ? '' : image.url}
+                  sx={{
+                    height: index > 2 ? 300 : 600,
+                    borderRadius: 1,
+                    overflow: 'hidden',
+                  }}
+                />
+              )}
             </Box>
           );
         })}

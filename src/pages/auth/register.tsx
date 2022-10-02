@@ -5,6 +5,7 @@ import { ReactElement } from 'react';
 import { DeveloperIllustrator } from 'src/assets';
 import Page from 'src/components/Page';
 import { RegisterForm } from 'src/container/auth';
+import GuestGuard from 'src/guards/GuestGuard';
 import Layout from 'src/layouts';
 import { PATH_AUTH } from 'src/routes/paths';
 import { NextPageWithLayout } from 'src/types';
@@ -25,45 +26,47 @@ const TextStyled = styled('div')(({ theme }) => ({
 
 const Register: NextPageWithLayout = () => {
   return (
-    <Page title="Login">
-      <RootStyled>
-        <TextStyled>
-          <Typography variant="body2">Already have an account?</Typography>
-          <NextLink href={PATH_AUTH.login}>
-            <Link underline="hover" variant="subtitle2" sx={{ cursor: 'pointer' }}>
-              Login
-            </Link>
-          </NextLink>
-        </TextStyled>
-        <Card
-          sx={{
-            height: 1,
-            display: {
-              xs: 'none',
-              lg: 'block',
-            },
-          }}
-        >
-          <Typography variant="h4" align="center" mt={15} mb={5}>
-            Hi, Wellcome my app
-          </Typography>
-          <DeveloperIllustrator sx={{ maxWidth: 500 }} />
-        </Card>
-        <Container maxWidth="sm">
-          <Stack
-            alignItems="center"
-            justifyContent="center"
-            spacing={2}
+    <GuestGuard>
+      <Page title="Register">
+        <RootStyled>
+          <TextStyled>
+            <Typography variant="body2">Already have an account?</Typography>
+            <NextLink href={PATH_AUTH.login}>
+              <Link underline="hover" variant="subtitle2" sx={{ cursor: 'pointer' }}>
+                Login
+              </Link>
+            </NextLink>
+          </TextStyled>
+          <Card
             sx={{
               height: 1,
+              display: {
+                xs: 'none',
+                lg: 'block',
+              },
             }}
           >
-            <Typography variant="h5">Register Now</Typography>
-            <RegisterForm />
-          </Stack>
-        </Container>
-      </RootStyled>
-    </Page>
+            <Typography variant="h4" align="center" mt={15} mb={5}>
+              Hi, Wellcome my app
+            </Typography>
+            <DeveloperIllustrator sx={{ maxWidth: 500 }} />
+          </Card>
+          <Container maxWidth="sm">
+            <Stack
+              alignItems="center"
+              justifyContent="center"
+              spacing={2}
+              sx={{
+                height: 1,
+              }}
+            >
+              <Typography variant="h5">Register Now</Typography>
+              <RegisterForm />
+            </Stack>
+          </Container>
+        </RootStyled>
+      </Page>
+    </GuestGuard>
   );
 };
 

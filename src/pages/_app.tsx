@@ -6,6 +6,7 @@ import { ReactElement } from 'react';
 import { CookiesProvider } from 'react-cookie';
 import { Provider as ReduxProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { OverrideScroll } from 'src/components/OverrideScroll';
 import useAppApolloClient from 'src/hooks/useAppApolloClient';
 import { NextPageWithLayout } from 'src/types';
 import NotistackProvider from '../components/Notistack';
@@ -27,16 +28,17 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <>
-      <ApolloProvider client={apolloClient}>
-        <ReduxProvider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <ApolloProvider client={apolloClient}>
+          <ReduxProvider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
               <CookiesProvider>
                 <CollapseSideBarProvider>
                   <SettingContextProvider>
                     <ThemeProvider>
                       <NotistackProvider>
                         <ProgressBar />
+                        <OverrideScroll />
                         <ReactQueryDevtools initialIsOpen={false} />
                         {getLayout(<Component {...pageProps} />)}
                       </NotistackProvider>
@@ -44,10 +46,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                   </SettingContextProvider>
                 </CollapseSideBarProvider>
               </CookiesProvider>
-            </QueryClientProvider>
-          </PersistGate>
-        </ReduxProvider>
-      </ApolloProvider>
+            </PersistGate>
+          </ReduxProvider>
+        </ApolloProvider>
+      </QueryClientProvider>
     </>
   );
 }

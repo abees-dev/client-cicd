@@ -1,21 +1,20 @@
-import { Button, Container, Divider, Stack, styled, Typography } from '@mui/material';
-import React, { useCallback, useState } from 'react';
-import { FormProvider, RHFTextField } from 'src/components/hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { LoadingButton } from '@mui/lab';
+import { Button, Container, Stack, styled, Typography } from '@mui/material';
+import { isEmpty } from 'lodash';
+import { useCallback, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { uploadMultiple } from 'src/api/upload';
+import { FormProvider } from 'src/components/hook-form';
 import RHFTextArea from 'src/components/hook-form/RHFTextArea';
 import { RHFUploadMultiple } from 'src/components/hook-form/RHFUpload';
 import Iconify from 'src/components/Iconify';
 import MyAvatar from 'src/components/MyAvatar';
-import { useAppSelector } from 'src/redux/hooks';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
-import { useForm } from 'react-hook-form';
-import { FileType } from 'src/types';
-import { LoadingButton } from '@mui/lab';
-import PostAction from './PostAction';
-import { isEmpty } from 'lodash';
-import { uploadMultiple } from 'src/api/upload';
 import { Post, useCreatePostMutation } from 'src/generated/graphql';
-import { PostCreateProps } from './PostCreate';
+import { useAppSelector } from 'src/redux/hooks';
+import { FileType } from 'src/types';
+import * as Yup from 'yup';
+import PostAction from './PostAction';
 
 const RootStyled = styled('div')(({}) => ({}));
 
@@ -106,7 +105,6 @@ export default function PostCreateForm({ handleSuccess }: PostFormProps) {
   };
 
   const handleSelectAction = (value: string) => {
-    console.log(value);
     setAction((prev) => ({ ...prev, addImage: value === 'add' }));
   };
 

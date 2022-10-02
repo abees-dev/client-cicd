@@ -1,6 +1,6 @@
-import { Box, Dialog as MUIDialog, DialogProps, Slide } from '@mui/material';
+import { Dialog as MUIDialog, DialogProps, Slide } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
-import { forwardRef, ReactElement, Ref, useEffect, useState } from 'react';
+import { forwardRef, ReactElement, Ref } from 'react';
 import useCollapse from 'src/hooks/useCollapse';
 
 const Transition = forwardRef(function Transition(

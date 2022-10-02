@@ -51,7 +51,9 @@ export default function NotistackProvider({ children }: IPropsTypes<ReactNode>) 
     <>
       <SnackBarStyle />
       <SnackbarProvider
-        maxSnack={3}
+        maxSnack={5}
+        preventDuplicate
+        autoHideDuration={1000}
         anchorOrigin={{
           horizontal: 'right',
           vertical: 'top',

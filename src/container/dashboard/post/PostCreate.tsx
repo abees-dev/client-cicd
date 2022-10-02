@@ -1,5 +1,4 @@
 import { alpha, Box, Button, Card, Divider, Stack, styled, Typography } from '@mui/material';
-import React, { useState } from 'react';
 import { CameraIllustrator, LiveIllustrator, LoveIcon } from 'src/assets';
 import IconButtonAnimate from 'src/components/animate/IconButtonAnimate';
 import Dialog from 'src/components/Dialog';

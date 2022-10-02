@@ -8,6 +8,7 @@ import Iconify from 'src/components/Iconify';
 import MyAvatar from 'src/components/MyAvatar';
 import { HEADER, NAVBAR } from 'src/config';
 import useCollapse from 'src/hooks/useCollapse';
+import NotificationPopover from './NotificationPopover';
 
 interface AppBarProps {
   isCollapse: boolean;
@@ -38,11 +39,7 @@ export default function Header() {
       <AppBarStyled position="fixed" isCollapse={isCollapse}>
         <Toolbar sx={{ height: 1 }}>
           <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end" sx={{ width: 1 }}>
-            <IconButtonAnimate size="large">
-              <Badge badgeContent={1} color="error">
-                <Iconify icon="ooui:bell" sx={{ width: 22, height: 22 }} />
-              </Badge>
-            </IconButtonAnimate>
+            <NotificationPopover />
 
             <IconButtonAnimate size="large">
               <Iconify icon="fluent:settings-24-filled" sx={{ width: 22, height: 22 }} />

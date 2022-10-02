@@ -1,5 +1,4 @@
-import { Box, BoxProps, styled } from '@mui/material';
-import React from 'react';
+import { Box, BoxProps } from '@mui/material';
 import { PropsCustoms } from '../types/props';
 
 export default function BusinessmanSocial({ ...other }: PropsCustoms<BoxProps>) {

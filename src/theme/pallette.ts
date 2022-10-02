@@ -1,4 +1,4 @@
-import { alpha, PaletteOptions, Shadows } from '@mui/material';
+import { alpha, PaletteOptions } from '@mui/material';
 
 interface IColor {
   lighter: string;

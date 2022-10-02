@@ -1,22 +1,14 @@
-import {
-  Avatar,
-  AvatarGroup,
-  Box,
-  Button,
-  CardMedia,
-  Divider,
-  Stack,
-  styled,
-  Tooltip,
-  Typography,
-} from '@mui/material';
-import React from 'react';
+import { Avatar, AvatarGroup, Box, CardMedia, Divider, Link, Stack, styled, Tooltip, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import IconButtonAnimate from 'src/components/animate/IconButtonAnimate';
 import Iconify from 'src/components/Iconify';
 import PreviewImageMultiple from 'src/components/PreviewImageMultiple';
-import { Post } from 'src/generated/graphql';
+import ProfileTooltip from 'src/components/ProfileTooltip';
+import { CurrentLike, Post, PostLikeQueryResponse, useGetLikeByPostQuery } from 'src/generated/graphql';
 import { useAppSelector } from 'src/redux/hooks';
 import { fDistanceToNow } from 'src/utils/formatTime';
+import PostSocialAction from './PostSocialAction';
+import NextLink from 'next/link';
 
 const RootStyled = styled('div')(({ theme }) => ({
   padding: theme.spacing(2, 2),
@@ -32,7 +24,7 @@ const ContentStyled = styled('section')(({ theme }) => ({
   marginTop: theme.spacing(2),
 }));
 
-const AvatarIconStyled = styled(Avatar)(({ theme }) => ({
+const AvatarIconStyled = styled(Avatar)(() => ({
   width: 20,
   height: 20,
   border: 'none',
@@ -64,18 +56,65 @@ interface PostListProps {
 export default function PostList({ post }: PostListProps) {
   const user = useAppSelector((state) => state.auth.user);
 
-  const { avatar, firstName, lastName } = post.user;
-  const { image, content, createdAt } = post;
+  const { avatar, firstName, lastName, id: userId } = post.user;
+  const { image, content, createdAt, comment } = post;
+  const [likeResponse, setLikeResponse] = useState<PostLikeQueryResponse>({});
+
+  const { totalLike, currentLike } = likeResponse;
+
+  const { data } = useGetLikeByPostQuery({
+    variables: {
+      likeInput: {
+        postId: String(post?.id),
+        userId: String(user?.id),
+      },
+    },
+  });
+
+  useEffect(() => {
+    if (data) {
+      setLikeResponse(data.getLikeByPost as PostLikeQueryResponse);
+    }
+  }, [data]);
+
+  const handleLikeSuccess = (currentLike: CurrentLike) => {
+    setLikeResponse((prev) => ({
+      ...prev,
+      currentLike,
+      totalLike: !prev?.currentLike?.type ? Number(prev.totalLike) + 1 : prev.totalLike,
+    }));
+  };
+
+  const handleUnlikeSuccess = () => {
+    setLikeResponse((prev) => ({
+      ...prev,
+      currentLike: {
+        like: false,
+        type: null,
+      },
+      totalLike: Number(prev.totalLike) - 1,
+    }));
+  };
+
   return (
     <RootStyled>
       <HeaderStyled>
         <Stack direction="row" spacing={1} alignItems="center">
-          <Avatar src={avatar || ''} />
+          <ProfileTooltip userId={String(userId)}>
+            <Avatar src={avatar || ''} />
+          </ProfileTooltip>
           <Stack>
-            <Typography
-              variant="subtitle1"
-              sx={{ textTransform: 'capitalize' }}
-            >{`${firstName} ${lastName}`}</Typography>
+            <ProfileTooltip userId={String(userId)}>
+              <NextLink href="/">
+                <Link
+                  variant="subtitle1"
+                  color="inherit"
+                  underline="hover"
+                  sx={{ textTransform: 'capitalize', cursor: 'pointer' }}
+                >{`${firstName} ${lastName}`}</Link>
+              </NextLink>
+            </ProfileTooltip>
+
             <Stack direction="row" spacing={0.5}>
               <Typography variant="caption">{fDistanceToNow(Number(createdAt))}</Typography>
               <Tooltip title="public" placement="top">
@@ -92,9 +131,14 @@ export default function PostList({ post }: PostListProps) {
       </HeaderStyled>
 
       <ContentStyled>
-        <Typography variant="body1">{content}</Typography>
+        <Typography variant="body2">{content}</Typography>
+
         {image.length === 1 ? (
-          <CardMediaStyled component="img" src={image[0].url} />
+          image[0].type === 'image*/mp4' ? (
+            <CardMediaStyled component="video" src={image[0].url} controls loop defaultValue={10} />
+          ) : (
+            <CardMediaStyled component="img" src={image[0].url} />
+          )
         ) : (
           <PreviewImageMultiple listImage={image} />
         )}
@@ -109,31 +153,20 @@ export default function PostList({ post }: PostListProps) {
               <Iconify icon="ci:heart-fill" color="common.white" sx={{ width: 12, height: 12 }} />
             </AvatarIconStyled>
           </AvatarGroup>
-          <TextStyled>3,1K</TextStyled>
+          <TextStyled>{totalLike || 0}</TextStyled>
         </Stack>
         <Stack direction="row" spacing={1}>
-          <TextStyled>3,1K Like</TextStyled>
-          <TextStyled>100 comments</TextStyled>
+          <TextStyled>{totalLike || 0} Like</TextStyled>
+          <TextStyled>{comment?.length || 0} comments</TextStyled>
         </Stack>
       </Stack>
       <Divider />
-      <Stack direction="row" justifyContent="space-between" alignItems="center" mt={1} mb={1}>
-        <Button variant="text" color="inherit" fullWidth startIcon={<Iconify icon="uiw:like-o" />}>
-          Like
-        </Button>
-        <Button variant="text" color="inherit" fullWidth startIcon={<Iconify icon="akar-icons:comment" />}>
-          comments
-        </Button>
-        <Button variant="text" color="inherit" fullWidth startIcon={<Iconify icon="icon-park-outline:share-two" />}>
-          share
-        </Button>
-        <Button
-          variant="text"
-          color="inherit"
-          startIcon={<Avatar sx={{ width: 24, height: 24 }} src={user?.avatar ? user.avatar : ''} />}
-          endIcon={<Iconify icon="bi:caret-down-fill" sx={{ width: 12, height: 12 }} />}
-        />
-      </Stack>
+      <PostSocialAction
+        post={post}
+        currentLike={currentLike as CurrentLike}
+        handleLikeSuccess={handleLikeSuccess}
+        handleUnlike={handleUnlikeSuccess}
+      />
       <Divider />
     </RootStyled>
   );

@@ -1,0 +1,3 @@
+mutation MaskAsReadNotification($notificationInput: NotificationInput!) {
+  markAsRead(notificationInput: $notificationInput)
+}

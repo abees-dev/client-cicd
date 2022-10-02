@@ -1,5 +1,5 @@
 import { alpha, Box, Stack, styled, SxProps } from '@mui/material';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
 import { FileType } from 'src/types';
 import { PropsCustoms } from 'src/types/props';
@@ -41,7 +41,7 @@ export default function UploadSingle({ file, sx, ...other }: UploadSingleType) {
   //   //dependencies
   // }, []);
 
-  const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     multiple: false,
     ...other,
   });
