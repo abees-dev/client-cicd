@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { useListenReplySubscription, useTestListenSubscription } from 'src/generated/graphql';
+import { useTestListenSubscription } from 'src/generated/graphql';
 import { NextPageWithLayout } from 'src/types';
 import Layout from '../../layouts';
 
@@ -10,8 +10,6 @@ const Dashboard: NextPageWithLayout = () => {
     },
     onSubscriptionComplete: () => console.log('first'),
   });
-
-  console.log(data);
 
   return (
     <div>

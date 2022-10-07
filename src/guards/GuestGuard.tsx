@@ -15,7 +15,7 @@ export default function GuestGuard({ children }: IGuestGuard) {
 
   useEffect(() => {
     if (isAuthenticated) {
-      push(path);
+      push(path || '/');
     }
   }, [isAuthenticated, path]);
 

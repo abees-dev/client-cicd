@@ -55,13 +55,10 @@ export default function FriendRequest() {
         friendRequest: prev.friendRequest?.filter((item) => item.id !== id),
         totalCount: Number(prev.totalCount) - 1,
       }));
-      console.log(id);
     } catch (error) {
       console.log(error);
     }
   };
-
-  console.log(friendState);
 
   return (
     <>

@@ -72,7 +72,6 @@ export default function Message() {
   useEffect(() => {
     if (socket) {
       socket.emit('join-chat-room', { sender: user?.id, receive });
-      console.log('first');
     }
   }, [socket, receive]);
 

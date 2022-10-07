@@ -18,8 +18,6 @@ Task.getLayout = function getLayout(page: ReactElement) {
     },
   });
 
-  console.log(data);
-
   return <Layout>{page}</Layout>;
 };
 

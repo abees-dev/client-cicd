@@ -15,7 +15,6 @@ interface INavListRoot {
 
 export function NavListRoot({ list, isCollapse }: INavListRoot) {
   const { pathname, asPath } = useRouter();
-  // console.log(pathname, asPath);
 
   const active = getActive(list.path, pathname, asPath);
 

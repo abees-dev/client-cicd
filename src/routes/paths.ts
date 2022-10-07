@@ -12,7 +12,7 @@ export const PATH_DASHBOARD = {
   message: paths(ROOT_DASHBOARD, 'message'),
   inbox: paths(ROOT_DASHBOARD, 'inbox'),
   post: paths(ROOT_DASHBOARD, 'post'),
-  profile: paths(ROOT_DASHBOARD, `profile`),
+  profile: (id: string) => paths(ROOT_DASHBOARD, `profile/${id}`),
   lookingFriend: paths(ROOT_DASHBOARD, 'looking-friend'),
 };
 

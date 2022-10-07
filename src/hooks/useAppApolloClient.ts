@@ -37,6 +37,7 @@ export default function useAppApolloClient() {
       const httpLink = createHttpLink({
         uri: process.env.NEXT_PUBLIC_BASE_URL,
         credentials: 'include',
+        // same-origin
       });
 
       const authLink = setContext(async (_, { headers }) => {

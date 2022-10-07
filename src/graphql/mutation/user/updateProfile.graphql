@@ -1,0 +1,29 @@
+mutation UpdateUserProfile($data: UserProfileInput!) {
+  updateProfile(data: $data) {
+    code
+    message
+    profile {
+      id
+      gender
+      phoneNumber
+      liveAt
+      province
+      district
+      ward
+      createdAt
+      story
+    }
+    user {
+      id
+      avatar
+      firstName
+      lastName
+      email
+      createdAt
+    }
+  }
+}
+
+mutation UploadAvatar($url: String!, $userId: String!) {
+  uploadAvatar(url: $url, userId: $userId)
+}

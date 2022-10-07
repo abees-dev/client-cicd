@@ -85,6 +85,8 @@ export default function PostSocialAction({ post, currentLike, handleLikeSuccess,
     <Stack direction="row" justifyContent="space-between" alignItems="center" mt={1} mb={1}>
       <Tooltip
         placement="top"
+        leaveDelay={200}
+        enterDelay={100}
         title={
           <TooltipLikeItem
             user={user}
@@ -159,7 +161,6 @@ function TooltipLikeItem({ user, post, handleLikeSuccess, typeCurrent }: Tooltip
       if (code === 201) {
         handleLikeSuccess({ like: true, type: likes?.type });
       } else {
-        console.log(currentLike);
         handleLikeSuccess(currentLike as CurrentLike);
       }
     } catch (error) {
