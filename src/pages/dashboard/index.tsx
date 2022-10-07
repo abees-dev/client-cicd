@@ -11,8 +11,6 @@ const Dashboard: NextPageWithLayout = () => {
     onSubscriptionComplete: () => console.log('first'),
   });
 
-  console.log(data);
-
   return (
     <div>
       Dashboard

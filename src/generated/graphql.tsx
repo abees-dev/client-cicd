@@ -208,6 +208,8 @@ export type Mutation = {
   register: UserResponse;
   replyComment: Scalars['Boolean'];
   unLikePost: UnlikePostMutationResponse;
+  updateProfile: UpdateUserProfileResponse;
+  uploadAvatar: Scalars['Boolean'];
 };
 
 
@@ -261,6 +263,17 @@ export type MutationReplyCommentArgs = {
 
 export type MutationUnLikePostArgs = {
   likeInput: PostLikeQueryInput;
+};
+
+
+export type MutationUpdateProfileArgs = {
+  data: UserProfileInput;
+};
+
+
+export type MutationUploadAvatarArgs = {
+  url: Scalars['String'];
+  userId: Scalars['String'];
 };
 
 export type Notification = {
@@ -369,6 +382,7 @@ export type Query = {
   comments: CommentListResponse;
   friendShipRecommend: FriendShipRecommendResponse;
   friendWaiting: FriendShipRequestResponse;
+  getCurrentUser: User;
   getFriendRequest: FriendShipRequestResponse;
   getLikeByPost: PostLikeQueryResponse;
   getNotification: NotificationQueryResponse;
@@ -393,6 +407,11 @@ export type QueryFriendShipRecommendArgs = {
 
 export type QueryFriendWaitingArgs = {
   query?: InputMaybe<QueryInput>;
+  userId: Scalars['String'];
+};
+
+
+export type QueryGetCurrentUserArgs = {
   userId: Scalars['String'];
 };
 
@@ -508,6 +527,21 @@ export type UnlikePostMutationResponse = BaseResponse & {
   message?: Maybe<Scalars['String']>;
 };
 
+export type UpdateUserProfileResponse = BaseResponse & {
+  __typename?: 'UpdateUserProfileResponse';
+  code?: Maybe<Scalars['Float']>;
+  message?: Maybe<Scalars['String']>;
+  profile?: Maybe<UserProfile>;
+  user?: Maybe<User>;
+};
+
+export type UploadAvatarResponse = BaseResponse & {
+  __typename?: 'UploadAvatarResponse';
+  code?: Maybe<Scalars['Float']>;
+  message?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+};
+
 export type User = {
   __typename?: 'User';
   avatar?: Maybe<Scalars['String']>;
@@ -526,6 +560,10 @@ export type User = {
   updatedAt: Scalars['String'];
 };
 
+export type UserInput = {
+  user?: InputMaybe<Scalars['JSONObject']>;
+};
+
 export type UserLogoutResponse = BaseResponse & {
   __typename?: 'UserLogoutResponse';
   code?: Maybe<Scalars['Float']>;
@@ -541,17 +579,33 @@ export type UserNotCurrentResponse = BaseResponse & {
 
 export type UserProfile = {
   __typename?: 'UserProfile';
-  address: Scalars['String'];
   createdAt: Scalars['String'];
   dayOfBirth: Scalars['String'];
-  form: Scalars['String'];
+  district: Scalars['String'];
   gender: Scalars['String'];
   id?: Maybe<Scalars['String']>;
   liveAt: Scalars['String'];
   phoneNumber: Scalars['String'];
+  province: Scalars['String'];
+  story: Scalars['String'];
+  thumbnail: Scalars['String'];
   updatedAt: Scalars['String'];
   user: User;
-  workAt: Scalars['String'];
+  ward: Scalars['String'];
+};
+
+export type UserProfileInput = {
+  dayOfBirth: Scalars['String'];
+  district: Scalars['String'];
+  firstName: Scalars['String'];
+  gender: Scalars['String'];
+  lastName: Scalars['String'];
+  liveAt: Scalars['String'];
+  phoneNumber: Scalars['String'];
+  province: Scalars['String'];
+  story: Scalars['String'];
+  user?: InputMaybe<Scalars['JSONObject']>;
+  ward: Scalars['String'];
 };
 
 export type UserQueryInput = {
@@ -637,6 +691,21 @@ export type UnlikeCommentPostMutationVariables = Exact<{
 
 export type UnlikeCommentPostMutation = { __typename?: 'Mutation', unLikePost: { __typename?: 'UnlikePostMutationResponse', code?: number | null, message?: string | null } };
 
+export type UpdateUserProfileMutationVariables = Exact<{
+  data: UserProfileInput;
+}>;
+
+
+export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateProfile: { __typename?: 'UpdateUserProfileResponse', code?: number | null, message?: string | null, profile?: { __typename?: 'UserProfile', id?: string | null, gender: string, phoneNumber: string, liveAt: string, province: string, district: string, ward: string, createdAt: string, story: string } | null, user?: { __typename?: 'User', id?: string | null, avatar?: string | null, firstName: string, lastName: string, email: string, createdAt: string } | null } };
+
+export type UploadAvatarMutationVariables = Exact<{
+  url: Scalars['String'];
+  userId: Scalars['String'];
+}>;
+
+
+export type UploadAvatarMutation = { __typename?: 'Mutation', uploadAvatar: boolean };
+
 export type FriendShipRecommendQueryVariables = Exact<{
   query?: InputMaybe<QueryInput>;
   userId: Scalars['String'];
@@ -692,6 +761,13 @@ export type GetAllPostQueryVariables = Exact<{
 
 export type GetAllPostQuery = { __typename?: 'Query', postsQuery: { __typename?: 'AllPostResponse', page?: number | null, perPage?: number | null, totalCount?: number | null, totalPage?: number | null, posts?: Array<{ __typename?: 'Post', id?: string | null, content: string, createdAt: string, updatedAt: string, image: Array<{ __typename?: 'Image', url: string, id?: string | null, type: string }>, user: { __typename?: 'User', id?: string | null, email: string, lastName: string, firstName: string, avatar?: string | null, createdAt: string }, comment: Array<{ __typename?: 'Comment', id?: string | null }> }> | null } };
 
+export type GetCurrentUserQueryVariables = Exact<{
+  userId: Scalars['String'];
+}>;
+
+
+export type GetCurrentUserQuery = { __typename?: 'Query', getCurrentUser: { __typename?: 'User', id?: string | null, avatar?: string | null, firstName: string, lastName: string, createdAt: string, profile?: { __typename?: 'UserProfile', id?: string | null, dayOfBirth: string, district: string, gender: string, liveAt: string, phoneNumber: string, province: string, story: string, updatedAt: string, ward: string } | null } };
+
 export type GetUserNotCurrentQueryVariables = Exact<{
   userId: Scalars['String'];
 }>;
@@ -704,7 +780,7 @@ export type HoverCardQueryVariables = Exact<{
 }>;
 
 
-export type HoverCardQuery = { __typename?: 'Query', hoverCard: { __typename?: 'HoverCardResponse', isFriend: boolean, user?: { __typename?: 'User', id?: string | null, avatar?: string | null, firstName: string, lastName: string, createdAt: string, profile?: { __typename?: 'UserProfile', address: string, dayOfBirth: string, gender: string, workAt: string, liveAt: string, phoneNumber: string } | null } | null } };
+export type HoverCardQuery = { __typename?: 'Query', hoverCard: { __typename?: 'HoverCardResponse', isFriend: boolean, user?: { __typename?: 'User', id?: string | null, avatar?: string | null, firstName: string, lastName: string, createdAt: string, profile?: { __typename?: 'UserProfile', dayOfBirth: string, gender: string, liveAt: string, phoneNumber: string, province: string, district: string, ward: string } | null } | null } };
 
 export type ListJoinCommentPostSubscriptionVariables = Exact<{
   room: Scalars['String'];
@@ -1108,6 +1184,91 @@ export function useUnlikeCommentPostMutation(baseOptions?: Apollo.MutationHookOp
 export type UnlikeCommentPostMutationHookResult = ReturnType<typeof useUnlikeCommentPostMutation>;
 export type UnlikeCommentPostMutationResult = Apollo.MutationResult<UnlikeCommentPostMutation>;
 export type UnlikeCommentPostMutationOptions = Apollo.BaseMutationOptions<UnlikeCommentPostMutation, UnlikeCommentPostMutationVariables>;
+export const UpdateUserProfileDocument = gql`
+    mutation UpdateUserProfile($data: UserProfileInput!) {
+  updateProfile(data: $data) {
+    code
+    message
+    profile {
+      id
+      gender
+      phoneNumber
+      liveAt
+      province
+      district
+      ward
+      createdAt
+      story
+    }
+    user {
+      id
+      avatar
+      firstName
+      lastName
+      email
+      createdAt
+    }
+  }
+}
+    `;
+export type UpdateUserProfileMutationFn = Apollo.MutationFunction<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>;
+
+/**
+ * __useUpdateUserProfileMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserProfileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserProfileMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserProfileMutation, { data, loading, error }] = useUpdateUserProfileMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateUserProfileMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>(UpdateUserProfileDocument, options);
+      }
+export type UpdateUserProfileMutationHookResult = ReturnType<typeof useUpdateUserProfileMutation>;
+export type UpdateUserProfileMutationResult = Apollo.MutationResult<UpdateUserProfileMutation>;
+export type UpdateUserProfileMutationOptions = Apollo.BaseMutationOptions<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>;
+export const UploadAvatarDocument = gql`
+    mutation UploadAvatar($url: String!, $userId: String!) {
+  uploadAvatar(url: $url, userId: $userId)
+}
+    `;
+export type UploadAvatarMutationFn = Apollo.MutationFunction<UploadAvatarMutation, UploadAvatarMutationVariables>;
+
+/**
+ * __useUploadAvatarMutation__
+ *
+ * To run a mutation, you first call `useUploadAvatarMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadAvatarMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [uploadAvatarMutation, { data, loading, error }] = useUploadAvatarMutation({
+ *   variables: {
+ *      url: // value for 'url'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUploadAvatarMutation(baseOptions?: Apollo.MutationHookOptions<UploadAvatarMutation, UploadAvatarMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UploadAvatarMutation, UploadAvatarMutationVariables>(UploadAvatarDocument, options);
+      }
+export type UploadAvatarMutationHookResult = ReturnType<typeof useUploadAvatarMutation>;
+export type UploadAvatarMutationResult = Apollo.MutationResult<UploadAvatarMutation>;
+export type UploadAvatarMutationOptions = Apollo.BaseMutationOptions<UploadAvatarMutation, UploadAvatarMutationVariables>;
 export const FriendShipRecommendDocument = gql`
     query FriendShipRecommend($query: QueryInput, $userId: String!) {
   friendShipRecommend(query: $query, userId: $userId) {
@@ -1496,6 +1657,57 @@ export function useGetAllPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetAllPostQueryHookResult = ReturnType<typeof useGetAllPostQuery>;
 export type GetAllPostLazyQueryHookResult = ReturnType<typeof useGetAllPostLazyQuery>;
 export type GetAllPostQueryResult = Apollo.QueryResult<GetAllPostQuery, GetAllPostQueryVariables>;
+export const GetCurrentUserDocument = gql`
+    query GetCurrentUser($userId: String!) {
+  getCurrentUser(userId: $userId) {
+    id
+    avatar
+    firstName
+    lastName
+    createdAt
+    profile {
+      id
+      dayOfBirth
+      district
+      gender
+      liveAt
+      phoneNumber
+      province
+      story
+      updatedAt
+      ward
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCurrentUserQuery__
+ *
+ * To run a query within a React component, call `useGetCurrentUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCurrentUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCurrentUserQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetCurrentUserQuery(baseOptions: Apollo.QueryHookOptions<GetCurrentUserQuery, GetCurrentUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCurrentUserQuery, GetCurrentUserQueryVariables>(GetCurrentUserDocument, options);
+      }
+export function useGetCurrentUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentUserQuery, GetCurrentUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCurrentUserQuery, GetCurrentUserQueryVariables>(GetCurrentUserDocument, options);
+        }
+export type GetCurrentUserQueryHookResult = ReturnType<typeof useGetCurrentUserQuery>;
+export type GetCurrentUserLazyQueryHookResult = ReturnType<typeof useGetCurrentUserLazyQuery>;
+export type GetCurrentUserQueryResult = Apollo.QueryResult<GetCurrentUserQuery, GetCurrentUserQueryVariables>;
 export const GetUserNotCurrentDocument = gql`
     query GetUserNotCurrent($userId: String!) {
   getUserNotCurrent(userId: $userId) {
@@ -1550,12 +1762,13 @@ export const HoverCardDocument = gql`
       lastName
       createdAt
       profile {
-        address
         dayOfBirth
         gender
-        workAt
         liveAt
         phoneNumber
+        province
+        district
+        ward
       }
     }
   }

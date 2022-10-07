@@ -134,6 +134,12 @@ const NotificationPopover = () => {
 
       if (type === 'Friend request') {
         push(PATH_DASHBOARD.lookingFriend);
+        handleClosePopover();
+      }
+
+      if (type === 'Friend accepted') {
+        push(PATH_DASHBOARD.profile(requester.id as string));
+        handleClosePopover();
       }
     } catch (error) {
       console.log(error);

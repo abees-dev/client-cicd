@@ -8,6 +8,7 @@ import Iconify from 'src/components/Iconify';
 import MyAvatar from 'src/components/MyAvatar';
 import { HEADER, NAVBAR } from 'src/config';
 import useCollapse from 'src/hooks/useCollapse';
+import AccountPopover from './AccountPopover';
 import NotificationPopover from './NotificationPopover';
 
 interface AppBarProps {
@@ -44,15 +45,7 @@ export default function Header() {
             <IconButtonAnimate size="large">
               <Iconify icon="fluent:settings-24-filled" sx={{ width: 22, height: 22 }} />
             </IconButtonAnimate>
-            <IconButtonAnimate
-              sx={{
-                '&:hover': {
-                  backgroundColor: 'transparent',
-                },
-              }}
-            >
-              <MyAvatar />
-            </IconButtonAnimate>
+            <AccountPopover />
           </Stack>
         </Toolbar>
       </AppBarStyled>

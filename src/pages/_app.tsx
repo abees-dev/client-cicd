@@ -15,6 +15,8 @@ import CollapseSideBarProvider from '../contexts/CollapseSideBarContext';
 import SettingContextProvider from '../contexts/SettingContext';
 import store, { persistor } from '../redux/store';
 import ThemeProvider from '../theme';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers-pro';
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
@@ -37,10 +39,12 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                   <SettingContextProvider>
                     <ThemeProvider>
                       <NotistackProvider>
-                        <ProgressBar />
-                        <OverrideScroll />
-                        <ReactQueryDevtools initialIsOpen={false} />
-                        {getLayout(<Component {...pageProps} />)}
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <ProgressBar />
+                          <OverrideScroll />
+                          <ReactQueryDevtools initialIsOpen={false} />
+                          {getLayout(<Component {...pageProps} />)}
+                        </LocalizationProvider>
                       </NotistackProvider>
                     </ThemeProvider>
                   </SettingContextProvider>

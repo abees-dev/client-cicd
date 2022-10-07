@@ -1,0 +1,21 @@
+query GetCurrentUser($userId: String!) {
+  getCurrentUser(userId: $userId) {
+    id
+    avatar
+    firstName
+    lastName
+    createdAt
+    profile {
+      id
+      dayOfBirth
+      district
+      gender
+      liveAt
+      phoneNumber
+      province
+      story
+      updatedAt
+      ward
+    }
+  }
+}

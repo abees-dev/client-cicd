@@ -3,6 +3,7 @@ import React, { ReactElement, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { setLocation } from 'src/redux/slice/location.slice';
 import { PATH_AUTH } from 'src/routes/paths';
+import { whiteListUrl } from 'src/utils/whitelistUrl';
 
 interface IAuthGuard {
   children: ReactElement;
@@ -18,7 +19,7 @@ export const AuthGuard = ({ children }: IAuthGuard) => {
     if (!isAuthenticated) {
       replace(PATH_AUTH.login);
     }
-    if (locationPath !== pathname && isAuthenticated) {
+    if (locationPath !== pathname && isAuthenticated && !whiteListUrl(pathname)) {
       dispatch(setLocation(pathname));
     }
   }, [isAuthenticated, pathname]);

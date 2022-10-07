@@ -116,8 +116,6 @@ export default function PreviewImageMultiple({ files = [] }: PreviewImageProps) 
     }
   };
 
-  console.log(files);
-
   return (
     <>
       <Masonry defaultHeight={0} columns={files.length === 1 ? 1 : 2} spacing={1}>

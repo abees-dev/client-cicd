@@ -8,12 +8,13 @@ query HoverCard($userId: String!) {
       lastName
       createdAt
       profile {
-        address
         dayOfBirth
         gender
-        workAt
         liveAt
         phoneNumber
+        province
+        district
+        ward
       }
     }
   }

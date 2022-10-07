@@ -112,9 +112,7 @@ export const ProfilePost = () => {
         <Grid xs={4}>
           <Card sx={{ p: 2, position: 'sticky', top: HEADER.HEADER_DESKTOP_HEIGHT + 16 }}>
             <Typography variant="h5">Introduce</Typography>
-            <Typography variant="caption">
-              Tart I love sugar plum I love oat cake. Sweet roll caramels I love jujubes. Topping cake wafer..
-            </Typography>
+            <Typography variant="caption">{user?.profile?.story}</Typography>
             <Divider sx={{ my: 2 }} />
             <List>
               {INTRODUCE_LIST.map(({ icon, title }, index) => (

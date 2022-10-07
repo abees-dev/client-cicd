@@ -30,9 +30,19 @@ export const userSlice = createSlice({
     refreshToken: (state, action) => {
       state.accessToken = action.payload;
     },
+    updateUser: (state, action) => {
+      state.user = action.payload;
+    },
+    updateProfile: (state, action) => {
+      state.user = { ...state.user, profile: action.payload } as User;
+    },
+    updateAvatarRedux: (state, action) => {
+      state.user = { ...state.user, avatar: action.payload } as User;
+    },
   },
 });
 
-export const { useLogout, refreshToken, loginSuccess } = userSlice.actions;
+export const { useLogout, refreshToken, loginSuccess, updateUser, updateProfile, updateAvatarRedux } =
+  userSlice.actions;
 
 export default userSlice.reducer;

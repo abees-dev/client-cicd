@@ -1,5 +1,4 @@
 import { styled, Typography } from '@mui/material';
-import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import {
   Comment,
@@ -72,7 +71,6 @@ export default function CommentList({ post }: CommentListProps) {
     if (socketData && socketData.listJoinCommentPost.type === 'reply') {
       const commentId = socketData.listJoinCommentPost.commentId;
       const reply = socketData.listJoinCommentPost.data;
-      console.log(isEmpty(commentResponse.comment?.find((item) => item.id === commentId)));
       setCommentResponse((prev) => ({
         ...prev,
         comment: prev.comment?.map((item) =>
@@ -115,7 +113,6 @@ export default function CommentList({ post }: CommentListProps) {
 
       const { comment, ...other } = fetchMoreData.comments as CommentList;
 
-      console.log(fetchMoreData);
       setPage((prev) => prev + 1);
       setCommentResponse((prev) => ({
         comment: [...(prev.comment as any[]), ...(comment as Comment[])],

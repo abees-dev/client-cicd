@@ -40,11 +40,6 @@ export const navConfig: INavBar[] = [
         icon: 'ic:sharp-forward-to-inbox',
       },
       {
-        title: 'Profile',
-        path: PATH_DASHBOARD.profile,
-        icon: 'uim:bag',
-      },
-      {
         title: 'Message',
         path: PATH_DASHBOARD.message,
         icon: 'ant-design:message-filled',
