@@ -1,10 +1,9 @@
 import data from '@emoji-mart/data';
-import { Box, ClickAwayListener, GlobalStyles, styled, useTheme } from '@mui/material';
+import { Box, ClickAwayListener, GlobalStyles, IconButton, styled, useTheme } from '@mui/material';
 // @ts-ignore
 import Picker from '@emoji-mart/react';
 import { BaseEmoji } from 'emoji-mart';
 import { Dispatch, useState } from 'react';
-import IconButtonAnimate from './animate/IconButtonAnimate';
 import Iconify from './Iconify';
 
 interface PickerProps {
@@ -17,6 +16,7 @@ const PickerStyled = styled('div')<PickerProps>(({ theme, isLight }) => ({
   position: 'absolute',
   bottom: 40,
   right: 0,
+  zIndex: theme.zIndex.modal,
   '& .search': {
     backgroundColor: 'red',
   },
@@ -56,9 +56,9 @@ export default function EmojiPicker({ value, setValue, size = 'medium' }: EmojiP
           </PickerStyled>
         )}
 
-        <IconButtonAnimate size={size} onClick={() => setIsPicker(true)}>
+        <IconButton size={size} onClick={() => setIsPicker(true)}>
           <Iconify icon="iconoir:emoji" />
-        </IconButtonAnimate>
+        </IconButton>
       </Box>
     </ClickAwayListener>
   );

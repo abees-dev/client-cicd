@@ -82,7 +82,7 @@ export default function RecommendFriend() {
                     <Image src={item?.avatar || ''} ratio="6/4" />
                     <Box p={1}>
                       <Typography variant="subtitle1">{capitalCase(`${item?.firstName} ${item?.lastName}`)}</Typography>
-                      <Typography variant="caption">{fDistanceToNow(Number(item?.createdAt))}</Typography>
+                      <Typography variant="caption">{fDistanceToNow(item?.createdAt)}</Typography>
                       <Stack spacing={1} mt={2}>
                         <LoadingButton
                           loading={isLoading[String(item.id)]}

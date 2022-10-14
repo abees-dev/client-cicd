@@ -11,6 +11,7 @@ import PostSkeleton from 'src/components/skeleton/PostSkeleton';
 import { useAppSelector } from 'src/redux/hooks';
 import { HEADER } from 'src/config';
 import { useRouter } from 'next/router';
+import socket from 'src/utils/socket';
 
 const RootStyled = styled('div')(({ theme }) => ({
   marginTop: theme.spacing(2),
@@ -67,8 +68,14 @@ export const ProfilePost = () => {
 
   useEffect(() => {
     if (!loading && !isEmpty(data)) {
+      const posts = data.postsQuery?.posts;
       setPostResponse(data.postsQuery as AllPostResponse);
       setPage(0);
+
+      socket.emit(
+        'POST_ROOM',
+        posts?.map((post) => post.id)
+      );
     }
   }, [data, loading]);
 

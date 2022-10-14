@@ -1,0 +1,15 @@
+query GetFriend($query: QueryInput, $userId: String!) {
+  getFriends(query: $query, userId: $userId) {
+    friends {
+      id
+      avatar
+      createdAt
+      firstName
+      lastName
+    }
+    page
+    perPage
+    totalCount
+    totalPage
+  }
+}

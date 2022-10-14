@@ -13,6 +13,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  DateTime: any;
+  JSON: any;
   JSONObject: any;
 };
 
@@ -44,11 +46,9 @@ export type AllCommentResponse = BaseResponse & {
 
 export type AllPostResponse = QueryResponse & {
   __typename?: 'AllPostResponse';
-  limit?: Maybe<Scalars['Float']>;
   page?: Maybe<Scalars['Float']>;
   perPage?: Maybe<Scalars['Float']>;
   posts?: Maybe<Array<Post>>;
-  skip?: Maybe<Scalars['Float']>;
   totalCount?: Maybe<Scalars['Float']>;
   totalPage?: Maybe<Scalars['Float']>;
 };
@@ -61,12 +61,12 @@ export type BaseResponse = {
 export type Comment = {
   __typename?: 'Comment';
   author?: Maybe<User>;
-  createdAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
   id?: Maybe<Scalars['String']>;
   message: Scalars['String'];
   post: Post;
   reply?: Maybe<Array<ReplyCommentPost>>;
-  updatedAt: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type CommentInput = {
@@ -80,10 +80,8 @@ export type CommentInput = {
 export type CommentListResponse = QueryResponse & {
   __typename?: 'CommentListResponse';
   comment?: Maybe<Array<Comment>>;
-  limit?: Maybe<Scalars['Float']>;
   page?: Maybe<Scalars['Float']>;
   perPage?: Maybe<Scalars['Float']>;
-  skip?: Maybe<Scalars['Float']>;
   totalCount?: Maybe<Scalars['Float']>;
   totalPage?: Maybe<Scalars['Float']>;
 };
@@ -104,6 +102,16 @@ export type CommentResponse = BaseResponse & {
   reply?: Maybe<ReplyCommentPost>;
 };
 
+export type Conversation = {
+  __typename?: 'Conversation';
+  createdAt: Scalars['DateTime'];
+  id?: Maybe<Scalars['String']>;
+  owner?: Maybe<User>;
+  receiver?: Maybe<Array<User>>;
+  title?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+};
+
 export type CurrentLike = {
   __typename?: 'CurrentLike';
   like?: Maybe<Scalars['Boolean']>;
@@ -119,10 +127,8 @@ export type FriendNotificationResponse = {
 
 export type FriendShipRecommendResponse = QueryResponse & {
   __typename?: 'FriendShipRecommendResponse';
-  limit?: Maybe<Scalars['Float']>;
   page?: Maybe<Scalars['Float']>;
   perPage?: Maybe<Scalars['Float']>;
-  skip?: Maybe<Scalars['Float']>;
   totalCount?: Maybe<Scalars['Float']>;
   totalPage?: Maybe<Scalars['Float']>;
   users?: Maybe<Array<User>>;
@@ -135,10 +141,8 @@ export type FriendShipRequestInputQuery = {
 export type FriendShipRequestResponse = QueryResponse & {
   __typename?: 'FriendShipRequestResponse';
   friendRequest?: Maybe<Array<Friendship>>;
-  limit?: Maybe<Scalars['Float']>;
   page?: Maybe<Scalars['Float']>;
   perPage?: Maybe<Scalars['Float']>;
-  skip?: Maybe<Scalars['Float']>;
   totalCount?: Maybe<Scalars['Float']>;
   totalPage?: Maybe<Scalars['Float']>;
 };
@@ -147,16 +151,25 @@ export type Friendship = {
   __typename?: 'Friendship';
   accepted: Scalars['Boolean'];
   addressee: User;
-  createdAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
   id?: Maybe<Scalars['String']>;
   requester: User;
-  updatedAt: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type FriendshipPayload = {
   __typename?: 'FriendshipPayload';
   data?: Maybe<Notification>;
   room: Scalars['String'];
+};
+
+export type GetFriendResponse = QueryResponse & {
+  __typename?: 'GetFriendResponse';
+  friends?: Maybe<Array<User>>;
+  page?: Maybe<Scalars['Float']>;
+  perPage?: Maybe<Scalars['Float']>;
+  totalCount?: Maybe<Scalars['Float']>;
+  totalPage?: Maybe<Scalars['Float']>;
 };
 
 export type HoverCardResponse = {
@@ -167,12 +180,12 @@ export type HoverCardResponse = {
 
 export type Image = {
   __typename?: 'Image';
-  createdAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
   fileName: Scalars['String'];
   id?: Maybe<Scalars['String']>;
   post: Post;
   type: Scalars['String'];
-  updatedAt: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
   url: Scalars['String'];
 };
 
@@ -189,9 +202,9 @@ export type LoginInput = {
 
 export type Model = {
   __typename?: 'Model';
-  createdAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
   id?: Maybe<Scalars['String']>;
-  updatedAt: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type Mutation = {
@@ -207,6 +220,7 @@ export type Mutation = {
   refreshToken: UserResponse;
   register: UserResponse;
   replyComment: Scalars['Boolean'];
+  sendMessage: Scalars['Boolean'];
   unLikePost: UnlikePostMutationResponse;
   updateProfile: UpdateUserProfileResponse;
   uploadAvatar: Scalars['Boolean'];
@@ -220,7 +234,6 @@ export type MutationAddFriendMutationArgs = {
 
 export type MutationCreateCommentArgs = {
   commentInput: CommentInput;
-  room: Scalars['String'];
 };
 
 
@@ -257,7 +270,11 @@ export type MutationRegisterArgs = {
 
 export type MutationReplyCommentArgs = {
   replyInput: ReplyInput;
-  room: Scalars['String'];
+};
+
+
+export type MutationSendMessageArgs = {
+  data: SendChatInput;
 };
 
 
@@ -279,13 +296,13 @@ export type MutationUploadAvatarArgs = {
 export type Notification = {
   __typename?: 'Notification';
   content: Scalars['String'];
-  createdAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
   id?: Maybe<Scalars['String']>;
   owner: User;
   read: Scalars['Boolean'];
   requester: User;
   type: Scalars['String'];
-  updatedAt: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type NotificationInput = {
@@ -296,14 +313,26 @@ export type NotificationInput = {
 
 export type NotificationQueryResponse = QueryResponse & {
   __typename?: 'NotificationQueryResponse';
-  limit?: Maybe<Scalars['Float']>;
   notifications?: Maybe<Array<Notification>>;
   page?: Maybe<Scalars['Float']>;
   perPage?: Maybe<Scalars['Float']>;
-  skip?: Maybe<Scalars['Float']>;
   totalCount?: Maybe<Scalars['Float']>;
   totalPage?: Maybe<Scalars['Float']>;
   totalUnread: Scalars['Float'];
+};
+
+export type Participants = {
+  __typename?: 'Participants';
+  conversation: Conversation;
+  createdAt: Scalars['DateTime'];
+  id?: Maybe<Scalars['String']>;
+  lastMessage?: Maybe<Scalars['String']>;
+  lastSendUser?: Maybe<User>;
+  seen?: Maybe<Scalars['Boolean']>;
+  totalUnSeen?: Maybe<Scalars['Float']>;
+  type: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+  user?: Maybe<User>;
 };
 
 export type Post = {
@@ -312,12 +341,12 @@ export type Post = {
   checking: Scalars['String'];
   comment: Array<Comment>;
   content: Scalars['String'];
-  createdAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
   id?: Maybe<Scalars['String']>;
   image: Array<Image>;
   like?: Maybe<Array<PostLike>>;
   status: Scalars['String'];
-  updatedAt: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
   user: User;
   visible: Scalars['String'];
 };
@@ -333,11 +362,11 @@ export type PostInput = {
 
 export type PostLike = {
   __typename?: 'PostLike';
-  createdAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
   id?: Maybe<Scalars['String']>;
   post: User;
   type: Scalars['String'];
-  updatedAt: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
   user: User;
 };
 
@@ -377,17 +406,31 @@ export type PostResponse = BaseResponse & {
   post?: Maybe<Post>;
 };
 
+export type PrivateChat = {
+  __typename?: 'PrivateChat';
+  conversation: Conversation;
+  createdAt: Scalars['DateTime'];
+  id?: Maybe<Scalars['String']>;
+  message: Scalars['String'];
+  sender: User;
+  updatedAt: Scalars['DateTime'];
+};
+
 export type Query = {
   __typename?: 'Query';
   comments: CommentListResponse;
   friendShipRecommend: FriendShipRecommendResponse;
   friendWaiting: FriendShipRequestResponse;
+  getChats: Array<PrivateChat>;
   getCurrentUser: User;
   getFriendRequest: FriendShipRequestResponse;
+  getFriends: GetFriendResponse;
   getLikeByPost: PostLikeQueryResponse;
+  getListChatUser: Array<Conversation>;
   getNotification: NotificationQueryResponse;
   getUserNotCurrent: UserNotCurrentResponse;
   hoverCard: HoverCardResponse;
+  listSideBar: Array<Participants>;
   postsQuery: AllPostResponse;
   users: Scalars['String'];
 };
@@ -411,6 +454,11 @@ export type QueryFriendWaitingArgs = {
 };
 
 
+export type QueryGetChatsArgs = {
+  conversionId: Scalars['String'];
+};
+
+
 export type QueryGetCurrentUserArgs = {
   userId: Scalars['String'];
 };
@@ -422,8 +470,19 @@ export type QueryGetFriendRequestArgs = {
 };
 
 
+export type QueryGetFriendsArgs = {
+  query?: InputMaybe<QueryInput>;
+  userId: Scalars['String'];
+};
+
+
 export type QueryGetLikeByPostArgs = {
   likeInput: PostLikeQueryInput;
+};
+
+
+export type QueryGetListChatUserArgs = {
+  userId: Scalars['String'];
 };
 
 
@@ -443,6 +502,11 @@ export type QueryHoverCardArgs = {
 };
 
 
+export type QueryListSideBarArgs = {
+  userId: Scalars['String'];
+};
+
+
 export type QueryPostsQueryArgs = {
   query?: InputMaybe<QueryInput>;
   userId?: InputMaybe<Scalars['String']>;
@@ -456,10 +520,8 @@ export type QueryInput = {
 };
 
 export type QueryResponse = {
-  limit?: Maybe<Scalars['Float']>;
   page?: Maybe<Scalars['Float']>;
   perPage?: Maybe<Scalars['Float']>;
-  skip?: Maybe<Scalars['Float']>;
   totalCount?: Maybe<Scalars['Float']>;
   totalPage?: Maybe<Scalars['Float']>;
 };
@@ -475,23 +537,30 @@ export type RegisterInput = {
 export type ReplyCommentPost = {
   __typename?: 'ReplyCommentPost';
   author?: Maybe<User>;
-  createdAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
   id?: Maybe<Scalars['String']>;
   message: Scalars['String'];
   parent: Comment;
-  updatedAt: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type ReplyInput = {
   author: Scalars['JSONObject'];
   comment: Scalars['JSONObject'];
   message: Scalars['String'];
+  postId: Scalars['String'];
 };
 
 export type ReplyPayload = {
   __typename?: 'ReplyPayload';
   data?: Maybe<ReplyCommentPost>;
   room: Scalars['String'];
+};
+
+export type SendChatInput = {
+  message: Scalars['String'];
+  receiver: Scalars['JSON'];
+  sender: Scalars['JSONObject'];
 };
 
 export type SocketReturn = {
@@ -501,14 +570,8 @@ export type SocketReturn = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  listJoinCommentPost: CommentPayload;
   listenTest: SocketReturn;
   littenJoinRoomRequest: Notification;
-};
-
-
-export type SubscriptionListJoinCommentPostArgs = {
-  room: Scalars['String'];
 };
 
 
@@ -546,7 +609,7 @@ export type User = {
   __typename?: 'User';
   avatar?: Maybe<Scalars['String']>;
   comment?: Maybe<Comment>;
-  createdAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
   email: Scalars['String'];
   firstName: Scalars['String'];
   githubId?: Maybe<Scalars['String']>;
@@ -557,7 +620,7 @@ export type User = {
   posts: Array<Post>;
   profile?: Maybe<UserProfile>;
   provider?: Maybe<Scalars['String']>;
-  updatedAt: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type UserInput = {
@@ -579,7 +642,7 @@ export type UserNotCurrentResponse = BaseResponse & {
 
 export type UserProfile = {
   __typename?: 'UserProfile';
-  createdAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
   dayOfBirth: Scalars['String'];
   district: Scalars['String'];
   gender: Scalars['String'];
@@ -589,7 +652,7 @@ export type UserProfile = {
   province: Scalars['String'];
   story: Scalars['String'];
   thumbnail: Scalars['String'];
-  updatedAt: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
   user: User;
   ward: Scalars['String'];
 };
@@ -620,31 +683,45 @@ export type UserResponse = BaseResponse & {
   user?: Maybe<User>;
 };
 
+export type UserRoom = {
+  __typename?: 'UserRoom';
+  createdAt: Scalars['DateTime'];
+  id?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+};
+
 export type LoginMutationVariables = Exact<{
   data: LoginInput;
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', code?: number | null, message?: string | null, accessToken?: string | null, user?: { __typename?: 'User', id?: string | null, email: string, lastName: string, firstName: string, createdAt: string, updatedAt: string, avatar?: string | null } | null } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', code?: number | null, message?: string | null, accessToken?: string | null, user?: { __typename?: 'User', id?: string | null, email: string, lastName: string, firstName: string, createdAt: any, updatedAt: any, avatar?: string | null } | null } };
 
 export type RegisterMutationVariables = Exact<{
   data: RegisterInput;
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', code?: number | null, message?: string | null } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', code?: number | null, message?: string | null, user?: { __typename?: 'User', id?: string | null } | null } };
 
 export type RefreshTokenMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type RefreshTokenMutation = { __typename?: 'Mutation', refreshToken: { __typename?: 'UserResponse', code?: number | null, message?: string | null, accessToken?: string | null } };
 
+export type SendMessageMutationVariables = Exact<{
+  data: SendChatInput;
+}>;
+
+
+export type SendMessageMutation = { __typename?: 'Mutation', sendMessage: boolean };
+
 export type AddFriendRequestMutationVariables = Exact<{
   data: AddFriendInput;
 }>;
 
 
-export type AddFriendRequestMutation = { __typename?: 'Mutation', addFriendMutation: { __typename?: 'AddFriendMutationResponse', code?: number | null, message?: string | null, addressee?: { __typename?: 'User', id?: string | null, firstName: string, lastName: string, avatar?: string | null, createdAt: string, email: string } | null } };
+export type AddFriendRequestMutation = { __typename?: 'Mutation', addFriendMutation: { __typename?: 'AddFriendMutationResponse', code?: number | null, message?: string | null, addressee?: { __typename?: 'User', id?: string | null, firstName: string, lastName: string, avatar?: string | null, createdAt: any, email: string } | null } };
 
 export type MaskAsReadNotificationMutationVariables = Exact<{
   notificationInput: NotificationInput;
@@ -655,14 +732,12 @@ export type MaskAsReadNotificationMutation = { __typename?: 'Mutation', markAsRe
 
 export type CreateReplyCommentMutationVariables = Exact<{
   replyInput: ReplyInput;
-  room: Scalars['String'];
 }>;
 
 
 export type CreateReplyCommentMutation = { __typename?: 'Mutation', replyComment: boolean };
 
 export type CreateCommentMutationVariables = Exact<{
-  room: Scalars['String'];
   commentInput: CommentInput;
 }>;
 
@@ -675,14 +750,14 @@ export type CreatePostMutationVariables = Exact<{
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'PostResponse', code?: number | null, message?: string | null, post?: { __typename?: 'Post', id?: string | null, content: string, updatedAt: string, createdAt: string, image: Array<{ __typename?: 'Image', url: string, type: string }>, user: { __typename?: 'User', id?: string | null, firstName: string, lastName: string, avatar?: string | null, createdAt: string } } | null } };
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'PostResponse', code?: number | null, message?: string | null, post?: { __typename?: 'Post', id?: string | null, content: string, updatedAt: any, createdAt: any, image: Array<{ __typename?: 'Image', url: string, type: string }>, user: { __typename?: 'User', id?: string | null, firstName: string, lastName: string, avatar?: string | null, createdAt: any } } | null } };
 
 export type CreatePostLikeMutationVariables = Exact<{
   likeInput: PostLikeMutationInput;
 }>;
 
 
-export type CreatePostLikeMutation = { __typename?: 'Mutation', createPostLike: { __typename?: 'PostLikeMutationResponse', code?: number | null, message?: string | null, likes?: { __typename?: 'PostLike', id?: string | null, type: string, createdAt: string, updatedAt: string } | null, currentLike?: { __typename?: 'CurrentLike', like?: boolean | null, type?: string | null } | null } };
+export type CreatePostLikeMutation = { __typename?: 'Mutation', createPostLike: { __typename?: 'PostLikeMutationResponse', code?: number | null, message?: string | null, likes?: { __typename?: 'PostLike', id?: string | null, type: string, createdAt: any, updatedAt: any } | null, currentLike?: { __typename?: 'CurrentLike', like?: boolean | null, type?: string | null } | null } };
 
 export type UnlikeCommentPostMutationVariables = Exact<{
   likeInput: PostLikeQueryInput;
@@ -696,7 +771,7 @@ export type UpdateUserProfileMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateProfile: { __typename?: 'UpdateUserProfileResponse', code?: number | null, message?: string | null, profile?: { __typename?: 'UserProfile', id?: string | null, gender: string, phoneNumber: string, liveAt: string, province: string, district: string, ward: string, createdAt: string, story: string } | null, user?: { __typename?: 'User', id?: string | null, avatar?: string | null, firstName: string, lastName: string, email: string, createdAt: string } | null } };
+export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateProfile: { __typename?: 'UpdateUserProfileResponse', code?: number | null, message?: string | null, profile?: { __typename?: 'UserProfile', id?: string | null, gender: string, phoneNumber: string, liveAt: string, province: string, district: string, ward: string, createdAt: any, story: string } | null, user?: { __typename?: 'User', id?: string | null, avatar?: string | null, firstName: string, lastName: string, email: string, createdAt: any } | null } };
 
 export type UploadAvatarMutationVariables = Exact<{
   url: Scalars['String'];
@@ -706,13 +781,27 @@ export type UploadAvatarMutationVariables = Exact<{
 
 export type UploadAvatarMutation = { __typename?: 'Mutation', uploadAvatar: boolean };
 
+export type ChatListSideBarQueryVariables = Exact<{
+  userId: Scalars['String'];
+}>;
+
+
+export type ChatListSideBarQuery = { __typename?: 'Query', listSideBar: Array<{ __typename?: 'Participants', id?: string | null, lastMessage?: string | null, createdAt: any, seen?: boolean | null, totalUnSeen?: number | null, updatedAt: any, user?: { __typename?: 'User', id?: string | null, avatar?: string | null, firstName: string, lastName: string, createdAt: any } | null, lastSendUser?: { __typename?: 'User', id?: string | null, avatar?: string | null, firstName: string, lastName: string, createdAt: any } | null, conversation: { __typename?: 'Conversation', id?: string | null, createdAt: any } }> };
+
+export type GetChatsQueryVariables = Exact<{
+  conversionId: Scalars['String'];
+}>;
+
+
+export type GetChatsQuery = { __typename?: 'Query', getChats: Array<{ __typename?: 'PrivateChat', id?: string | null, message: string, createdAt: any, sender: { __typename?: 'User', id?: string | null, firstName: string, lastName: string, avatar?: string | null, createdAt: any } }> };
+
 export type FriendShipRecommendQueryVariables = Exact<{
   query?: InputMaybe<QueryInput>;
   userId: Scalars['String'];
 }>;
 
 
-export type FriendShipRecommendQuery = { __typename?: 'Query', friendShipRecommend: { __typename?: 'FriendShipRecommendResponse', page?: number | null, perPage?: number | null, totalCount?: number | null, totalPage?: number | null, users?: Array<{ __typename?: 'User', id?: string | null, avatar?: string | null, firstName: string, lastName: string, createdAt: string }> | null } };
+export type FriendShipRecommendQuery = { __typename?: 'Query', friendShipRecommend: { __typename?: 'FriendShipRecommendResponse', page?: number | null, perPage?: number | null, totalCount?: number | null, totalPage?: number | null, users?: Array<{ __typename?: 'User', id?: string | null, avatar?: string | null, firstName: string, lastName: string, createdAt: any }> | null } };
 
 export type FriendRequestQueryVariables = Exact<{
   query?: InputMaybe<QueryInput>;
@@ -720,7 +809,7 @@ export type FriendRequestQueryVariables = Exact<{
 }>;
 
 
-export type FriendRequestQuery = { __typename?: 'Query', getFriendRequest: { __typename?: 'FriendShipRequestResponse', page?: number | null, perPage?: number | null, totalCount?: number | null, totalPage?: number | null, friendRequest?: Array<{ __typename?: 'Friendship', id?: string | null, accepted: boolean, createdAt: string, addressee: { __typename?: 'User', id?: string | null }, requester: { __typename?: 'User', avatar?: string | null, firstName: string, lastName: string, id?: string | null } }> | null } };
+export type FriendRequestQuery = { __typename?: 'Query', getFriendRequest: { __typename?: 'FriendShipRequestResponse', page?: number | null, perPage?: number | null, totalCount?: number | null, totalPage?: number | null, friendRequest?: Array<{ __typename?: 'Friendship', id?: string | null, accepted: boolean, createdAt: any, addressee: { __typename?: 'User', id?: string | null }, requester: { __typename?: 'User', avatar?: string | null, firstName: string, lastName: string, id?: string | null } }> | null } };
 
 export type FriendWaitingQueryVariables = Exact<{
   query?: InputMaybe<QueryInput>;
@@ -730,13 +819,21 @@ export type FriendWaitingQueryVariables = Exact<{
 
 export type FriendWaitingQuery = { __typename?: 'Query', friendWaiting: { __typename?: 'FriendShipRequestResponse', page?: number | null, perPage?: number | null, totalCount?: number | null, totalPage?: number | null, friendRequest?: Array<{ __typename?: 'Friendship', accepted: boolean, addressee: { __typename?: 'User', avatar?: string | null, firstName: string, lastName: string, id?: string | null }, requester: { __typename?: 'User', avatar?: string | null, firstName: string, lastName: string, id?: string | null } }> | null } };
 
+export type GetFriendQueryVariables = Exact<{
+  query?: InputMaybe<QueryInput>;
+  userId: Scalars['String'];
+}>;
+
+
+export type GetFriendQuery = { __typename?: 'Query', getFriends: { __typename?: 'GetFriendResponse', page?: number | null, perPage?: number | null, totalCount?: number | null, totalPage?: number | null, friends?: Array<{ __typename?: 'User', id?: string | null, avatar?: string | null, createdAt: any, firstName: string, lastName: string }> | null } };
+
 export type GetNotificationsQueryVariables = Exact<{
   query?: InputMaybe<QueryInput>;
   ownerId: Scalars['String'];
 }>;
 
 
-export type GetNotificationsQuery = { __typename?: 'Query', getNotification: { __typename?: 'NotificationQueryResponse', totalUnread: number, totalCount?: number | null, totalPage?: number | null, perPage?: number | null, page?: number | null, notifications?: Array<{ __typename?: 'Notification', id?: string | null, content: string, createdAt: string, type: string, read: boolean, requester: { __typename?: 'User', avatar?: string | null, id?: string | null, firstName: string, lastName: string, createdAt: string } }> | null } };
+export type GetNotificationsQuery = { __typename?: 'Query', getNotification: { __typename?: 'NotificationQueryResponse', totalUnread: number, totalCount?: number | null, totalPage?: number | null, perPage?: number | null, page?: number | null, notifications?: Array<{ __typename?: 'Notification', id?: string | null, content: string, createdAt: any, type: string, read: boolean, requester: { __typename?: 'User', avatar?: string | null, id?: string | null, firstName: string, lastName: string, createdAt: any } }> | null } };
 
 export type GetCommentByPostQueryVariables = Exact<{
   query: QueryInput;
@@ -744,14 +841,14 @@ export type GetCommentByPostQueryVariables = Exact<{
 }>;
 
 
-export type GetCommentByPostQuery = { __typename?: 'Query', comments: { __typename?: 'CommentListResponse', totalCount?: number | null, totalPage?: number | null, page?: number | null, perPage?: number | null, comment?: Array<{ __typename: 'Comment', id?: string | null, message: string, createdAt: string, updatedAt: string, author?: { __typename?: 'User', id?: string | null, firstName: string, lastName: string, createdAt: string, email: string, avatar?: string | null, updatedAt: string } | null, reply?: Array<{ __typename?: 'ReplyCommentPost', id?: string | null, message: string, createdAt: string, updatedAt: string, author?: { __typename?: 'User', id?: string | null, firstName: string, lastName: string, createdAt: string, email: string, avatar?: string | null, updatedAt: string } | null }> | null, post: { __typename?: 'Post', id?: string | null } }> | null } };
+export type GetCommentByPostQuery = { __typename?: 'Query', comments: { __typename?: 'CommentListResponse', totalCount?: number | null, totalPage?: number | null, page?: number | null, perPage?: number | null, comment?: Array<{ __typename: 'Comment', id?: string | null, message: string, createdAt: any, updatedAt: any, author?: { __typename?: 'User', id?: string | null, firstName: string, lastName: string, createdAt: any, email: string, avatar?: string | null, updatedAt: any } | null, reply?: Array<{ __typename?: 'ReplyCommentPost', id?: string | null, message: string, createdAt: any, updatedAt: any, author?: { __typename?: 'User', id?: string | null, firstName: string, lastName: string, createdAt: any, email: string, avatar?: string | null, updatedAt: any } | null }> | null, post: { __typename?: 'Post', id?: string | null } }> | null } };
 
 export type GetLikeByPostQueryVariables = Exact<{
   likeInput: PostLikeQueryInput;
 }>;
 
 
-export type GetLikeByPostQuery = { __typename?: 'Query', getLikeByPost: { __typename?: 'PostLikeQueryResponse', code?: number | null, message?: string | null, totalLike?: number | null, likes?: Array<{ __typename?: 'PostLike', id?: string | null, type: string, createdAt: string, updatedAt: string }> | null, currentLike?: { __typename?: 'CurrentLike', like?: boolean | null, type?: string | null } | null } };
+export type GetLikeByPostQuery = { __typename?: 'Query', getLikeByPost: { __typename?: 'PostLikeQueryResponse', code?: number | null, message?: string | null, totalLike?: number | null, likes?: Array<{ __typename?: 'PostLike', id?: string | null, type: string, createdAt: any, updatedAt: any }> | null, currentLike?: { __typename?: 'CurrentLike', like?: boolean | null, type?: string | null } | null } };
 
 export type GetAllPostQueryVariables = Exact<{
   query: QueryInput;
@@ -759,49 +856,28 @@ export type GetAllPostQueryVariables = Exact<{
 }>;
 
 
-export type GetAllPostQuery = { __typename?: 'Query', postsQuery: { __typename?: 'AllPostResponse', page?: number | null, perPage?: number | null, totalCount?: number | null, totalPage?: number | null, posts?: Array<{ __typename?: 'Post', id?: string | null, content: string, createdAt: string, updatedAt: string, image: Array<{ __typename?: 'Image', url: string, id?: string | null, type: string }>, user: { __typename?: 'User', id?: string | null, email: string, lastName: string, firstName: string, avatar?: string | null, createdAt: string }, comment: Array<{ __typename?: 'Comment', id?: string | null }> }> | null } };
+export type GetAllPostQuery = { __typename?: 'Query', postsQuery: { __typename?: 'AllPostResponse', page?: number | null, perPage?: number | null, totalCount?: number | null, totalPage?: number | null, posts?: Array<{ __typename?: 'Post', id?: string | null, content: string, createdAt: any, updatedAt: any, image: Array<{ __typename?: 'Image', url: string, id?: string | null, type: string }>, user: { __typename?: 'User', id?: string | null, email: string, lastName: string, firstName: string, avatar?: string | null, createdAt: any }, comment: Array<{ __typename?: 'Comment', id?: string | null }> }> | null } };
 
 export type GetCurrentUserQueryVariables = Exact<{
   userId: Scalars['String'];
 }>;
 
 
-export type GetCurrentUserQuery = { __typename?: 'Query', getCurrentUser: { __typename?: 'User', id?: string | null, avatar?: string | null, firstName: string, lastName: string, createdAt: string, profile?: { __typename?: 'UserProfile', id?: string | null, dayOfBirth: string, district: string, gender: string, liveAt: string, phoneNumber: string, province: string, story: string, updatedAt: string, ward: string } | null } };
+export type GetCurrentUserQuery = { __typename?: 'Query', getCurrentUser: { __typename?: 'User', id?: string | null, avatar?: string | null, firstName: string, lastName: string, createdAt: any, profile?: { __typename?: 'UserProfile', id?: string | null, dayOfBirth: string, district: string, gender: string, liveAt: string, phoneNumber: string, province: string, story: string, updatedAt: any, ward: string } | null } };
 
 export type GetUserNotCurrentQueryVariables = Exact<{
   userId: Scalars['String'];
 }>;
 
 
-export type GetUserNotCurrentQuery = { __typename?: 'Query', getUserNotCurrent: { __typename?: 'UserNotCurrentResponse', code?: number | null, message?: string | null, users?: Array<{ __typename?: 'User', id?: string | null, firstName: string, lastName: string, createdAt: string, avatar?: string | null }> | null } };
+export type GetUserNotCurrentQuery = { __typename?: 'Query', getUserNotCurrent: { __typename?: 'UserNotCurrentResponse', code?: number | null, message?: string | null, users?: Array<{ __typename?: 'User', id?: string | null, firstName: string, lastName: string, createdAt: any, avatar?: string | null }> | null } };
 
 export type HoverCardQueryVariables = Exact<{
   userId: Scalars['String'];
 }>;
 
 
-export type HoverCardQuery = { __typename?: 'Query', hoverCard: { __typename?: 'HoverCardResponse', isFriend: boolean, user?: { __typename?: 'User', id?: string | null, avatar?: string | null, firstName: string, lastName: string, createdAt: string, profile?: { __typename?: 'UserProfile', dayOfBirth: string, gender: string, liveAt: string, phoneNumber: string, province: string, district: string, ward: string } | null } | null } };
-
-export type ListJoinCommentPostSubscriptionVariables = Exact<{
-  room: Scalars['String'];
-}>;
-
-
-export type ListJoinCommentPostSubscription = { __typename?: 'Subscription', listJoinCommentPost: { __typename?: 'CommentPayload', commentId?: string | null, type?: string | null, data?: { __typename?: 'Comment', id?: string | null, message: string, createdAt: string, author?: { __typename?: 'User', avatar?: string | null, firstName: string, lastName: string, createdAt: string } | null } | null } };
-
-export type LittenJoinRoomSubscriptionVariables = Exact<{
-  room: Scalars['String'];
-}>;
-
-
-export type LittenJoinRoomSubscription = { __typename?: 'Subscription', littenJoinRoomRequest: { __typename?: 'Notification', id?: string | null, content: string, createdAt: string, type: string, requester: { __typename?: 'User', avatar?: string | null, id?: string | null, firstName: string, lastName: string, createdAt: string } } };
-
-export type TestListenSubscriptionVariables = Exact<{
-  room: Scalars['String'];
-}>;
-
-
-export type TestListenSubscription = { __typename?: 'Subscription', listenTest: { __typename?: 'SocketReturn', date: string } };
+export type HoverCardQuery = { __typename?: 'Query', hoverCard: { __typename?: 'HoverCardResponse', isFriend: boolean, user?: { __typename?: 'User', id?: string | null, avatar?: string | null, firstName: string, lastName: string, createdAt: any, profile?: { __typename?: 'UserProfile', dayOfBirth: string, gender: string, liveAt: string, phoneNumber: string, province: string, district: string, ward: string } | null } | null } };
 
 
 export const LoginDocument = gql`
@@ -853,6 +929,9 @@ export const RegisterDocument = gql`
   register(registerInput: $data) {
     code
     message
+    user {
+      id
+    }
   }
 }
     `;
@@ -916,6 +995,37 @@ export function useRefreshTokenMutation(baseOptions?: Apollo.MutationHookOptions
 export type RefreshTokenMutationHookResult = ReturnType<typeof useRefreshTokenMutation>;
 export type RefreshTokenMutationResult = Apollo.MutationResult<RefreshTokenMutation>;
 export type RefreshTokenMutationOptions = Apollo.BaseMutationOptions<RefreshTokenMutation, RefreshTokenMutationVariables>;
+export const SendMessageDocument = gql`
+    mutation SendMessage($data: SendChatInput!) {
+  sendMessage(data: $data)
+}
+    `;
+export type SendMessageMutationFn = Apollo.MutationFunction<SendMessageMutation, SendMessageMutationVariables>;
+
+/**
+ * __useSendMessageMutation__
+ *
+ * To run a mutation, you first call `useSendMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendMessageMutation, { data, loading, error }] = useSendMessageMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useSendMessageMutation(baseOptions?: Apollo.MutationHookOptions<SendMessageMutation, SendMessageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SendMessageMutation, SendMessageMutationVariables>(SendMessageDocument, options);
+      }
+export type SendMessageMutationHookResult = ReturnType<typeof useSendMessageMutation>;
+export type SendMessageMutationResult = Apollo.MutationResult<SendMessageMutation>;
+export type SendMessageMutationOptions = Apollo.BaseMutationOptions<SendMessageMutation, SendMessageMutationVariables>;
 export const AddFriendRequestDocument = gql`
     mutation addFriendRequest($data: AddFriendInput!) {
   addFriendMutation(data: $data) {
@@ -990,8 +1100,8 @@ export type MaskAsReadNotificationMutationHookResult = ReturnType<typeof useMask
 export type MaskAsReadNotificationMutationResult = Apollo.MutationResult<MaskAsReadNotificationMutation>;
 export type MaskAsReadNotificationMutationOptions = Apollo.BaseMutationOptions<MaskAsReadNotificationMutation, MaskAsReadNotificationMutationVariables>;
 export const CreateReplyCommentDocument = gql`
-    mutation CreateReplyComment($replyInput: ReplyInput!, $room: String!) {
-  replyComment(replyInput: $replyInput, room: $room)
+    mutation CreateReplyComment($replyInput: ReplyInput!) {
+  replyComment(replyInput: $replyInput)
 }
     `;
 export type CreateReplyCommentMutationFn = Apollo.MutationFunction<CreateReplyCommentMutation, CreateReplyCommentMutationVariables>;
@@ -1010,7 +1120,6 @@ export type CreateReplyCommentMutationFn = Apollo.MutationFunction<CreateReplyCo
  * const [createReplyCommentMutation, { data, loading, error }] = useCreateReplyCommentMutation({
  *   variables: {
  *      replyInput: // value for 'replyInput'
- *      room: // value for 'room'
  *   },
  * });
  */
@@ -1022,8 +1131,8 @@ export type CreateReplyCommentMutationHookResult = ReturnType<typeof useCreateRe
 export type CreateReplyCommentMutationResult = Apollo.MutationResult<CreateReplyCommentMutation>;
 export type CreateReplyCommentMutationOptions = Apollo.BaseMutationOptions<CreateReplyCommentMutation, CreateReplyCommentMutationVariables>;
 export const CreateCommentDocument = gql`
-    mutation CreateComment($room: String!, $commentInput: CommentInput!) {
-  createComment(room: $room, commentInput: $commentInput)
+    mutation CreateComment($commentInput: CommentInput!) {
+  createComment(commentInput: $commentInput)
 }
     `;
 export type CreateCommentMutationFn = Apollo.MutationFunction<CreateCommentMutation, CreateCommentMutationVariables>;
@@ -1041,7 +1150,6 @@ export type CreateCommentMutationFn = Apollo.MutationFunction<CreateCommentMutat
  * @example
  * const [createCommentMutation, { data, loading, error }] = useCreateCommentMutation({
  *   variables: {
- *      room: // value for 'room'
  *      commentInput: // value for 'commentInput'
  *   },
  * });
@@ -1269,6 +1377,108 @@ export function useUploadAvatarMutation(baseOptions?: Apollo.MutationHookOptions
 export type UploadAvatarMutationHookResult = ReturnType<typeof useUploadAvatarMutation>;
 export type UploadAvatarMutationResult = Apollo.MutationResult<UploadAvatarMutation>;
 export type UploadAvatarMutationOptions = Apollo.BaseMutationOptions<UploadAvatarMutation, UploadAvatarMutationVariables>;
+export const ChatListSideBarDocument = gql`
+    query ChatListSideBar($userId: String!) {
+  listSideBar(userId: $userId) {
+    id
+    lastMessage
+    createdAt
+    seen
+    totalUnSeen
+    updatedAt
+    user {
+      id
+      avatar
+      firstName
+      lastName
+      createdAt
+    }
+    lastSendUser {
+      id
+      avatar
+      firstName
+      lastName
+      createdAt
+    }
+    conversation {
+      id
+      createdAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useChatListSideBarQuery__
+ *
+ * To run a query within a React component, call `useChatListSideBarQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChatListSideBarQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChatListSideBarQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useChatListSideBarQuery(baseOptions: Apollo.QueryHookOptions<ChatListSideBarQuery, ChatListSideBarQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ChatListSideBarQuery, ChatListSideBarQueryVariables>(ChatListSideBarDocument, options);
+      }
+export function useChatListSideBarLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ChatListSideBarQuery, ChatListSideBarQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ChatListSideBarQuery, ChatListSideBarQueryVariables>(ChatListSideBarDocument, options);
+        }
+export type ChatListSideBarQueryHookResult = ReturnType<typeof useChatListSideBarQuery>;
+export type ChatListSideBarLazyQueryHookResult = ReturnType<typeof useChatListSideBarLazyQuery>;
+export type ChatListSideBarQueryResult = Apollo.QueryResult<ChatListSideBarQuery, ChatListSideBarQueryVariables>;
+export const GetChatsDocument = gql`
+    query GetChats($conversionId: String!) {
+  getChats(conversionId: $conversionId) {
+    id
+    message
+    createdAt
+    sender {
+      id
+      firstName
+      lastName
+      avatar
+      createdAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetChatsQuery__
+ *
+ * To run a query within a React component, call `useGetChatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetChatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetChatsQuery({
+ *   variables: {
+ *      conversionId: // value for 'conversionId'
+ *   },
+ * });
+ */
+export function useGetChatsQuery(baseOptions: Apollo.QueryHookOptions<GetChatsQuery, GetChatsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetChatsQuery, GetChatsQueryVariables>(GetChatsDocument, options);
+      }
+export function useGetChatsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetChatsQuery, GetChatsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetChatsQuery, GetChatsQueryVariables>(GetChatsDocument, options);
+        }
+export type GetChatsQueryHookResult = ReturnType<typeof useGetChatsQuery>;
+export type GetChatsLazyQueryHookResult = ReturnType<typeof useGetChatsLazyQuery>;
+export type GetChatsQueryResult = Apollo.QueryResult<GetChatsQuery, GetChatsQueryVariables>;
 export const FriendShipRecommendDocument = gql`
     query FriendShipRecommend($query: QueryInput, $userId: String!) {
   friendShipRecommend(query: $query, userId: $userId) {
@@ -1422,6 +1632,52 @@ export function useFriendWaitingLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type FriendWaitingQueryHookResult = ReturnType<typeof useFriendWaitingQuery>;
 export type FriendWaitingLazyQueryHookResult = ReturnType<typeof useFriendWaitingLazyQuery>;
 export type FriendWaitingQueryResult = Apollo.QueryResult<FriendWaitingQuery, FriendWaitingQueryVariables>;
+export const GetFriendDocument = gql`
+    query GetFriend($query: QueryInput, $userId: String!) {
+  getFriends(query: $query, userId: $userId) {
+    friends {
+      id
+      avatar
+      createdAt
+      firstName
+      lastName
+    }
+    page
+    perPage
+    totalCount
+    totalPage
+  }
+}
+    `;
+
+/**
+ * __useGetFriendQuery__
+ *
+ * To run a query within a React component, call `useGetFriendQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetFriendQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetFriendQuery({
+ *   variables: {
+ *      query: // value for 'query'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetFriendQuery(baseOptions: Apollo.QueryHookOptions<GetFriendQuery, GetFriendQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetFriendQuery, GetFriendQueryVariables>(GetFriendDocument, options);
+      }
+export function useGetFriendLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFriendQuery, GetFriendQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetFriendQuery, GetFriendQueryVariables>(GetFriendDocument, options);
+        }
+export type GetFriendQueryHookResult = ReturnType<typeof useGetFriendQuery>;
+export type GetFriendLazyQueryHookResult = ReturnType<typeof useGetFriendLazyQuery>;
+export type GetFriendQueryResult = Apollo.QueryResult<GetFriendQuery, GetFriendQueryVariables>;
 export const GetNotificationsDocument = gql`
     query GetNotifications($query: QueryInput, $ownerId: String!) {
   getNotification(query: $query, ownerId: $ownerId) {
@@ -1802,115 +2058,3 @@ export function useHoverCardLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type HoverCardQueryHookResult = ReturnType<typeof useHoverCardQuery>;
 export type HoverCardLazyQueryHookResult = ReturnType<typeof useHoverCardLazyQuery>;
 export type HoverCardQueryResult = Apollo.QueryResult<HoverCardQuery, HoverCardQueryVariables>;
-export const ListJoinCommentPostDocument = gql`
-    subscription ListJoinCommentPost($room: String!) {
-  listJoinCommentPost(room: $room) {
-    data {
-      id
-      message
-      createdAt
-      author {
-        avatar
-        firstName
-        lastName
-        createdAt
-      }
-    }
-    commentId
-    type
-  }
-}
-    `;
-
-/**
- * __useListJoinCommentPostSubscription__
- *
- * To run a query within a React component, call `useListJoinCommentPostSubscription` and pass it any options that fit your needs.
- * When your component renders, `useListJoinCommentPostSubscription` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useListJoinCommentPostSubscription({
- *   variables: {
- *      room: // value for 'room'
- *   },
- * });
- */
-export function useListJoinCommentPostSubscription(baseOptions: Apollo.SubscriptionHookOptions<ListJoinCommentPostSubscription, ListJoinCommentPostSubscriptionVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<ListJoinCommentPostSubscription, ListJoinCommentPostSubscriptionVariables>(ListJoinCommentPostDocument, options);
-      }
-export type ListJoinCommentPostSubscriptionHookResult = ReturnType<typeof useListJoinCommentPostSubscription>;
-export type ListJoinCommentPostSubscriptionResult = Apollo.SubscriptionResult<ListJoinCommentPostSubscription>;
-export const LittenJoinRoomDocument = gql`
-    subscription LittenJoinRoom($room: String!) {
-  littenJoinRoomRequest(room: $room) {
-    id
-    content
-    createdAt
-    type
-    requester {
-      avatar
-      id
-      firstName
-      lastName
-      createdAt
-    }
-  }
-}
-    `;
-
-/**
- * __useLittenJoinRoomSubscription__
- *
- * To run a query within a React component, call `useLittenJoinRoomSubscription` and pass it any options that fit your needs.
- * When your component renders, `useLittenJoinRoomSubscription` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useLittenJoinRoomSubscription({
- *   variables: {
- *      room: // value for 'room'
- *   },
- * });
- */
-export function useLittenJoinRoomSubscription(baseOptions: Apollo.SubscriptionHookOptions<LittenJoinRoomSubscription, LittenJoinRoomSubscriptionVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<LittenJoinRoomSubscription, LittenJoinRoomSubscriptionVariables>(LittenJoinRoomDocument, options);
-      }
-export type LittenJoinRoomSubscriptionHookResult = ReturnType<typeof useLittenJoinRoomSubscription>;
-export type LittenJoinRoomSubscriptionResult = Apollo.SubscriptionResult<LittenJoinRoomSubscription>;
-export const TestListenDocument = gql`
-    subscription TestListen($room: String!) {
-  listenTest(room: $room) {
-    date
-  }
-}
-    `;
-
-/**
- * __useTestListenSubscription__
- *
- * To run a query within a React component, call `useTestListenSubscription` and pass it any options that fit your needs.
- * When your component renders, `useTestListenSubscription` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useTestListenSubscription({
- *   variables: {
- *      room: // value for 'room'
- *   },
- * });
- */
-export function useTestListenSubscription(baseOptions: Apollo.SubscriptionHookOptions<TestListenSubscription, TestListenSubscriptionVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<TestListenSubscription, TestListenSubscriptionVariables>(TestListenDocument, options);
-      }
-export type TestListenSubscriptionHookResult = ReturnType<typeof useTestListenSubscription>;
-export type TestListenSubscriptionResult = Apollo.SubscriptionResult<TestListenSubscription>;

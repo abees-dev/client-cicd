@@ -1,5 +1,0 @@
-subscription TestListen($room: String!) {
-  listenTest(room: $room) {
-    date
-  }
-}

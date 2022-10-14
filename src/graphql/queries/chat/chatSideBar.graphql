@@ -1,0 +1,28 @@
+query ChatListSideBar($userId: String!) {
+  listSideBar(userId: $userId) {
+    id
+    lastMessage
+    createdAt
+    seen
+    totalUnSeen
+    updatedAt
+    user {
+      id
+      avatar
+      firstName
+      lastName
+      createdAt
+    }
+    lastSendUser {
+      id
+      avatar
+      firstName
+      lastName
+      createdAt
+    }
+    conversation {
+      id
+      createdAt
+    }
+  }
+}

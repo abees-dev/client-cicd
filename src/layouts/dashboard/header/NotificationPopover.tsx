@@ -24,12 +24,12 @@ import {
   Notification,
   NotificationQueryResponse,
   useGetNotificationsQuery,
-  useLittenJoinRoomSubscription,
   useMaskAsReadNotificationMutation,
 } from 'src/generated/graphql';
 import { useAppSelector } from 'src/redux/hooks';
 import { PATH_DASHBOARD } from 'src/routes/paths';
 import { fDistanceToNow } from 'src/utils/formatTime';
+import socket from 'src/utils/socket';
 
 const NotificationPopover = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -58,11 +58,26 @@ const NotificationPopover = () => {
     },
   });
 
+  // const socket = useSocket();
+
   useEffect(() => {
     if (data) {
       setNotificationState(data.getNotification as NotificationQueryResponse);
     }
+
+    // socket?.emit('JOIN_ROOM', user?.id);
   }, [data]);
+
+  useEffect(() => {
+    socket.on('NOTIFICATION', (response: Notification) => {
+      console.log(response);
+      setNotificationState((prev) => ({
+        ...prev,
+        totalUnread: prev.totalUnread + 1,
+        notifications: [response, ...(prev.notifications as Notification[])],
+      }));
+    });
+  }, []);
 
   const handleOpenPopover = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -71,22 +86,6 @@ const NotificationPopover = () => {
   const handleClosePopover = () => {
     setAnchorEl(null);
   };
-
-  const { data: notificationData } = useLittenJoinRoomSubscription({
-    variables: {
-      room: String(user?.id),
-    },
-  });
-
-  useEffect(() => {
-    if (notificationData) {
-      setNotificationState((prev) => ({
-        ...prev,
-        totalUnread: prev.totalUnread + 1,
-        notifications: [notificationData.littenJoinRoomRequest, ...(prev.notifications as any[])],
-      }));
-    }
-  }, [notificationData]);
 
   useEffect(() => {
     if (inView && !loading) {
@@ -207,7 +206,7 @@ const NotificationPopover = () => {
                         {content}
                       </Typography>
                     </TextMaxLine>
-                    <Typography variant="caption">{fDistanceToNow(Number(createdAt))}</Typography>
+                    <Typography variant="caption">{fDistanceToNow(createdAt)}</Typography>
                   </ListItemText>
                 </ListItemButton>
               );

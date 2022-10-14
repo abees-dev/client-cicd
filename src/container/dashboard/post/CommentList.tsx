@@ -6,9 +6,9 @@ import {
   Post,
   useCreateCommentMutation,
   useGetCommentByPostQuery,
-  useListJoinCommentPostSubscription,
 } from 'src/generated/graphql';
 import { useAppSelector } from 'src/redux/hooks';
+import socket from 'src/utils/socket';
 import CommentInput from './CommentInput';
 import CommentItemRoot from './CommentItem';
 
@@ -47,12 +47,6 @@ export default function CommentList({ post }: CommentListProps) {
     },
   });
 
-  const { data: socketData } = useListJoinCommentPostSubscription({
-    variables: {
-      room: String(post.id),
-    },
-  });
-
   useEffect(() => {
     if (data && !previousData) {
       setCommentResponse(data.comments as CommentList);
@@ -60,25 +54,37 @@ export default function CommentList({ post }: CommentListProps) {
     }
   }, [data]);
 
-  useEffect(() => {
-    if (socketData && socketData.listJoinCommentPost.type === 'comment') {
-      setCommentResponse((prev) => ({
-        ...prev,
-        comment: [{ ...(socketData.listJoinCommentPost.data as Comment), reply: [] }, ...(prev.comment as Comment[])],
-      }));
-    }
+  // const socket = useSocket();
 
-    if (socketData && socketData.listJoinCommentPost.type === 'reply') {
-      const commentId = socketData.listJoinCommentPost.commentId;
-      const reply = socketData.listJoinCommentPost.data;
-      setCommentResponse((prev) => ({
-        ...prev,
-        comment: prev.comment?.map((item) =>
-          item.id !== commentId ? item : { ...item, reply: [reply, ...(item.reply as any[])] }
-        ),
-      }));
+  // console.log(socket);
+
+  useEffect(() => {
+    if (socket) {
+      console.log('socket listen');
+      socket.on('POST_COMMENT', (response) => {
+        console.log(response);
+
+        if (response && response.type === 'comment') {
+          setCommentResponse((prev) => ({
+            ...prev,
+            comment: [{ ...(response.data as Comment), reply: [] }, ...(prev.comment as Comment[])],
+          }));
+        }
+
+        console.log('response from server');
+        if (response && response.type === 'reply') {
+          const commentId = response.data.parent.id;
+          const reply = response.data;
+          setCommentResponse((prev) => ({
+            ...prev,
+            comment: prev.comment?.map((item) =>
+              item.id !== commentId ? item : { ...item, reply: [reply, ...(item.reply as any[])] }
+            ),
+          }));
+        }
+      });
     }
-  }, [socketData]);
+  }, [socket]);
 
   const [createComment] = useCreateCommentMutation();
 
@@ -87,11 +93,10 @@ export default function CommentList({ post }: CommentListProps) {
       await createComment({
         variables: {
           commentInput: {
-            post: post,
             author: user,
+            post,
             message,
           },
-          room: String(post.id),
         },
       });
       setMessage('');

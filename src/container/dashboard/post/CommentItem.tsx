@@ -7,6 +7,8 @@ import { useAppSelector } from 'src/redux/hooks';
 import { fDistanceToNow } from 'src/utils/formatTime';
 import CommentInput from './CommentInput';
 import NextLink from 'next/link';
+import { PATH_DASHBOARD } from 'src/routes/paths';
+import socket from 'src/utils/socket';
 
 const CommentsItemStyled = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -52,7 +54,7 @@ function CommentItem({ comment, sx, handleOpenRely }: CommentItemProp) {
         <CommentsItemStyled>
           <Stack>
             <ProfileTooltip userId={String(userId)}>
-              <NextLink href="/">
+              <NextLink href={PATH_DASHBOARD.profile(userId as string)}>
                 <Link
                   variant="caption"
                   underline="hover"
@@ -74,7 +76,7 @@ function CommentItem({ comment, sx, handleOpenRely }: CommentItemProp) {
           <ActionStyled>Like</ActionStyled>
           <ActionStyled onClick={handleOpenRely}>Reply</ActionStyled>
           <ActionStyled sx={{ fontWeight: 300, fontSize: 11 }}>
-            {fDistanceToNow(Number(comment?.createdAt))}
+            {fDistanceToNow(comment?.createdAt as string)}
           </ActionStyled>
         </Stack>
       </Box>
@@ -104,18 +106,18 @@ export default function CommentItemRoot({ comment, post }: CommentItemRootProp) 
   };
   const hashReply = isEmpty(commentState.reply);
 
-  const [replyComment] = useCreateReplyCommentMutation();
+  const [sendReplyMutation] = useCreateReplyCommentMutation();
 
   const handleSendReply = async () => {
     try {
-      await replyComment({
+      await sendReplyMutation({
         variables: {
           replyInput: {
             author: user,
-            comment: comment,
             message: reply,
+            comment,
+            postId: post?.id as string,
           },
-          room: String(post.id),
         },
       });
       setOpenReply(false);

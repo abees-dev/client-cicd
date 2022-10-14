@@ -19,6 +19,9 @@ mutation Register($data: RegisterInput!) {
   register(registerInput: $data) {
     code
     message
+    user {
+      id
+    }
   }
 }
 

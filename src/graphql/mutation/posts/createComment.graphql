@@ -1,7 +1,7 @@
-mutation CreateReplyComment($replyInput: ReplyInput!, $room: String!) {
-  replyComment(replyInput: $replyInput, room: $room)
+mutation CreateReplyComment($replyInput: ReplyInput!) {
+  replyComment(replyInput: $replyInput)
 }
 
-mutation CreateComment($room: String!, $commentInput: CommentInput!) {
-  createComment(room: $room, commentInput: $commentInput)
+mutation CreateComment($commentInput: CommentInput!) {
+  createComment(commentInput: $commentInput)
 }

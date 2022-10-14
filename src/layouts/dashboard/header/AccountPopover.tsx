@@ -3,9 +3,10 @@ import React, { MouseEvent, useState } from 'react';
 import IconButtonAnimate from 'src/components/animate/IconButtonAnimate';
 import MyAvatar from 'src/components/MyAvatar';
 import Popover from 'src/components/Popover';
-import { useAppSelector } from 'src/redux/hooks';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { PATH_DASHBOARD } from 'src/routes/paths';
 import NextLink from 'next/link';
+import { useLogout } from 'src/redux/slice/auth.slice';
 
 export default function AccountPopover() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -14,6 +15,12 @@ export default function AccountPopover() {
 
   const handleOpenPopover = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    dispatch(useLogout());
   };
 
   const handleClosePopover = () => {
@@ -52,7 +59,7 @@ export default function AccountPopover() {
 
           <Divider sx={{ borderStyle: 'dashed' }} />
           <Box p={1}>
-            <ListItemButton dense sx={{ borderRadius: 1 }}>
+            <ListItemButton dense sx={{ borderRadius: 1 }} onClick={handleLogout}>
               <ListItemText primary={<Typography variant="body2">Logout</Typography>} />
             </ListItemButton>
           </Box>

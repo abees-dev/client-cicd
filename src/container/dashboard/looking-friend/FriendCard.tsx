@@ -39,7 +39,7 @@ export default function FriendCard({ accept, friendship, onAccepted }: FriendCar
         <Image src={generate().avatar || ''} ratio="6/4" />
         <Box p={1}>
           <Typography variant="subtitle1">{capitalCase(generate().fullName)}</Typography>
-          <Typography variant="caption">{fDistanceToNow(Number(generate().createdAt))}</Typography>
+          <Typography variant="caption">{fDistanceToNow(generate().createdAt)}</Typography>
           <Stack spacing={1} mt={2}>
             {accept ? (
               <Button

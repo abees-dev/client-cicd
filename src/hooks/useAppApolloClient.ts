@@ -7,7 +7,6 @@ import {
   split,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import axios from 'axios';
 import { createClient } from 'graphql-ws';
@@ -20,6 +19,7 @@ import { injectStore } from 'src/utils/injectStore';
 export default function useAppApolloClient() {
   const [optionClient, setOptionClient] = useState<ApolloClientOptions<NormalizedCacheObject>>({
     cache: new InMemoryCache(),
+    ssrMode: true,
   });
 
   const getToken = (): string => {
@@ -70,22 +70,7 @@ export default function useAppApolloClient() {
           },
         };
       });
-
-      const wsLink = new GraphQLWsLink(
-        createClient({
-          url: process.env.NEXT_PUBLIC_SOCKET_URL as string,
-        })
-      );
-
-      const splitLink = split(
-        ({ query }) => {
-          const definition = getMainDefinition(query);
-          return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
-        },
-        wsLink,
-        httpLink
-      );
-      setOptionClient((prev) => ({ ...prev, link: authLink.concat(splitLink) }));
+      setOptionClient((prev) => ({ ...prev, link: authLink.concat(httpLink) }));
     }
   }, []);
 

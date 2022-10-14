@@ -9,6 +9,7 @@ import { useAppSelector } from 'src/redux/hooks';
 import { fDistanceToNow } from 'src/utils/formatTime';
 import PostSocialAction from './PostSocialAction';
 import NextLink from 'next/link';
+import { PATH_DASHBOARD } from 'src/routes/paths';
 
 const RootStyled = styled('div')(({ theme }) => ({
   padding: theme.spacing(2, 2),
@@ -96,6 +97,8 @@ export default function PostList({ post }: PostListProps) {
     }));
   };
 
+  const linkTo = (id: string) => PATH_DASHBOARD.profile(id);
+
   return (
     <RootStyled>
       <HeaderStyled>
@@ -105,7 +108,7 @@ export default function PostList({ post }: PostListProps) {
           </ProfileTooltip>
           <Stack>
             <ProfileTooltip userId={String(userId)}>
-              <NextLink href="/">
+              <NextLink href={linkTo(userId as string)}>
                 <Link
                   variant="subtitle1"
                   color="inherit"
@@ -116,7 +119,7 @@ export default function PostList({ post }: PostListProps) {
             </ProfileTooltip>
 
             <Stack direction="row" spacing={0.5}>
-              <Typography variant="caption">{fDistanceToNow(Number(createdAt))}</Typography>
+              <Typography variant="caption">{fDistanceToNow(createdAt)}</Typography>
               <Tooltip title="public" placement="top">
                 <Box>
                   <Iconify icon="ic:baseline-public" />

@@ -1,13 +1,15 @@
 import { Box, Card, Container } from '@mui/material';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { isEmpty } from 'lodash';
 import { ReactElement, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import Page from 'src/components/Page';
 import PostSkeleton from 'src/components/skeleton/PostSkeleton';
 import { CommentList, PostCreate, PostList } from 'src/container/dashboard/post';
-import { AllPostResponse, Post, useGetAllPostQuery } from 'src/generated/graphql';
+import { AllPostResponse, Post, useGetAllPostLazyQuery, useGetAllPostQuery } from 'src/generated/graphql';
 import Layout from 'src/layouts';
 import { NextPageWithLayout } from 'src/types';
+import socket from 'src/utils/socket';
 
 const Post: NextPageWithLayout = () => {
   const [page, setPage] = useState(0);
@@ -19,6 +21,8 @@ const Post: NextPageWithLayout = () => {
         limit: 2,
       },
     },
+    fetchPolicy: 'network-only',
+    nextFetchPolicy: 'cache-first',
   });
 
   const [postResponse, setPostResponse] = useState<AllPostResponse>({
@@ -33,8 +37,13 @@ const Post: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (!loading && !isEmpty(data)) {
+      const posts = data.postsQuery.posts;
       setPostResponse(data.postsQuery as AllPostResponse);
       setPage(0);
+      socket.emit(
+        'POST_ROOM',
+        posts?.map((post) => post.id)
+      );
     }
   }, [data, loading]);
 

@@ -5,6 +5,7 @@ import { useSnackbar } from 'notistack';
 import { useForm } from 'react-hook-form';
 import { FormProvider, RHFTextField } from 'src/components/hook-form';
 import { useRegisterMutation } from 'src/generated/graphql';
+import socket from 'src/utils/socket';
 import * as Yup from 'yup';
 
 export type RegisterValue = {
@@ -51,10 +52,9 @@ export default function RegisterForm() {
 
     const response = data?.register;
 
-    console.log(errors);
-
     if (response?.code === 201) {
       enqueueSnackbar(response.message);
+      socket?.emit('CREATE_ROOM', response.user?.id);
     } else {
       enqueueSnackbar(response?.message, { variant: 'error' });
     }

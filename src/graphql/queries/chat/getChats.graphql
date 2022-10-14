@@ -1,0 +1,14 @@
+query GetChats($conversionId: String!) {
+  getChats(conversionId: $conversionId) {
+    id
+    message
+    createdAt
+    sender {
+      id
+      firstName
+      lastName
+      avatar
+      createdAt
+    }
+  }
+}

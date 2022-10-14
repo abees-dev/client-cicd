@@ -3,11 +3,14 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import { Stack } from '@mui/system';
+import { useEffect } from 'react';
+import { io } from 'socket.io-client';
 import IconButtonAnimate from 'src/components/animate/IconButtonAnimate';
 import Iconify from 'src/components/Iconify';
 import MyAvatar from 'src/components/MyAvatar';
 import { HEADER, NAVBAR } from 'src/config';
 import useCollapse from 'src/hooks/useCollapse';
+import { useAppDispatch } from 'src/redux/hooks';
 import AccountPopover from './AccountPopover';
 import NotificationPopover from './NotificationPopover';
 
